@@ -1,0 +1,63 @@
+[17:35:24] stage 1: 24 task cells, 24 already complete, 0 to run  [OFFLINE -- not reportable]
+[17:35:24] stage 1: 24 usable episodes for actor 'offline-scripted'
+[17:35:24]   [1/24] replayed 86ad1d0ba125 (8 actions)
+[17:35:24]   [2/24] replayed 20f9d8b2e5ba (8 actions)
+[17:35:24]   [3/24] replayed 9458ca97c363 (8 actions)
+[17:35:24]   [4/24] replayed 727ca58913c0 (8 actions)
+[17:35:24]   [5/24] replayed ddb10049b477 (8 actions)
+[17:35:24]   [6/24] replayed 335a777bda87 (8 actions)
+[17:35:24]   [7/24] replayed a99fcd8dfe8f (8 actions)
+[17:35:24]   [8/24] replayed ede6bd1f2a18 (8 actions)
+[17:35:24]   [9/24] replayed b571191600b4 (9 actions)
+[17:35:25]   [10/24] replayed 2bc92d5dcbf9 (8 actions)
+[17:35:25]   [11/24] replayed ce6979b76295 (9 actions)
+[17:35:25]   [12/24] replayed 4f1b1c517717 (9 actions)
+[17:35:25]   [13/24] replayed c24ab6356ecb (9 actions)
+[17:35:25]   [14/24] replayed 617ed92bb167 (10 actions)
+[17:35:25]   [15/24] replayed 119b082f0cc3 (8 actions)
+[17:35:25]   [16/24] replayed d0ad7d33e4cf (9 actions)
+[17:35:25]   [17/24] replayed 0f5e124feab1 (9 actions)
+[17:35:25]   [18/24] replayed 92ebe7c4719d (9 actions)
+[17:35:25]   [19/24] replayed 3e87c4605734 (10 actions)
+[17:35:25]   [20/24] replayed 9cc597c4624f (9 actions)
+[17:35:25]   [21/24] replayed 34b6447fbdde (10 actions)
+[17:35:25]   [22/24] replayed 6d0a7a99e779 (9 actions)
+[17:35:26]   [23/24] replayed 83389ee46266 (8 actions)
+[17:35:26]   [24/24] replayed de4dac4644e9 (9 actions)
+[17:35:26] stage 3: A_eval        192 pairs over  24 groups
+[17:35:26] stage 3: C_declared    192 pairs over  24 groups
+[17:35:26] stage 3: B_empirical    96 pairs over  24 groups
+[17:35:26] stage 3: S_scripted     96 pairs over  24 groups
+[17:35:26] stage 3: A_chat         24 pairs over  12 groups
+[17:35:26] stage 4: loading Qwen/Qwen3-1.7B (float16)
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights:   0%|          | 1/311 [00:00<00:32,  9.42it/s]Loading weights:  23%|██▎       | 70/311 [00:00<00:00, 395.30it/s]Loading weights:  44%|████▍     | 137/311 [00:00<00:00, 510.07it/s]Loading weights:  65%|██████▍   | 202/311 [00:00<00:00, 551.89it/s]Loading weights:  89%|████████▊ | 276/311 [00:00<00:00, 603.41it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 549.68it/s]
+[17:35:38]   NVIDIA GeForce RTX 2060 6.0 GiB, 29 layers x 2048 dims, quantised=False
+[17:35:38]   extracting A_eval (192 pairs -> 384 contexts)
+[17:36:52]     extracted 384 contexts (29 layers x 2048 dims)
+[17:36:52]   extracting C_declared (192 pairs -> 384 contexts)
+[17:38:06]     extracted 384 contexts (29 layers x 2048 dims)
+[17:38:06]   extracting B_empirical (96 pairs -> 192 contexts)
+[17:38:51]     extracted 192 contexts (29 layers x 2048 dims)
+[17:38:51]   extracting S_scripted (96 pairs -> 192 contexts)
+[17:39:34]     extracted 192 contexts (29 layers x 2048 dims)
+[17:39:34]   extracting A_chat (24 pairs -> 48 contexts)
+[17:39:36]     extracted 48 contexts (29 layers x 2048 dims)
+[17:39:36] stage 5: analysing pooling=last
+[17:39:38]   A_eval       best layer 11  AUROC 0.894 [0.880,0.911]  rel 1.000  shuffled 0.484
+[17:39:40]   C_declared   best layer 11  AUROC 0.804 [0.779,0.829]  rel 0.999  shuffled 0.484
+[17:39:41]   B_empirical  best layer 11  AUROC 1.000 [1.000,1.000]  rel 0.943  shuffled 0.495
+[17:39:43]   S_scripted   best layer 11  AUROC 1.000 [1.000,1.000]  rel 0.955  shuffled 0.493
+[17:39:44]   A_chat       best layer 10  AUROC 0.861 [0.750,1.000]  rel 0.837  shuffled 0.489
+[17:40:13] stage 5: analysing pooling=mean
+[17:40:15]   A_eval       best layer 13  AUROC 1.000 [1.000,1.000]  rel 1.000  shuffled 0.490
+[17:40:16]   C_declared   best layer  1  AUROC 0.812 [0.812,0.812]  rel 1.000  shuffled 0.479
+[17:40:18]   B_empirical  best layer  2  AUROC 1.000 [1.000,1.000]  rel 0.960  shuffled 0.480
+[17:40:20]   S_scripted   best layer  1  AUROC 1.000 [1.000,1.000]  rel 0.966  shuffled 0.489
+[17:40:20]   A_chat       best layer  0  AUROC 1.000 [1.000,1.000]  rel 0.872  shuffled 0.502
+[17:40:49] wrote D:\ins respinse\realness\results\exp0\exp0-offline.json
+
+==============================================================================
+exp0 NOT REPORTABLE -- validity gate failed:
+  - offline run: scripted trajectories and template simulators are not evidence about any model
+==============================================================================
+exit=2

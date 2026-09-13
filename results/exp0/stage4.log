@@ -1,0 +1,28 @@
+[20:16:13] stage 1: 24 task cells, 48 already complete, 0 to run
+[20:16:13]          (2 duplicate cell(s) dropped -- a cell run twice is one observation, not two)
+[20:16:13] stage 1: 24 usable episodes for actor 'qwen38-27b'
+[20:16:13]          (32 api_error episode(s) -- not counted, will be retried on resume)
+[20:16:13]          (24 episode(s) from other actors in the log, excluded)
+[20:16:13] stage 2: 24 replay(s) already cached
+[20:16:13] stage 2: SIM fidelity -- 1/221 simulated refusals (0.5%), 0 empty
+[20:16:13] stage 3: A_eval        192 pairs over  24 groups
+[20:16:13] stage 3: C_declared    192 pairs over  24 groups
+[20:16:13] stage 3: B_empirical    96 pairs over  24 groups
+[20:16:13] stage 3: S_scripted     96 pairs over  24 groups
+[20:16:13] stage 3: A_chat         24 pairs over  12 groups
+[20:16:13] stage 4: loading Qwen/Qwen3-1.7B (float16)
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights:   0%|          | 1/311 [00:00<00:49,  6.24it/s]Loading weights:  26%|██▋       | 82/311 [00:00<00:00, 377.68it/s]Loading weights:  51%|█████     | 158/311 [00:00<00:00, 520.77it/s]Loading weights:  72%|███████▏  | 224/311 [00:00<00:00, 569.80it/s]Loading weights:  96%|█████████▌| 299/311 [00:00<00:00, 624.28it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 534.11it/s]
+[20:16:25]   NVIDIA GeForce RTX 2060 6.0 GiB, 29 layers x 2048 dims, quantised=False
+[20:16:25]   extracting A_eval (192 pairs -> 384 contexts)
+[20:17:23]     extracted 384 contexts (29 layers x 2048 dims)
+[20:17:23]   extracting C_declared (192 pairs -> 384 contexts)
+[20:18:24]     extracted 384 contexts (29 layers x 2048 dims)
+[20:18:24]   extracting B_empirical (96 pairs -> 192 contexts)
+[20:19:05]     extracted 192 contexts (29 layers x 2048 dims)
+[20:19:05]   extracting S_scripted (96 pairs -> 192 contexts)
+[20:19:44]     extracted 192 contexts (29 layers x 2048 dims)
+[20:19:44]   extracting A_chat (24 pairs -> 48 contexts)
+[20:19:46]     extracted 48 contexts (29 layers x 2048 dims)
+[20:19:46] stage 5: analysing pooling=last
+[20:19:48]   A_eval       best layer 11  AUROC 0.919 [0.881,0.960]  rel 0.998  shuffled 0.487
+[20:19:50]   C_declared   best layer 11  AUROC 0.877 [0.844,0.918]  rel 0.998  shuffled 0.488

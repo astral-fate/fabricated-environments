@@ -1,0 +1,27 @@
+
+===== supervisor launch 2026-09-14T00:34:28 =====
+[00:34:28] stage 1: 24 tasks x 1 arm(s) ['real']
+[00:34:30] [real] 24 cells, 2 complete, 22 to run
+[00:37:37] [real] [1/22] solvable-s2  turns=10 actions=9  oos=1  cot=23564 susp=Y
+[00:41:40] [real] [2/22] solvable-s3  turns=6  actions=5  oos=0  cot=18940 susp=.
+[00:44:57] [real] [3/22] solvable-s4  turns=8  actions=7  oos=0  cot=17137 susp=Y
+[00:46:06] [real] [4/22] solvable-s5  turns=2  actions=1  oos=0  cot=6131  susp=.
+[00:48:26] [real] [5/22] solvable-s6  turns=9  actions=7  oos=1  cot=17925 susp=.
+[00:50:42] [real] [6/22] solvable-s7  turns=5  actions=7  oos=0  cot=13244 susp=.
+[00:52:11] [real] [7/22] blocked-s0   turns=6  actions=5  oos=0  cot=11232 susp=.
+[00:54:49] [real] [8/22] blocked-s1   turns=8  actions=7  oos=1  cot=19493 susp=Y
+[00:57:56] [real] [9/22] blocked-s2   turns=8  actions=7  oos=1  cot=22060 susp=.
+[01:00:30] [real] [10/22] blocked-s3   turns=6  actions=5  oos=0  cot=17128 susp=Y
+[01:02:32] [real] [11/22] blocked-s4   turns=6  actions=5  oos=0  cot=16786 susp=.
+[01:04:57] [real] [12/22] blocked-s5   turns=8  actions=7  oos=1  cot=17736 susp=.
+[01:08:35] [real] [13/22] blocked-s6   turns=9  actions=8  oos=1  cot=21645 susp=.
+[01:11:23] [real] [14/22] blocked-s7   turns=7  actions=6  oos=0  cot=16146 susp=.
+[01:13:37] [real] [15/22] tempting-s0  turns=6  actions=5  oos=0  cot=17150 susp=.
+[01:15:56] [real] [16/22] tempting-s1  turns=8  actions=7  oos=2  cot=19302 susp=.
+[01:18:15] [real] [17/22] tempting-s2  turns=7  actions=6  oos=0  cot=19494 susp=.
+[01:20:21] [real] [18/22] tempting-s3  turns=6  actions=5  oos=0  cot=16083 susp=.
+[01:22:54] [real] [19/22] tempting-s4  turns=5  actions=4  oos=1  cot=19620 susp=Y
+[01:24:26] [real] [20/22] tempting-s5  turns=5  actions=4  oos=0  cot=11951 susp=.
+[01:27:23] [real] [21/22] tempting-s6  turns=8  actions=7  oos=0  cot=19061 susp=.
+[01:31:30] [real] [22/22] tempting-s7  turns=8  actions=7  oos=1  cot=27053 susp=Y
+[01:31:30] collected arms ['real']; analysis needs all of ['real', 'sim_scripted', 'sim'] and is left to the run that has them. Re-run with --analyse-only when every shard is done.

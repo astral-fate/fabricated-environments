@@ -1,0 +1,55 @@
+C:\Users\Toooo\AppData\Roaming\Python\Python314\site-packages\modal\_utils\async_utils.py:43: DeprecationWarning: 'asyncio.WindowsSelectorEventLoopPolicy' is deprecated and slated for removal in Python 3.16
+  asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+C:\Users\Toooo\AppData\Roaming\Python\Python314\site-packages\modal\_utils\async_utils.py:43: DeprecationWarning: 'asyncio.set_event_loop_policy' is deprecated and slated for removal in Python 3.16
+  asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+✓ Initialized. View run at 
+https://modal.com/apps/astral-fate/main/ap-mpVxQlKlCqNRZdZLYH68DT
+✓ Created objects.
+├── 🔨 Created mount D:\ins respinse\realness\modal_exp2.py
+├── 🔨 Created mount D:\ins respinse\realness
+└── 🔨 Created function run_exp2.
+uploading 2 exp1 episodes; dispatching Qwen/Qwen3-32B (bfloat16) on A10G:4  [STAGE 1 ONLY] ...
+exp1 episodes uploaded: 2  (stage-1 validation; not used)
++ /usr/local/bin/python -u experiments/exp2_credence_predicts_behaviour.py --model Qwen/Qwen3-32B --dtype bfloat16 --exp0-artifact results/exp0/exp0-qwen3-32b.json --actor openrouter:qwen/qwen3-32b --batch-size 2 --max-prefixes 4 --device-map auto --stage1-only
+[21:20:43] inherited layer 14 for B_empirical (exp0 held-out AUROC 0.978)
+
+[1ALoading checkpoint shards:   0%|          | 0/17 [00:00<?, ?it/s]
+[1ALoading checkpoint shards:   6%|▌         | 1/17 [00:04<01:15,  4.70s/it]
+[1ALoading checkpoint shards:  12%|█▏        | 2/17 [00:08<01:05,  4.36s/it]
+[1ALoading checkpoint shards:  18%|█▊        | 3/17 [00:11<00:49,  3.56s/it]
+[1ALoading checkpoint shards:  24%|██▎       | 4/17 [00:13<00:40,  3.09s/it]
+[1ALoading checkpoint shards:  29%|██▉       | 5/17 [00:16<00:34,  2.84s/it]
+[1ALoading checkpoint shards:  35%|███▌      | 6/17 [00:21<00:39,  3.58s/it]
+[1ALoading checkpoint shards:  41%|████      | 7/17 [00:23<00:32,  3.23s/it]
+[1ALoading checkpoint shards:  47%|████▋     | 8/17 [00:25<00:26,  2.91s/it]
+[1ALoading checkpoint shards:  53%|█████▎    | 9/17 [00:29<00:25,  3.25s/it]
+[1ALoading checkpoint shards:  59%|█████▉    | 10/17 [00:32<00:20,  2.98s/it]
+[1ALoading checkpoint shards:  65%|██████▍   | 11/17 [00:36<00:20,  3.35s/it]
+[1ALoading checkpoint shards:  71%|███████   | 12/17 [00:38<00:15,  3.04s/it]
+[1ALoading checkpoint shards:  76%|███████▋  | 13/17 [00:41<00:11,  2.81s/it]
+[1ALoading checkpoint shards:  82%|████████▏ | 14/17 [00:43<00:08,  2.70s/it]
+[1ALoading checkpoint shards:  88%|████████▊ | 15/17 [00:48<00:06,  3.32s/it]
+[1ALoading checkpoint shards:  94%|█████████▍| 16/17 [00:51<00:03,  3.29s/it]
+[1ALoading checkpoint shards: 100%|██████████| 17/17 [00:54<00:00,  3.15s/it]
+[1ALoading checkpoint shards: 100%|██████████| 17/17 [00:54<00:00,  3.20s/it]
+[21:21:48] loaded Qwen/Qwen3-32B on 4x NVIDIA A10, 65 layers
+[21:21:48] stage 1: 96 B_empirical pairs from 24 replayed episodes (max_prefixes=4, inherited)
+[21:24:39]     extracted 192 contexts (1 layers x 5120 dims)
+[21:24:39] stage 1: re-derived B_empirical, held-out AUROC 0.977
+[21:24:39] stage 1 only: reproduction gate PASS (0.977 vs exp0 0.978); wrote results/exp2/exp2-stage1.json
+
+==============================================================================
+Qwen/Qwen3-32B  4x NVIDIA A10  quantised=False  236.6s
+  gate probe_reproduction           PASS
+  gate layer_inherited              PASS
+  gate not_quantised                PASS
+wrote /out/exp2-qwen3-32b-stage1.json in 236.6s
+Stopping app - uncaught exception raised locally: KeyError('verdict').
+┌───────────────────── Traceback (most recent call last) ─────────────────────┐
+│ D:\ins respinse\realness\modal_exp2.py:177 in main                          │
+│                                                                             │
+│   176 │   │   │   print(f"  {name:<26}{r['slope']:>+10.4f}  [{r['lo']:+.4f} │
+│ > 177 │   print(f"\nVERDICT: {payload['verdict']}")                         │
+│   178 │   print(payload["reading"])                                         │
+└─────────────────────────────────────────────────────────────────────────────┘
+KeyError: 'verdict'

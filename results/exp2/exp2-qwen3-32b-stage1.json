@@ -1,0 +1,46 @@
+{
+  "experiment": "exp2_stage1_direction_only",
+  "generated": "2026-09-13T21:24:39",
+  "note": "GPU-path validation. No trajectories were scored and no P2 claim is made; a verdict without exp1 trajectories would be meaningless.",
+  "direction": "B_empirical",
+  "pooling": "last",
+  "layer": 14,
+  "exp0_auroc": 0.9778645833333334,
+  "rederived_auroc": 0.9769965277777778,
+  "gates": {
+    "probe_reproduction": {
+      "rederived_auroc": 0.9769965277777778,
+      "exp0_auroc": 0.9778645833333334,
+      "delta": 0.0008680555555555802,
+      "tolerance": 0.05,
+      "pass": true,
+      "n_pairs": 96,
+      "n_groups": 24,
+      "max_prefixes_inherited": 4,
+      "n_train_groups": 12,
+      "n_test_groups": 12
+    },
+    "layer_inherited": {
+      "layer": 14,
+      "source": "exp0-qwen3-32b.json",
+      "pass": true
+    },
+    "not_quantised": {
+      "quantised": false,
+      "pass": true
+    }
+  },
+  "hardware": {
+    "device": "4x NVIDIA A10",
+    "dtype": "bfloat16",
+    "quantised": false,
+    "vram_gib": 88.2
+  },
+  "_modal": {
+    "model": "Qwen/Qwen3-32B",
+    "dtype": "bfloat16",
+    "n_exp1_episodes": 2,
+    "seconds": 236.6,
+    "exit_code": 0
+  }
+}

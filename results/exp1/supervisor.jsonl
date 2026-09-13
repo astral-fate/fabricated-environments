@@ -1,0 +1,81 @@
+{"ts": 1789334869.6388075, "iso": "2026-09-14T00:27:49", "event": "start", "done": 3, "expected": 72, "api_errors": 0, "stall_seconds": 900.0, "passthrough": ""}
+{"ts": 1789334869.6405742, "iso": "2026-09-14T00:27:49", "event": "launch", "cmd": "D:\\ins respinse\\realness\\experiments\\exp1_behavioural_divergence.py"}
+{"ts": 1789335019.6652086, "iso": "2026-09-14T00:30:19", "event": "progress", "done": 4, "expected": 72, "api_errors": 0}
+{"ts": 1789335268.416226, "iso": "2026-09-14T00:34:28", "event": "start", "arms": ["real", "sim_scripted", "sim"], "cells_per_arm": 24, "done": {"real": 2, "sim_scripted": 1, "sim": 1}, "stall_seconds": 900.0, "passthrough": ""}
+{"ts": 1789335268.428583, "iso": "2026-09-14T00:34:28", "event": "launch", "arm": "real", "done": 2, "log": "run-real.log"}
+{"ts": 1789335268.4405642, "iso": "2026-09-14T00:34:28", "event": "launch", "arm": "sim_scripted", "done": 1, "log": "run-sim_scripted.log"}
+{"ts": 1789335268.452657, "iso": "2026-09-14T00:34:28", "event": "launch", "arm": "sim", "done": 1, "log": "run-sim.log"}
+{"ts": 1789335448.5078804, "iso": "2026-09-14T00:37:28", "event": "progress", "arm": "sim", "done": 2, "of": 24, "api_errors": 0}
+{"ts": 1789335478.5177836, "iso": "2026-09-14T00:37:58", "event": "progress", "arm": "real", "done": 3, "of": 24, "api_errors": 0}
+{"ts": 1789335628.5995808, "iso": "2026-09-14T00:40:28", "event": "progress", "arm": "sim", "done": 3, "of": 24, "api_errors": 0}
+{"ts": 1789335658.605502, "iso": "2026-09-14T00:40:58", "event": "progress", "arm": "sim_scripted", "done": 2, "of": 24, "api_errors": 0}
+{"ts": 1789335688.612221, "iso": "2026-09-14T00:41:28", "event": "progress", "arm": "sim_scripted", "done": 3, "of": 24, "api_errors": 0}
+{"ts": 1789335718.6196535, "iso": "2026-09-14T00:41:58", "event": "progress", "arm": "real", "done": 4, "of": 24, "api_errors": 0}
+{"ts": 1789335748.6417832, "iso": "2026-09-14T00:42:28", "event": "progress", "arm": "sim", "done": 4, "of": 24, "api_errors": 0}
+{"ts": 1789335898.6963658, "iso": "2026-09-14T00:44:58", "event": "progress", "arm": "real", "done": 5, "of": 24, "api_errors": 0}
+{"ts": 1789335928.7164755, "iso": "2026-09-14T00:45:28", "event": "progress", "arm": "sim", "done": 5, "of": 24, "api_errors": 0}
+{"ts": 1789335988.7501898, "iso": "2026-09-14T00:46:28", "event": "progress", "arm": "real", "done": 6, "of": 24, "api_errors": 0}
+{"ts": 1789335988.759994, "iso": "2026-09-14T00:46:28", "event": "progress", "arm": "sim_scripted", "done": 4, "of": 24, "api_errors": 0}
+{"ts": 1789336108.8408663, "iso": "2026-09-14T00:48:28", "event": "progress", "arm": "real", "done": 7, "of": 24, "api_errors": 0}
+{"ts": 1789336108.845728, "iso": "2026-09-14T00:48:28", "event": "progress", "arm": "sim", "done": 6, "of": 24, "api_errors": 0}
+{"ts": 1789336258.9468617, "iso": "2026-09-14T00:50:58", "event": "progress", "arm": "real", "done": 8, "of": 24, "api_errors": 0}
+{"ts": 1789336318.9864216, "iso": "2026-09-14T00:51:58", "event": "progress", "arm": "sim", "done": 7, "of": 24, "api_errors": 0}
+{"ts": 1789336348.9958386, "iso": "2026-09-14T00:52:28", "event": "progress", "arm": "real", "done": 9, "of": 24, "api_errors": 0}
+{"ts": 1789336409.0415869, "iso": "2026-09-14T00:53:29", "event": "progress", "arm": "sim_scripted", "done": 5, "of": 24, "api_errors": 0}
+{"ts": 1789336499.078683, "iso": "2026-09-14T00:54:59", "event": "progress", "arm": "real", "done": 10, "of": 24, "api_errors": 0}
+{"ts": 1789336529.0883162, "iso": "2026-09-14T00:55:29", "event": "progress", "arm": "sim_scripted", "done": 6, "of": 24, "api_errors": 0}
+{"ts": 1789336529.0916574, "iso": "2026-09-14T00:55:29", "event": "progress", "arm": "sim", "done": 8, "of": 24, "api_errors": 0}
+{"ts": 1789336679.165567, "iso": "2026-09-14T00:57:59", "event": "progress", "arm": "real", "done": 11, "of": 24, "api_errors": 0}
+{"ts": 1789336799.2223113, "iso": "2026-09-14T00:59:59", "event": "progress", "arm": "sim", "done": 9, "of": 24, "api_errors": 0}
+{"ts": 1789336859.2542837, "iso": "2026-09-14T01:00:59", "event": "progress", "arm": "real", "done": 12, "of": 24, "api_errors": 0}
+{"ts": 1789336979.3279219, "iso": "2026-09-14T01:02:59", "event": "progress", "arm": "real", "done": 13, "of": 24, "api_errors": 0}
+{"ts": 1789337069.3810961, "iso": "2026-09-14T01:04:29", "event": "progress", "arm": "sim", "done": 10, "of": 24, "api_errors": 0}
+{"ts": 1789337099.3961792, "iso": "2026-09-14T01:04:59", "event": "progress", "arm": "real", "done": 14, "of": 24, "api_errors": 0}
+{"ts": 1789337309.5465808, "iso": "2026-09-14T01:08:29", "event": "progress", "arm": "sim", "done": 11, "of": 24, "api_errors": 0}
+{"ts": 1789337339.5521636, "iso": "2026-09-14T01:08:59", "event": "progress", "arm": "real", "done": 15, "of": 24, "api_errors": 0}
+{"ts": 1789337429.6189787, "iso": "2026-09-14T01:10:29", "event": "progress", "arm": "sim_scripted", "done": 7, "of": 24, "api_errors": 0}
+{"ts": 1789337489.6734958, "iso": "2026-09-14T01:11:29", "event": "progress", "arm": "real", "done": 16, "of": 24, "api_errors": 0}
+{"ts": 1789337519.7279992, "iso": "2026-09-14T01:11:59", "event": "progress", "arm": "sim", "done": 12, "of": 24, "api_errors": 0}
+{"ts": 1789337639.7963154, "iso": "2026-09-14T01:13:59", "event": "progress", "arm": "real", "done": 17, "of": 24, "api_errors": 0}
+{"ts": 1789337759.873977, "iso": "2026-09-14T01:15:59", "event": "progress", "arm": "real", "done": 18, "of": 24, "api_errors": 0}
+{"ts": 1789337909.9994037, "iso": "2026-09-14T01:18:29", "event": "progress", "arm": "real", "done": 19, "of": 24, "api_errors": 0}
+{"ts": 1789337940.0188015, "iso": "2026-09-14T01:19:00", "event": "progress", "arm": "sim_scripted", "done": 8, "of": 24, "api_errors": 0}
+{"ts": 1789337940.0232017, "iso": "2026-09-14T01:19:00", "event": "progress", "arm": "sim", "done": 13, "of": 24, "api_errors": 0}
+{"ts": 1789337970.0306985, "iso": "2026-09-14T01:19:30", "event": "progress", "arm": "sim_scripted", "done": 9, "of": 24, "api_errors": 0}
+{"ts": 1789338030.0603993, "iso": "2026-09-14T01:20:30", "event": "progress", "arm": "real", "done": 20, "of": 24, "api_errors": 0}
+{"ts": 1789338090.1098523, "iso": "2026-09-14T01:21:30", "event": "progress", "arm": "sim", "done": 14, "of": 24, "api_errors": 0}
+{"ts": 1789338180.1502416, "iso": "2026-09-14T01:23:00", "event": "progress", "arm": "real", "done": 21, "of": 24, "api_errors": 0}
+{"ts": 1789338210.2169788, "iso": "2026-09-14T01:23:30", "event": "progress", "arm": "sim", "done": 15, "of": 24, "api_errors": 0}
+{"ts": 1789338270.2733595, "iso": "2026-09-14T01:24:30", "event": "progress", "arm": "real", "done": 22, "of": 24, "api_errors": 0}
+{"ts": 1789338300.2957003, "iso": "2026-09-14T01:25:00", "event": "progress", "arm": "sim_scripted", "done": 10, "of": 24, "api_errors": 0}
+{"ts": 1789338300.3001788, "iso": "2026-09-14T01:25:00", "event": "progress", "arm": "sim", "done": 16, "of": 24, "api_errors": 0}
+{"ts": 1789338450.436141, "iso": "2026-09-14T01:27:30", "event": "progress", "arm": "real", "done": 23, "of": 24, "api_errors": 0}
+{"ts": 1789338540.5460887, "iso": "2026-09-14T01:29:00", "event": "progress", "arm": "sim", "done": 17, "of": 24, "api_errors": 0}
+{"ts": 1789338570.5777705, "iso": "2026-09-14T01:29:30", "event": "progress", "arm": "sim_scripted", "done": 11, "of": 24, "api_errors": 0}
+{"ts": 1789338690.6887674, "iso": "2026-09-14T01:31:30", "event": "progress", "arm": "real", "done": 24, "of": 24, "api_errors": 0}
+{"ts": 1789338690.6937037, "iso": "2026-09-14T01:31:30", "event": "arm_complete", "arm": "real", "done": 24, "restarts": 0, "api_errors": 0}
+{"ts": 1789338720.7348769, "iso": "2026-09-14T01:32:00", "event": "progress", "arm": "sim", "done": 18, "of": 24, "api_errors": 0}
+{"ts": 1789338870.8173845, "iso": "2026-09-14T01:34:30", "event": "progress", "arm": "sim_scripted", "done": 12, "of": 24, "api_errors": 0}
+{"ts": 1789338900.85658, "iso": "2026-09-14T01:35:00", "event": "progress", "arm": "sim", "done": 19, "of": 24, "api_errors": 0}
+{"ts": 1789338960.8926804, "iso": "2026-09-14T01:36:00", "event": "progress", "arm": "sim_scripted", "done": 13, "of": 24, "api_errors": 0}
+{"ts": 1789339171.0193257, "iso": "2026-09-14T01:39:31", "event": "progress", "arm": "sim_scripted", "done": 14, "of": 24, "api_errors": 0}
+{"ts": 1789339171.0362074, "iso": "2026-09-14T01:39:31", "event": "progress", "arm": "sim", "done": 20, "of": 24, "api_errors": 0}
+{"ts": 1789339381.2034383, "iso": "2026-09-14T01:43:01", "event": "progress", "arm": "sim_scripted", "done": 15, "of": 24, "api_errors": 0}
+{"ts": 1789339411.2448633, "iso": "2026-09-14T01:43:31", "event": "progress", "arm": "sim", "done": 21, "of": 24, "api_errors": 0}
+{"ts": 1789339711.5286412, "iso": "2026-09-14T01:48:31", "event": "progress", "arm": "sim", "done": 22, "of": 24, "api_errors": 0}
+{"ts": 1789339981.763731, "iso": "2026-09-14T01:53:01", "event": "progress", "arm": "sim", "done": 23, "of": 24, "api_errors": 0}
+{"ts": 1789340191.9927056, "iso": "2026-09-14T01:56:31", "event": "progress", "arm": "sim", "done": 24, "of": 24, "api_errors": 0}
+{"ts": 1789340192.0076618, "iso": "2026-09-14T01:56:32", "event": "arm_complete", "arm": "sim", "done": 24, "restarts": 0, "api_errors": 0}
+{"ts": 1789340252.0441494, "iso": "2026-09-14T01:57:32", "event": "progress", "arm": "sim_scripted", "done": 16, "of": 24, "api_errors": 0}
+{"ts": 1789340312.0739224, "iso": "2026-09-14T01:58:32", "event": "progress", "arm": "sim_scripted", "done": 17, "of": 24, "api_errors": 0}
+{"ts": 1789340552.1731734, "iso": "2026-09-14T02:02:32", "event": "progress", "arm": "sim_scripted", "done": 18, "of": 24, "api_errors": 0}
+{"ts": 1789340672.2342472, "iso": "2026-09-14T02:04:32", "event": "progress", "arm": "sim_scripted", "done": 19, "of": 24, "api_errors": 0}
+{"ts": 1789340822.3020408, "iso": "2026-09-14T02:07:02", "event": "progress", "arm": "sim_scripted", "done": 20, "of": 24, "api_errors": 0}
+{"ts": 1789341212.5486553, "iso": "2026-09-14T02:13:32", "event": "progress", "arm": "sim_scripted", "done": 21, "of": 24, "api_errors": 0}
+{"ts": 1789341452.6925814, "iso": "2026-09-14T02:17:32", "event": "progress", "arm": "sim_scripted", "done": 22, "of": 24, "api_errors": 0}
+{"ts": 1789341903.016827, "iso": "2026-09-14T02:25:03", "event": "progress", "arm": "sim_scripted", "done": 23, "of": 24, "api_errors": 0}
+{"ts": 1789342143.1774237, "iso": "2026-09-14T02:29:03", "event": "progress", "arm": "sim_scripted", "done": 24, "of": 24, "api_errors": 0}
+{"ts": 1789342143.1954007, "iso": "2026-09-14T02:29:03", "event": "arm_complete", "arm": "sim_scripted", "done": 24, "restarts": 0, "api_errors": 0}
+{"ts": 1789342143.2373374, "iso": "2026-09-14T02:29:03", "event": "supervisor_exit", "code": 0, "filled": 72, "expected": 72}
+{"ts": 1789342143.2390316, "iso": "2026-09-14T02:29:03", "event": "final_analysis"}
+{"ts": 1789342161.318328, "iso": "2026-09-14T02:29:21", "event": "final_analysis_done", "code": 0}

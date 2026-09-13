@@ -1,0 +1,54 @@
+[supervise] launch: {'cmd': 'D:\\ins respinse\\realness\\experiments\\exp0_construct_separation.py --seeds 8 --max-turns 9 --max-prefixes 4 --batch-size 2 --min-episodes 12', 'restart': 0}
+[supervise] key_rotation: {'key': 4, 'of': 4, 'note': 'last key in use'}
+[supervise] budget_spent: {'trailing_api_errors': 18, 'clean_episodes': 18, 'api_error_episodes': 18}
+
+==============================================================================
+STOPPED: 18 consecutive api_error episodes.
+Every configured key looks spent -- retrying cannot help.
+  usable episodes so far: 18
+
+Add capacity, then re-run the same command:
+  GROQ_API_KEY_5=... (numbered form), or GROQ_API_KEYS=k1,k2,k3
+Stage 1 is append-only and resumable; completed episodes are kept.
+==============================================================================
+SUPERVISOR EXIT=4
+[supervise] launch: {'cmd': 'D:\\ins respinse\\realness\\experiments\\exp0_construct_separation.py --seeds 8 --max-turns 9 --max-prefixes 4 --batch-size 2 --min-episodes 12', 'restart': 0}
+[supervise] key_rotation: {'key': 4, 'of': 4, 'note': 'last key in use'}
+[supervise] rate_limited: {'trailing_api_errors': 26, 'clean_episodes': 18, 'api_error_episodes': 26, 'cooldown': 1}
+
+[supervise] every key rate-limited after 18 clean episode(s). Cooling down 600s (1/6), then resuming.
+[supervise] launch: {'cmd': 'D:\\ins respinse\\realness\\experiments\\exp0_construct_separation.py --seeds 8 --max-turns 9 --max-prefixes 4 --batch-size 2 --min-episodes 12', 'restart': 0}
+[supervise] key_rotation: {'key': 2, 'of': 4, 'note': ''}
+[supervise] rate_limited: {'trailing_api_errors': 26, 'clean_episodes': 16, 'api_error_episodes': 26, 'cooldown': 1}
+
+[supervise] every key rate-limited after 16 clean episode(s). Cooling down 300s (1/12), then resuming.
+[supervise] exit: {'code': 1, 'clean_episodes': 16, 'api_error_episodes': 26}
+SUPERVISOR EXIT=1
+[supervise] launch: {'cmd': 'D:\\ins respinse\\realness\\experiments\\exp0_construct_separation.py --seeds 8 --max-turns 9 --max-prefixes 4 --batch-size 2 --min-episodes 16', 'restart': 0}
+[supervise] key_rotation: {'key': 3, 'of': 4, 'note': ''}
+[supervise] rate_limited: {'trailing_api_errors': 26, 'clean_episodes': 16, 'api_error_episodes': 26, 'cooldown': 1}
+
+[supervise] every key rate-limited after 16 clean episode(s). Cooling down 420s (1/12), then resuming.
+[supervise] exit: {'code': 1, 'clean_episodes': 16, 'api_error_episodes': 26}
+SUPERVISOR EXIT=1
+[supervise] launch: {'cmd': 'D:\\ins respinse\\realness\\experiments\\exp0_construct_separation.py --seeds 8 --max-turns 9 --max-prefixes 4 --batch-size 2 --min-episodes 16', 'restart': 0, 'log_watermark': 68}
+[supervise] key_rotation: {'key': 3, 'of': 4, 'note': ''}
+[supervise] key_rotation: {'key': 4, 'of': 4, 'note': 'last key in use'}
+[supervise] rate_limited: {'trailing_api_errors': 4, 'clean_episodes': 16, 'api_error_episodes': 30, 'cooldown': 1}
+
+[supervise] every key rate-limited after 16 clean episode(s). Cooling down 420s (1/12), then resuming.
+[supervise] restarting: {'restart': 0}
+[supervise] launch: {'cmd': 'D:\\ins respinse\\realness\\experiments\\exp0_construct_separation.py --seeds 8 --max-turns 9 --max-prefixes 4 --batch-size 2 --min-episodes 16', 'restart': 0, 'log_watermark': 72}
+[supervise] key_rotation: {'key': 4, 'of': 4, 'note': 'last key in use'}
+[supervise] exit: {'code': 1, 'clean_episodes': 16, 'api_error_episodes': 30}
+SUPERVISOR EXIT=1
+[supervise] launch: {'cmd': 'D:\\ins respinse\\realness\\experiments\\exp0_construct_separation.py --seeds 8 --max-turns 9 --max-prefixes 4 --batch-size 2 --min-episodes 16', 'restart': 0, 'log_watermark': 72}
+[supervise] key_rotation: {'key': 4, 'of': 4, 'note': 'last key in use'}
+[supervise] key_rotation: {'key': 2, 'of': 4, 'note': ''}
+[supervise] key_rotation: {'key': 3, 'of': 4, 'note': ''}
+[supervise] key_rotation: {'key': 4, 'of': 4, 'note': 'last key in use'}
+SUPERVISOR_DONE=1
+[supervise] launch: {'cmd': 'D:\\ins respinse\\realness\\experiments\\exp0_construct_separation.py --seeds 8 --max-turns 9 --max-prefixes 4 --batch-size 2 --min-episodes 20', 'restart': 0, 'log_watermark': 74}
+[supervise] key_rotation: {'key': 4, 'of': 4, 'note': 'last key in use'}
+[supervise] exit: {'code': 1, 'clean_episodes': 24, 'api_error_episodes': 32}
+SUPERVISOR_DONE=1

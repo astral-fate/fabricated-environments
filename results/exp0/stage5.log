@@ -1,0 +1,46 @@
+[20:20:48] stage 1: 24 task cells, 48 already complete, 0 to run
+[20:20:48]          (2 duplicate cell(s) dropped -- a cell run twice is one observation, not two)
+[20:20:48] stage 1: 24 usable episodes for actor 'qwen38-27b'
+[20:20:48]          (32 api_error episode(s) -- not counted, will be retried on resume)
+[20:20:48]          (24 episode(s) from other actors in the log, excluded)
+[20:20:48] stage 2: 24 replay(s) already cached
+[20:20:48] stage 2: SIM fidelity -- 1/221 simulated refusals (0.5%), 0 empty
+[20:20:48] stage 3: A_eval        192 pairs over  24 groups
+[20:20:48] stage 3: C_declared    192 pairs over  24 groups
+[20:20:48] stage 3: B_empirical    96 pairs over  24 groups
+[20:20:48] stage 3: S_scripted     96 pairs over  24 groups
+[20:20:48] stage 3: A_chat         24 pairs over  12 groups
+[20:20:48] stage 4: loading Qwen/Qwen3-1.7B (float16)
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights:   1%|          | 2/311 [00:00<00:20, 14.83it/s]Loading weights:  29%|██▊       | 89/311 [00:00<00:00, 446.01it/s]Loading weights:  46%|████▌     | 142/311 [00:00<00:00, 480.22it/s]Loading weights:  64%|██████▍   | 199/311 [00:00<00:00, 513.65it/s]Loading weights:  85%|████████▌ | 265/311 [00:00<00:00, 564.21it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 506.09it/s]
+[20:21:01]   NVIDIA GeForce RTX 2060 6.0 GiB, 29 layers x 2048 dims, quantised=False
+[20:21:01]   extracting A_eval (192 pairs -> 384 contexts)
+[20:22:03]     extracted 384 contexts (29 layers x 2048 dims)
+[20:22:03]   extracting C_declared (192 pairs -> 384 contexts)
+[20:23:06]     extracted 384 contexts (29 layers x 2048 dims)
+[20:23:06]   extracting B_empirical (96 pairs -> 192 contexts)
+[20:23:48]     extracted 192 contexts (29 layers x 2048 dims)
+[20:23:48]   extracting S_scripted (96 pairs -> 192 contexts)
+[20:24:27]     extracted 192 contexts (29 layers x 2048 dims)
+[20:24:27]   extracting A_chat (24 pairs -> 48 contexts)
+[20:24:29]     extracted 48 contexts (29 layers x 2048 dims)
+[20:24:54] stage 4: cached activations -> activations-17285b3d3f0af597.npz
+[20:24:54] stage 5: analysing pooling=last
+[20:24:55]   A_eval       best layer 11  AUROC 0.919 [0.881,0.960]  rel 0.998  shuffled 0.487
+[20:24:57]   C_declared   best layer 11  AUROC 0.877 [0.844,0.918]  rel 0.998  shuffled 0.488
+[20:24:59]   B_empirical  best layer 11  AUROC 0.925 [0.877,0.968]  rel 0.936  shuffled 0.502
+[20:25:01]   S_scripted   best layer 16  AUROC 0.970 [0.946,0.994]  rel 0.884  shuffled 0.489
+[20:25:01]   A_chat       best layer 10  AUROC 0.861 [0.750,1.000]  rel 0.837  shuffled 0.489
+[20:25:31] stage 5: analysing pooling=mean
+[20:25:33]   A_eval       best layer 11  AUROC 0.994 [0.986,1.000]  rel 1.000  shuffled 0.488
+[20:25:35]   C_declared   best layer 16  AUROC 0.830 [0.802,0.869]  rel 0.999  shuffled 0.489
+[20:25:37]   B_empirical  best layer  1  AUROC 0.947 [0.897,0.987]  rel 0.968  shuffled 0.510
+[20:25:39]   S_scripted   best layer 27  AUROC 0.941 [0.897,0.979]  rel 0.983  shuffled 0.505
+[20:25:39]   A_chat       best layer  0  AUROC 1.000 [1.000,1.000]  rel 0.872  shuffled 0.502
+[20:26:08] wrote D:\ins respinse\realness\results\exp0\exp0.json
+
+==============================================================================
+exp0 VERDICT: SEPARABLE.
+  cross-AUROC A->B = 0.473, B->A = 0.572; at least one < 0.85.
+  Environment-realness is not reducible to evaluation-awareness in this model.
+  P5' is SUPPORTED at this scale. The project proceeds.
+==============================================================================

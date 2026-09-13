@@ -1,0 +1,33 @@
+[20:06:21] stage 1: 24 task cells, 48 already complete, 0 to run
+[20:06:21]          (2 duplicate cell(s) dropped -- a cell run twice is one observation, not two)
+[20:06:21] stage 1: 24 usable episodes for actor 'qwen38-27b'
+[20:06:21]          (32 api_error episode(s) -- not counted, will be retried on resume)
+[20:06:21]          (24 episode(s) from other actors in the log, excluded)
+[20:06:21] stage 2: 7 replay(s) already cached
+[20:06:47]   [1/17] replayed 813d90d2e72f (9 actions)
+[20:06:57]   [2/17] replayed a5640cd55b0a (6 actions)
+[20:07:30]   [3/17] replayed 671e4c2b40cb (13 actions)
+[20:07:50]   [4/17] replayed 24f4d80aab2f (7 actions)
+[20:08:22]   [5/17] replayed ac95ad922237 (14 actions)
+[20:08:59]   [6/17] replayed ef62c41ff956 (15 actions)
+[20:09:16]   [7/17] replayed 1fa046d37291 (6 actions)
+[20:09:47]   [8/17] replayed ddb6feb86d1d (10 actions)
+[20:10:12]   [9/17] replayed bb0f2331f9c8 (9 actions)
+[20:10:36]   [10/17] replayed c2fca7e97600 (6 actions)
+[20:11:00]   [11/17] replayed b72367894a80 (9 actions)
+[20:11:45]   [12/17] replayed cec6e829023d (12 actions)
+[20:12:28]   [13/17] replayed cccc90a69df5 (12 actions)
+[20:13:03]   [14/17] replayed 41531cd663ea (11 actions)
+[20:13:44]   [15/17] replayed 5dd3ec5c21c0 (15 actions)
+[20:14:05]   [16/17] replayed ffb1de846078 (5 actions)
+[20:14:48]   [17/17] replayed 8afc5b066f53 (8 actions)
+[20:14:48] stage 2: SIM fidelity -- 1/221 simulated refusals (0.5%), 0 empty
+[20:14:48] stage 3: A_eval        192 pairs over  24 groups
+[20:14:48] stage 3: C_declared    192 pairs over  24 groups
+[20:14:48] stage 3: B_empirical    96 pairs over  24 groups
+[20:14:48] stage 3: S_scripted     96 pairs over  24 groups
+[20:14:48] stage 3: A_chat         24 pairs over  12 groups
+[20:14:48] stage 4: loading Qwen/Qwen3-1.7B (float16)
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights:   0%|          | 1/311 [00:00<00:52,  5.91it/s]Loading weights:  19%|█▉        | 59/311 [00:00<00:00, 268.10it/s]Loading weights:  35%|███▌      | 109/311 [00:00<00:00, 359.36it/s]Loading weights:  50%|████▉     | 155/311 [00:00<00:00, 392.47it/s]Loading weights:  69%|██████▉   | 214/311 [00:00<00:00, 458.74it/s]Loading weights:  89%|████████▉ | 277/311 [00:00<00:00, 504.09it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 426.82it/s]
+[20:15:01]   NVIDIA GeForce RTX 2060 6.0 GiB, 29 layers x 2048 dims, quantised=False
+[20:15:01]   extracting A_eval (192 pairs -> 384 contexts)

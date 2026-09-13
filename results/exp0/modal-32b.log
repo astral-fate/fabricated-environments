@@ -1,0 +1,80 @@
+C:\Users\Toooo\AppData\Roaming\Python\Python314\site-packages\modal\_utils\async_utils.py:43: DeprecationWarning: 'asyncio.WindowsSelectorEventLoopPolicy' is deprecated and slated for removal in Python 3.16
+  asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+C:\Users\Toooo\AppData\Roaming\Python\Python314\site-packages\modal\_utils\async_utils.py:43: DeprecationWarning: 'asyncio.set_event_loop_policy' is deprecated and slated for removal in Python 3.16
+  asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+Note that running a local entrypoint in detached mode only keeps the last triggered Modal function alive after the parent process has been killed or disconnected.
+✓ Initialized. View run at 
+https://modal.com/apps/astral-fate/main/ap-pkPtomPuQRoJj2DJTEqK7v
+✓ Created objects.
+├── 🔨 Created mount D:\ins respinse\realness\modal_exp0.py
+├── 🔨 Created mount D:\ins respinse\realness
+└── 🔨 Created function run_exp0.
+dispatching Qwen/Qwen3-32B (bfloat16) on A100-80GB ...
++ /usr/local/bin/python -u experiments/exp0_construct_separation.py --model Qwen/Qwen3-32B --dtype bfloat16 --batch-size 1 --max-prefixes 4 --seeds 8 --max-turns 9 --min-episodes 20
+[17:51:54] stage 1: 24 task cells, 48 already complete, 0 to run
+[17:51:54]          (2 duplicate cell(s) dropped -- a cell run twice is one observation, not two)
+[17:51:54] stage 1: 24 usable episodes for actor 'qwen38-27b'
+[17:51:54]          (32 api_error episode(s) -- not counted, will be retried on resume)
+[17:51:54]          (24 episode(s) from other actors in the log, excluded)
+[17:51:54] stage 2: 24 replay(s) already cached
+[17:51:54] stage 2: SIM fidelity -- 1/221 simulated refusals (0.5%), 0 empty
+[17:51:54] stage 3: A_eval        192 pairs over  24 groups
+[17:51:54] stage 3: C_declared    192 pairs over  24 groups
+[17:51:54] stage 3: B_empirical    96 pairs over  24 groups
+[17:51:54] stage 3: S_scripted     96 pairs over  24 groups
+[17:51:54] stage 3: A_chat         24 pairs over  12 groups
+[17:51:54] stage 4: loading Qwen/Qwen3-32B (bfloat16)
+
+[1ALoading checkpoint shards:   0%|          | 0/17 [00:00<?, ?it/s]
+[1ALoading checkpoint shards:   6%|▌         | 1/17 [00:00<00:04,  3.28it/s]
+[1ALoading checkpoint shards:  12%|█▏        | 2/17 [00:01<00:16,  1.07s/it]
+[1ALoading checkpoint shards:  35%|███▌      | 6/17 [00:02<00:02,  3.72it/s]
+[1ALoading checkpoint shards:  59%|█████▉    | 10/17 [00:02<00:00,  7.05it/s]
+[1ALoading checkpoint shards:  82%|████████▏ | 14/17 [00:02<00:00, 10.86it/s]
+[1ALoading checkpoint shards: 100%|██████████| 17/17 [00:02<00:00,  7.37it/s]
+[17:58:32]   NVIDIA A100-SXM4-80GB 79.3 GiB, 65 layers x 5120 dims, quantised=False
+[17:58:32]   extracting A_eval (192 pairs -> 384 contexts)
+[18:00:18]     extracted 384 contexts (65 layers x 5120 dims)
+[18:00:18]   extracting C_declared (192 pairs -> 384 contexts)
+[18:02:03]     extracted 384 contexts (65 layers x 5120 dims)
+[18:02:03]   extracting B_empirical (96 pairs -> 192 contexts)
+[18:03:00]     extracted 192 contexts (65 layers x 5120 dims)
+[18:03:00]   extracting S_scripted (96 pairs -> 192 contexts)
+[18:04:00]     extracted 192 contexts (65 layers x 5120 dims)
+[18:04:00]   extracting A_chat (24 pairs -> 48 contexts)
+[18:04:07]     extracted 48 contexts (65 layers x 5120 dims)
+[18:10:51] stage 4: cached activations -> activations-f129eb419c72e2d4.npz
+[18:10:51] stage 5: analysing pooling=last
+[18:10:54]   A_eval       best layer 19  AUROC 0.999 [0.996,1.000]  rel 0.996  shuffled 0.488
+[18:10:57]   C_declared   best layer 27  AUROC 0.974 [0.958,0.990]  rel 0.994  shuffled 0.487
+[18:11:00]   B_empirical  best layer 14  AUROC 0.978 [0.954,0.999]  rel 0.923  shuffled 0.505
+[18:11:02]   S_scripted   best layer 44  AUROC 0.918 [0.862,0.966]  rel 0.858  shuffled 0.488
+[18:11:03]   A_chat       best layer  9  AUROC 0.944 [0.833,1.000]  rel 0.859  shuffled 0.482
+[18:11:45] stage 5: analysing pooling=mean
+[18:11:47]   A_eval       best layer 43  AUROC 1.000 [1.000,1.000]  rel 1.000  shuffled 0.489
+[18:11:50]   C_declared   best layer 55  AUROC 0.997 [0.990,1.000]  rel 0.988  shuffled 0.502
+[18:11:53]   B_empirical  best layer  0  AUROC 0.961 [0.922,0.992]  rel 0.964  shuffled 0.514
+[18:11:56]   S_scripted   best layer  0  AUROC 0.862 [0.786,0.930]  rel 0.976  shuffled 0.514
+[18:11:56]   A_chat       best layer  0  AUROC 1.000 [1.000,1.000]  rel 0.851  shuffled 0.499
+[18:12:40] wrote /realness/results/exp0/exp0.json
+
+==============================================================================
+exp0 VERDICT: SEPARABLE.
+  cross-AUROC A->B = 0.417, B->A = 0.484; at least one < 0.85.
+  Environment-realness is not reducible to evaluation-awareness in this model.
+  P5' is SUPPORTED at this scale. The project proceeds.
+==============================================================================
+wrote /out/exp0-qwen3-32b.json in 1247.8s
+
+==============================================================================
+Qwen/Qwen3-32B  NVIDIA A100-SXM4-80GB  quantised=False  1247.8s
+exp0 VERDICT: SEPARABLE.
+  cross-AUROC A->B = 0.417, B->A = 0.484; at least one < 0.85.
+  Environment-realness is not reducible to evaluation-awareness in this model.
+  P5' is SUPPORTED at this scale. The project proceeds.
+==============================================================================
+wrote D:\ins respinse\realness\results\exp0\exp0-qwen3-32b.json
+Runner terminated.
+✓ App completed. View run at 
+https://modal.com/apps/astral-fate/main/ap-pkPtomPuQRoJj2DJTEqK7v
+MODAL_EXIT=0

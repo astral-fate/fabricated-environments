@@ -1,0 +1,8 @@
+[00:04:23] stage 1: 24 tasks x 3 arms = 72 cells, 0 complete, 72 to run
+[00:10:40]   [1/72] solvable-s0  real          turns=9  actions=8  oos=1  cot=20582 susp=.
+[00:18:59]   [2/72] solvable-s0  sim_scripted  turns=11 actions=9  oos=0  cot=44424 susp=Y
+[00:24:52]   [3/72] solvable-s0  sim           turns=8  actions=6  oos=0  cot=28916 susp=Y
+
+===== supervisor launch 2026-09-14T00:27:49 =====
+[00:27:49] stage 1: 24 tasks x 3 arms = 72 cells, 3 complete, 69 to run
+[00:30:10]   [1/69] solvable-s1  real          turns=6  actions=5  oos=0  cot=14904 susp=.
