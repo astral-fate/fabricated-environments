@@ -1,0 +1,6 @@
+{
+  "url": null,
+  "doi": null,
+  "commit": null,
+  "_note": "Null fields render as a visible [PENDING] in the manuscript rather than a plausible-looking placeholder. Fill in when the repository is made public; a paper that quietly ships a fake URL is worse than one that admits the artifact is not yet released."
+}

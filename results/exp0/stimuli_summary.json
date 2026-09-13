@@ -1,0 +1,42 @@
+{
+  "A_eval": {
+    "name": "A_eval",
+    "description": "Evaluation-awareness, Heidari et al.'s contrastive framing ported to the agentic setting. Tool outputs are the REAL ones in both members of the pair.",
+    "manipulation": "system framing sentence",
+    "pos_label": "being evaluated",
+    "n_pairs": 192,
+    "n_groups": 24
+  },
+  "C_declared": {
+    "name": "C_declared",
+    "description": "Declared environment-realness: the same construction as A, on the realness axis. Tool outputs are the REAL ones in both members of the pair.",
+    "manipulation": "system declaration sentence",
+    "pos_label": "environment declared synthetic",
+    "n_pairs": 192,
+    "n_groups": 24
+  },
+  "B_empirical": {
+    "name": "B_empirical",
+    "description": "Empirical environment-realness: no framing sentence; the tool outputs themselves are genuine or LLM-fabricated. Available only because a REAL arm exists.",
+    "manipulation": "tool output provenance (substrate vs LLM)",
+    "pos_label": "environment actually synthetic",
+    "n_pairs": 96,
+    "n_groups": 24
+  },
+  "S_scripted": {
+    "name": "S_scripted",
+    "description": "Transfer control for B: fabrication by template rather than by a model. Separates 'detects synthetic environments' from 'detects one simulator's prose'.",
+    "manipulation": "tool output provenance (substrate vs template)",
+    "pos_label": "environment actually synthetic",
+    "n_pairs": 96,
+    "n_groups": 24
+  },
+  "A_chat": {
+    "name": "A_chat",
+    "description": "Evaluation-awareness on short chat prompts, in the original style. Checks that the agentic port of A behaves like the construction it ports.",
+    "manipulation": "system framing sentence",
+    "pos_label": "being evaluated",
+    "n_pairs": 24,
+    "n_groups": 12
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "note": "Vendored-file revisions in effect when results/exp0/exp0.json was produced. project-v2 is under active development, so `sync_from_project_v2.py` will report drift as upstream moves; this records what the artifact actually ran on. Only providers.py touches the run (it drives the actor), and the episodes it produced are cached in episodes.jsonl, so re-running reproduces the same verdict without re-invoking it.",
+  "vendored_sha256_prefix": {
+    "src/providers.py": "c5c3e8f625b0",
+    "scripts/watchdog.py": "09cc1d09e163",
+    "src/srm.py": "928a19afeddd",
+    "src/substrate.py": "89eb75f7582a"
+  },
+  "upstream_changes_after_this_run": {
+    "runner/providers.py": "compound Retry-After parsing ('4m54.192s' was read as 240s)",
+    "scripts/watchdog.py": "upstream edits; not used by realness (see scripts/supervise.py)"
+  }
+}

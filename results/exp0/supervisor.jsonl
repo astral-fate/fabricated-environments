@@ -1,0 +1,30 @@
+{"ts": 1789311531.620807, "event": "launch", "cmd": "D:\\ins respinse\\realness\\experiments\\exp0_construct_separation.py --seeds 8 --max-turns 9 --max-prefixes 4 --batch-size 2 --min-episodes 12", "restart": 0}
+{"ts": 1789311551.6323795, "event": "key_rotation", "key": 4, "of": 4, "note": "last key in use"}
+{"ts": 1789312172.0189126, "event": "budget_spent", "trailing_api_errors": 18, "clean_episodes": 18, "api_error_episodes": 18}
+{"ts": 1789312465.000939, "event": "launch", "cmd": "D:\\ins respinse\\realness\\experiments\\exp0_construct_separation.py --seeds 8 --max-turns 9 --max-prefixes 4 --batch-size 2 --min-episodes 12", "restart": 0}
+{"ts": 1789312485.0113134, "event": "key_rotation", "key": 4, "of": 4, "note": "last key in use"}
+{"ts": 1789312485.034416, "event": "rate_limited", "trailing_api_errors": 26, "clean_episodes": 18, "api_error_episodes": 26, "cooldown": 1}
+{"ts": 1789312796.4842668, "event": "launch", "cmd": "D:\\ins respinse\\realness\\experiments\\exp0_construct_separation.py --seeds 8 --max-turns 9 --max-prefixes 4 --batch-size 2 --min-episodes 12", "restart": 0}
+{"ts": 1789312816.4948988, "event": "key_rotation", "key": 2, "of": 4, "note": ""}
+{"ts": 1789312816.5173419, "event": "rate_limited", "trailing_api_errors": 26, "clean_episodes": 16, "api_error_episodes": 26, "cooldown": 1}
+{"ts": 1789313116.524408, "event": "exit", "code": 1, "clean_episodes": 16, "api_error_episodes": 26}
+{"ts": 1789313569.1110337, "event": "launch", "cmd": "D:\\ins respinse\\realness\\experiments\\exp0_construct_separation.py --seeds 8 --max-turns 9 --max-prefixes 4 --batch-size 2 --min-episodes 16", "restart": 0}
+{"ts": 1789313589.1601014, "event": "key_rotation", "key": 3, "of": 4, "note": ""}
+{"ts": 1789313589.1830664, "event": "rate_limited", "trailing_api_errors": 26, "clean_episodes": 16, "api_error_episodes": 26, "cooldown": 1}
+{"ts": 1789314010.05369, "event": "exit", "code": 1, "clean_episodes": 16, "api_error_episodes": 26}
+{"ts": 1789314107.7697418, "event": "launch", "cmd": "D:\\ins respinse\\realness\\experiments\\exp0_construct_separation.py --seeds 8 --max-turns 9 --max-prefixes 4 --batch-size 2 --min-episodes 16", "restart": 0, "log_watermark": 68}
+{"ts": 1789314127.7804298, "event": "key_rotation", "key": 3, "of": 4, "note": ""}
+{"ts": 1789314167.7851412, "event": "key_rotation", "key": 4, "of": 4, "note": "last key in use"}
+{"ts": 1789314227.8140845, "event": "rate_limited", "trailing_api_errors": 4, "clean_episodes": 16, "api_error_episodes": 30, "cooldown": 1}
+{"ts": 1789314648.6763523, "event": "restarting", "restart": 0}
+{"ts": 1789314648.6792593, "event": "launch", "cmd": "D:\\ins respinse\\realness\\experiments\\exp0_construct_separation.py --seeds 8 --max-turns 9 --max-prefixes 4 --batch-size 2 --min-episodes 16", "restart": 0, "log_watermark": 72}
+{"ts": 1789314668.6893144, "event": "key_rotation", "key": 4, "of": 4, "note": "last key in use"}
+{"ts": 1789314668.6962695, "event": "exit", "code": 1, "clean_episodes": 16, "api_error_episodes": 30}
+{"ts": 1789315598.760344, "event": "launch", "cmd": "D:\\ins respinse\\realness\\experiments\\exp0_construct_separation.py --seeds 8 --max-turns 9 --max-prefixes 4 --batch-size 2 --min-episodes 16", "restart": 0, "log_watermark": 72}
+{"ts": 1789315618.7723563, "event": "key_rotation", "key": 4, "of": 4, "note": "last key in use"}
+{"ts": 1789315638.780626, "event": "key_rotation", "key": 2, "of": 4, "note": ""}
+{"ts": 1789315658.7846737, "event": "key_rotation", "key": 3, "of": 4, "note": ""}
+{"ts": 1789315678.78794, "event": "key_rotation", "key": 4, "of": 4, "note": "last key in use"}
+{"ts": 1789316071.1790032, "event": "launch", "cmd": "D:\\ins respinse\\realness\\experiments\\exp0_construct_separation.py --seeds 8 --max-turns 9 --max-prefixes 4 --batch-size 2 --min-episodes 20", "restart": 0, "log_watermark": 74}
+{"ts": 1789316091.1911879, "event": "key_rotation", "key": 4, "of": 4, "note": "last key in use"}
+{"ts": 1789316711.3734994, "event": "exit", "code": 1, "clean_episodes": 24, "api_error_episodes": 32}

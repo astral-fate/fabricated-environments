@@ -1,0 +1,12 @@
+# exp0 needs numpy + torch + transformers; everything else runs without them.
+numpy>=1.26
+scikit-learn>=1.4        # only used to cross-check AUROC in tests/test_probe.py
+pytest>=8.0
+
+# hosted providers (action generation + the LLM simulator)
+openai>=1.30             # Groq is reached through the OpenAI SDK -- urllib gets a Cloudflare 403
+
+# the probe arm. torch must match the host's CUDA driver; install it first on a rented GPU.
+torch>=2.4
+transformers>=4.44
+accelerate>=0.33

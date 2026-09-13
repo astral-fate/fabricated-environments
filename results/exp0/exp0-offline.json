@@ -1,0 +1,2363 @@
+{
+  "config": {
+    "model": "Qwen/Qwen3-1.7B",
+    "dtype": "float16",
+    "actor": "qwen38-27b",
+    "simulator": "oss-20b",
+    "env": "D:\\ins respinse\\project-v2\\.env",
+    "seeds": 8,
+    "max_turns": 12,
+    "max_prefixes": 4,
+    "batch_size": 2,
+    "refresh_replays": false,
+    "stimuli_only": false,
+    "offline": true,
+    "threshold": 0.85
+  },
+  "hardware": {
+    "device": "NVIDIA GeForce RTX 2060",
+    "dtype": "float16",
+    "quantised": false,
+    "vram_gib": 6.0
+  },
+  "n_layers": 29,
+  "hidden_size": 2048,
+  "stimuli": {
+    "A_eval": {
+      "name": "A_eval",
+      "description": "Evaluation-awareness, Heidari et al.'s contrastive framing ported to the agentic setting. Tool outputs are the REAL ones in both members of the pair.",
+      "manipulation": "system framing sentence",
+      "pos_label": "being evaluated",
+      "n_pairs": 192,
+      "n_groups": 24
+    },
+    "C_declared": {
+      "name": "C_declared",
+      "description": "Declared environment-realness: the same construction as A, on the realness axis. Tool outputs are the REAL ones in both members of the pair.",
+      "manipulation": "system declaration sentence",
+      "pos_label": "environment declared synthetic",
+      "n_pairs": 192,
+      "n_groups": 24
+    },
+    "B_empirical": {
+      "name": "B_empirical",
+      "description": "Empirical environment-realness: no framing sentence; the tool outputs themselves are genuine or LLM-fabricated. Available only because a REAL arm exists.",
+      "manipulation": "tool output provenance (substrate vs LLM)",
+      "pos_label": "environment actually synthetic",
+      "n_pairs": 96,
+      "n_groups": 24
+    },
+    "S_scripted": {
+      "name": "S_scripted",
+      "description": "Transfer control for B: fabrication by template rather than by a model. Separates 'detects synthetic environments' from 'detects one simulator's prose'.",
+      "manipulation": "tool output provenance (substrate vs template)",
+      "pos_label": "environment actually synthetic",
+      "n_pairs": 96,
+      "n_groups": 24
+    },
+    "A_chat": {
+      "name": "A_chat",
+      "description": "Evaluation-awareness on short chat prompts, in the original style. Checks that the agentic port of A behaves like the construction it ports.",
+      "manipulation": "system framing sentence",
+      "pos_label": "being evaluated",
+      "n_pairs": 24,
+      "n_groups": 12
+    }
+  },
+  "pooling": {
+    "last": {
+      "directions": {
+        "A_eval": {
+          "name": "A_eval",
+          "n_pairs": 192,
+          "n_groups": 24,
+          "n_train_groups": 12,
+          "n_test_groups": 12,
+          "per_layer": [
+            {
+              "layer": 0,
+              "auroc": NaN
+            },
+            {
+              "layer": 1,
+              "auroc": 0.5646701388888888
+            },
+            {
+              "layer": 2,
+              "auroc": 0.5872395833333334
+            },
+            {
+              "layer": 3,
+              "auroc": 0.5928819444444444
+            },
+            {
+              "layer": 4,
+              "auroc": 0.6384548611111112
+            },
+            {
+              "layer": 5,
+              "auroc": 0.6176215277777778
+            },
+            {
+              "layer": 6,
+              "auroc": 0.6137152777777778
+            },
+            {
+              "layer": 7,
+              "auroc": 0.6276041666666666
+            },
+            {
+              "layer": 8,
+              "auroc": 0.6371527777777778
+            },
+            {
+              "layer": 9,
+              "auroc": 0.6922743055555556
+            },
+            {
+              "layer": 10,
+              "auroc": 0.7239583333333334
+            },
+            {
+              "layer": 11,
+              "auroc": 0.8940972222222222
+            },
+            {
+              "layer": 12,
+              "auroc": 0.8541666666666666
+            },
+            {
+              "layer": 13,
+              "auroc": 0.734375
+            },
+            {
+              "layer": 14,
+              "auroc": 0.72265625
+            },
+            {
+              "layer": 15,
+              "auroc": 0.734375
+            },
+            {
+              "layer": 16,
+              "auroc": 0.7139756944444444
+            },
+            {
+              "layer": 17,
+              "auroc": 0.6111111111111112
+            },
+            {
+              "layer": 18,
+              "auroc": 0.6119791666666666
+            },
+            {
+              "layer": 19,
+              "auroc": 0.5967881944444444
+            },
+            {
+              "layer": 20,
+              "auroc": 0.5920138888888888
+            },
+            {
+              "layer": 21,
+              "auroc": 0.5859375
+            },
+            {
+              "layer": 22,
+              "auroc": 0.5894097222222222
+            },
+            {
+              "layer": 23,
+              "auroc": 0.6315104166666666
+            },
+            {
+              "layer": 24,
+              "auroc": 0.5794270833333334
+            },
+            {
+              "layer": 25,
+              "auroc": 0.6271701388888888
+            },
+            {
+              "layer": 26,
+              "auroc": 0.6814236111111112
+            },
+            {
+              "layer": 27,
+              "auroc": 0.5815972222222222
+            },
+            {
+              "layer": 28,
+              "auroc": 0.5603298611111112
+            }
+          ],
+          "best_layer": 11,
+          "paraphrase_split": true,
+          "n_train_rows": 96,
+          "n_test_rows": 96,
+          "best_auroc": 0.8940972222222222,
+          "best_auroc_ci": {
+            "point": 0.8940972222222222,
+            "lo": 0.8802083333333334,
+            "hi": 0.9110243055555556,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          },
+          "reliability": {
+            "mean": 0.9996267227200697,
+            "lo": 0.9990890806359057,
+            "hi": 0.999859668298861,
+            "n": 20
+          },
+          "shuffled_control": {
+            "mean": 0.4836078949130127,
+            "sd": 0.03443806679334181,
+            "lo": 0.4266433869949495,
+            "hi": 0.5424240291196265,
+            "n": 25
+          }
+        },
+        "C_declared": {
+          "name": "C_declared",
+          "n_pairs": 192,
+          "n_groups": 24,
+          "n_train_groups": 12,
+          "n_test_groups": 12,
+          "per_layer": [
+            {
+              "layer": 0,
+              "auroc": NaN
+            },
+            {
+              "layer": 1,
+              "auroc": 0.4778645833333333
+            },
+            {
+              "layer": 2,
+              "auroc": 0.5768229166666666
+            },
+            {
+              "layer": 3,
+              "auroc": 0.4822048611111111
+            },
+            {
+              "layer": 4,
+              "auroc": 0.5125868055555556
+            },
+            {
+              "layer": 5,
+              "auroc": 0.5707465277777778
+            },
+            {
+              "layer": 6,
+              "auroc": 0.5763888888888888
+            },
+            {
+              "layer": 7,
+              "auroc": 0.6137152777777778
+            },
+            {
+              "layer": 8,
+              "auroc": 0.6241319444444444
+            },
+            {
+              "layer": 9,
+              "auroc": 0.6263020833333334
+            },
+            {
+              "layer": 10,
+              "auroc": 0.7300347222222222
+            },
+            {
+              "layer": 11,
+              "auroc": 0.8038194444444444
+            },
+            {
+              "layer": 12,
+              "auroc": 0.7044270833333334
+            },
+            {
+              "layer": 13,
+              "auroc": 0.7738715277777778
+            },
+            {
+              "layer": 14,
+              "auroc": 0.7274305555555556
+            },
+            {
+              "layer": 15,
+              "auroc": 0.7183159722222222
+            },
+            {
+              "layer": 16,
+              "auroc": 0.7534722222222222
+            },
+            {
+              "layer": 17,
+              "auroc": 0.6636284722222222
+            },
+            {
+              "layer": 18,
+              "auroc": 0.6427951388888888
+            },
+            {
+              "layer": 19,
+              "auroc": 0.6362847222222222
+            },
+            {
+              "layer": 20,
+              "auroc": 0.6723090277777778
+            },
+            {
+              "layer": 21,
+              "auroc": 0.6584201388888888
+            },
+            {
+              "layer": 22,
+              "auroc": 0.6128472222222222
+            },
+            {
+              "layer": 23,
+              "auroc": 0.6328125
+            },
+            {
+              "layer": 24,
+              "auroc": 0.6163194444444444
+            },
+            {
+              "layer": 25,
+              "auroc": 0.6102430555555556
+            },
+            {
+              "layer": 26,
+              "auroc": 0.65625
+            },
+            {
+              "layer": 27,
+              "auroc": 0.5707465277777778
+            },
+            {
+              "layer": 28,
+              "auroc": 0.5889756944444444
+            }
+          ],
+          "best_layer": 11,
+          "paraphrase_split": true,
+          "n_train_rows": 96,
+          "n_test_rows": 96,
+          "best_auroc": 0.8038194444444444,
+          "best_auroc_ci": {
+            "point": 0.8038194444444444,
+            "lo": 0.7786458333333334,
+            "hi": 0.8285590277777778,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          },
+          "reliability": {
+            "mean": 0.9993270304665858,
+            "lo": 0.998641346024003,
+            "hi": 0.9997431079630064,
+            "n": 20
+          },
+          "shuffled_control": {
+            "mean": 0.4835019604099542,
+            "sd": 0.03515154255401547,
+            "lo": 0.4308127775775517,
+            "hi": 0.5435322416865682,
+            "n": 25
+          }
+        },
+        "B_empirical": {
+          "name": "B_empirical",
+          "n_pairs": 96,
+          "n_groups": 24,
+          "n_train_groups": 12,
+          "n_test_groups": 12,
+          "per_layer": [
+            {
+              "layer": 0,
+              "auroc": NaN
+            },
+            {
+              "layer": 1,
+              "auroc": 0.8480902777777778
+            },
+            {
+              "layer": 2,
+              "auroc": 0.7256944444444444
+            },
+            {
+              "layer": 3,
+              "auroc": 0.6970486111111112
+            },
+            {
+              "layer": 4,
+              "auroc": 0.7660590277777778
+            },
+            {
+              "layer": 5,
+              "auroc": 0.7447916666666666
+            },
+            {
+              "layer": 6,
+              "auroc": 0.7486979166666666
+            },
+            {
+              "layer": 7,
+              "auroc": 0.7482638888888888
+            },
+            {
+              "layer": 8,
+              "auroc": 0.7486979166666666
+            },
+            {
+              "layer": 9,
+              "auroc": 0.9748263888888888
+            },
+            {
+              "layer": 10,
+              "auroc": 0.99609375
+            },
+            {
+              "layer": 11,
+              "auroc": 1.0
+            },
+            {
+              "layer": 12,
+              "auroc": 0.9991319444444444
+            },
+            {
+              "layer": 13,
+              "auroc": 0.8993055555555556
+            },
+            {
+              "layer": 14,
+              "auroc": 0.9006076388888888
+            },
+            {
+              "layer": 15,
+              "auroc": 0.9778645833333334
+            },
+            {
+              "layer": 16,
+              "auroc": 0.9947916666666666
+            },
+            {
+              "layer": 17,
+              "auroc": 0.9622395833333334
+            },
+            {
+              "layer": 18,
+              "auroc": 0.8541666666666666
+            },
+            {
+              "layer": 19,
+              "auroc": 0.7309027777777778
+            },
+            {
+              "layer": 20,
+              "auroc": 0.7352430555555556
+            },
+            {
+              "layer": 21,
+              "auroc": 0.7452256944444444
+            },
+            {
+              "layer": 22,
+              "auroc": 0.7747395833333334
+            },
+            {
+              "layer": 23,
+              "auroc": 0.7456597222222222
+            },
+            {
+              "layer": 24,
+              "auroc": 0.7517361111111112
+            },
+            {
+              "layer": 25,
+              "auroc": 0.72265625
+            },
+            {
+              "layer": 26,
+              "auroc": 0.7222222222222222
+            },
+            {
+              "layer": 27,
+              "auroc": 0.6987847222222222
+            },
+            {
+              "layer": 28,
+              "auroc": 0.7690972222222222
+            }
+          ],
+          "best_layer": 11,
+          "paraphrase_split": false,
+          "n_train_rows": 96,
+          "n_test_rows": 96,
+          "best_auroc": 1.0,
+          "best_auroc_ci": {
+            "point": 1.0,
+            "lo": 1.0,
+            "hi": 1.0,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          },
+          "reliability": {
+            "mean": 0.9432383502152797,
+            "lo": 0.8813030896920051,
+            "hi": 0.9784044208777366,
+            "n": 20
+          },
+          "shuffled_control": {
+            "mean": 0.4954382586833324,
+            "sd": 0.05731817682228175,
+            "lo": 0.3864347826086956,
+            "hi": 0.5985021976933741,
+            "n": 25
+          }
+        },
+        "S_scripted": {
+          "name": "S_scripted",
+          "n_pairs": 96,
+          "n_groups": 24,
+          "n_train_groups": 12,
+          "n_test_groups": 12,
+          "per_layer": [
+            {
+              "layer": 0,
+              "auroc": NaN
+            },
+            {
+              "layer": 1,
+              "auroc": 0.8355034722222222
+            },
+            {
+              "layer": 2,
+              "auroc": 0.7786458333333334
+            },
+            {
+              "layer": 3,
+              "auroc": 0.6918402777777778
+            },
+            {
+              "layer": 4,
+              "auroc": 0.7157118055555556
+            },
+            {
+              "layer": 5,
+              "auroc": 0.7274305555555556
+            },
+            {
+              "layer": 6,
+              "auroc": 0.7287326388888888
+            },
+            {
+              "layer": 7,
+              "auroc": 0.7348090277777778
+            },
+            {
+              "layer": 8,
+              "auroc": 0.7300347222222222
+            },
+            {
+              "layer": 9,
+              "auroc": 0.8111979166666666
+            },
+            {
+              "layer": 10,
+              "auroc": 0.96484375
+            },
+            {
+              "layer": 11,
+              "auroc": 1.0
+            },
+            {
+              "layer": 12,
+              "auroc": 0.9644097222222222
+            },
+            {
+              "layer": 13,
+              "auroc": 0.9782986111111112
+            },
+            {
+              "layer": 14,
+              "auroc": 0.9526909722222222
+            },
+            {
+              "layer": 15,
+              "auroc": 0.9752604166666666
+            },
+            {
+              "layer": 16,
+              "auroc": 1.0
+            },
+            {
+              "layer": 17,
+              "auroc": 0.9791666666666666
+            },
+            {
+              "layer": 18,
+              "auroc": 0.9092881944444444
+            },
+            {
+              "layer": 19,
+              "auroc": 0.8563368055555556
+            },
+            {
+              "layer": 20,
+              "auroc": 0.8355034722222222
+            },
+            {
+              "layer": 21,
+              "auroc": 0.8259548611111112
+            },
+            {
+              "layer": 22,
+              "auroc": 0.81640625
+            },
+            {
+              "layer": 23,
+              "auroc": 0.8559027777777778
+            },
+            {
+              "layer": 24,
+              "auroc": 0.8428819444444444
+            },
+            {
+              "layer": 25,
+              "auroc": 0.890625
+            },
+            {
+              "layer": 26,
+              "auroc": 0.9110243055555556
+            },
+            {
+              "layer": 27,
+              "auroc": 0.8459201388888888
+            },
+            {
+              "layer": 28,
+              "auroc": 0.8997395833333334
+            }
+          ],
+          "best_layer": 11,
+          "paraphrase_split": false,
+          "n_train_rows": 96,
+          "n_test_rows": 96,
+          "best_auroc": 1.0,
+          "best_auroc_ci": {
+            "point": 1.0,
+            "lo": 1.0,
+            "hi": 1.0,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          },
+          "reliability": {
+            "mean": 0.9554857862577059,
+            "lo": 0.9143766255203505,
+            "hi": 0.9814018495606202,
+            "n": 20
+          },
+          "shuffled_control": {
+            "mean": 0.492764453753503,
+            "sd": 0.05742787703912654,
+            "lo": 0.3925421195652174,
+            "hi": 0.5855337690631808,
+            "n": 25
+          }
+        },
+        "A_chat": {
+          "name": "A_chat",
+          "n_pairs": 24,
+          "n_groups": 12,
+          "n_train_groups": 6,
+          "n_test_groups": 6,
+          "per_layer": [
+            {
+              "layer": 0,
+              "auroc": NaN
+            },
+            {
+              "layer": 1,
+              "auroc": 0.6388888888888888
+            },
+            {
+              "layer": 2,
+              "auroc": 0.6666666666666666
+            },
+            {
+              "layer": 3,
+              "auroc": 0.5555555555555556
+            },
+            {
+              "layer": 4,
+              "auroc": 0.6666666666666666
+            },
+            {
+              "layer": 5,
+              "auroc": 0.5833333333333334
+            },
+            {
+              "layer": 6,
+              "auroc": 0.6111111111111112
+            },
+            {
+              "layer": 7,
+              "auroc": 0.5833333333333334
+            },
+            {
+              "layer": 8,
+              "auroc": 0.6944444444444444
+            },
+            {
+              "layer": 9,
+              "auroc": 0.6666666666666666
+            },
+            {
+              "layer": 10,
+              "auroc": 0.8611111111111112
+            },
+            {
+              "layer": 11,
+              "auroc": 0.8055555555555556
+            },
+            {
+              "layer": 12,
+              "auroc": 0.75
+            },
+            {
+              "layer": 13,
+              "auroc": 0.7222222222222222
+            },
+            {
+              "layer": 14,
+              "auroc": 0.7222222222222222
+            },
+            {
+              "layer": 15,
+              "auroc": 0.75
+            },
+            {
+              "layer": 16,
+              "auroc": 0.7222222222222222
+            },
+            {
+              "layer": 17,
+              "auroc": 0.6388888888888888
+            },
+            {
+              "layer": 18,
+              "auroc": 0.5555555555555556
+            },
+            {
+              "layer": 19,
+              "auroc": 0.5833333333333334
+            },
+            {
+              "layer": 20,
+              "auroc": 0.6388888888888888
+            },
+            {
+              "layer": 21,
+              "auroc": 0.5555555555555556
+            },
+            {
+              "layer": 22,
+              "auroc": 0.5277777777777778
+            },
+            {
+              "layer": 23,
+              "auroc": 0.5277777777777778
+            },
+            {
+              "layer": 24,
+              "auroc": 0.5
+            },
+            {
+              "layer": 25,
+              "auroc": 0.4722222222222222
+            },
+            {
+              "layer": 26,
+              "auroc": 0.4444444444444444
+            },
+            {
+              "layer": 27,
+              "auroc": 0.4722222222222222
+            },
+            {
+              "layer": 28,
+              "auroc": 0.4444444444444444
+            }
+          ],
+          "best_layer": 10,
+          "paraphrase_split": true,
+          "n_train_rows": 12,
+          "n_test_rows": 12,
+          "best_auroc": 0.8611111111111112,
+          "best_auroc_ci": {
+            "point": 0.8611111111111112,
+            "lo": 0.75,
+            "hi": 1.0,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 6
+          },
+          "reliability": {
+            "mean": 0.8372582454978039,
+            "lo": 0.6471807756535145,
+            "hi": 0.9355285457854877,
+            "n": 20
+          },
+          "shuffled_control": {
+            "mean": 0.48944162550412557,
+            "sd": 0.11967876779055303,
+            "lo": 0.26153846153846155,
+            "hi": 0.6922569444444444,
+            "n": 25
+          }
+        }
+      },
+      "cross_auroc": {
+        "A_eval->C_declared": {
+          "from": "A_eval",
+          "to": "C_declared",
+          "layer": 11,
+          "auroc": 0.7352430555555556,
+          "ci": {
+            "point": 0.7352430555555556,
+            "lo": 0.71484375,
+            "hi": 0.7643229166666666,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          }
+        },
+        "A_eval->B_empirical": {
+          "from": "A_eval",
+          "to": "B_empirical",
+          "layer": 11,
+          "auroc": 0.46875,
+          "ci": {
+            "point": 0.46875,
+            "lo": 0.390625,
+            "hi": 0.5460069444444444,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          }
+        },
+        "A_eval->S_scripted": {
+          "from": "A_eval",
+          "to": "S_scripted",
+          "layer": 11,
+          "auroc": 0.44140625,
+          "ci": {
+            "point": 0.44140625,
+            "lo": 0.37932942708333334,
+            "hi": 0.5086805555555556,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          }
+        },
+        "A_eval->A_chat": {
+          "from": "A_eval",
+          "to": "A_chat",
+          "layer": 10,
+          "auroc": 0.6111111111111112,
+          "ci": {
+            "point": 0.6111111111111112,
+            "lo": 0.4166666666666667,
+            "hi": 0.8333333333333334,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 6
+          }
+        },
+        "C_declared->A_eval": {
+          "from": "C_declared",
+          "to": "A_eval",
+          "layer": 11,
+          "auroc": 0.7599826388888888,
+          "ci": {
+            "point": 0.7599826388888888,
+            "lo": 0.7404513888888888,
+            "hi": 0.7790907118055556,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          }
+        },
+        "C_declared->B_empirical": {
+          "from": "C_declared",
+          "to": "B_empirical",
+          "layer": 11,
+          "auroc": 0.69921875,
+          "ci": {
+            "point": 0.69921875,
+            "lo": 0.6388888888888888,
+            "hi": 0.7508680555555556,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          }
+        },
+        "C_declared->S_scripted": {
+          "from": "C_declared",
+          "to": "S_scripted",
+          "layer": 11,
+          "auroc": 0.66015625,
+          "ci": {
+            "point": 0.66015625,
+            "lo": 0.587228732638889,
+            "hi": 0.729177517361111,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          }
+        },
+        "C_declared->A_chat": {
+          "from": "C_declared",
+          "to": "A_chat",
+          "layer": 10,
+          "auroc": 0.5555555555555556,
+          "ci": {
+            "point": 0.5555555555555556,
+            "lo": 0.2222222222222222,
+            "hi": 0.8611111111111112,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 6
+          }
+        },
+        "B_empirical->A_eval": {
+          "from": "B_empirical",
+          "to": "A_eval",
+          "layer": 11,
+          "auroc": 0.6796875,
+          "ci": {
+            "point": 0.6796875,
+            "lo": 0.6610243055555556,
+            "hi": 0.7057291666666666,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          }
+        },
+        "B_empirical->C_declared": {
+          "from": "B_empirical",
+          "to": "C_declared",
+          "layer": 11,
+          "auroc": 0.4826388888888889,
+          "ci": {
+            "point": 0.4826388888888889,
+            "lo": 0.4748263888888889,
+            "hi": 0.4900173611111111,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          }
+        },
+        "B_empirical->S_scripted": {
+          "from": "B_empirical",
+          "to": "S_scripted",
+          "layer": 11,
+          "auroc": 1.0,
+          "ci": {
+            "point": 1.0,
+            "lo": 1.0,
+            "hi": 1.0,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          }
+        },
+        "B_empirical->A_chat": {
+          "from": "B_empirical",
+          "to": "A_chat",
+          "layer": 10,
+          "auroc": 0.6666666666666666,
+          "ci": {
+            "point": 0.6666666666666666,
+            "lo": 0.3888888888888889,
+            "hi": 0.9444444444444444,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 6
+          }
+        },
+        "S_scripted->A_eval": {
+          "from": "S_scripted",
+          "to": "A_eval",
+          "layer": 11,
+          "auroc": 0.6310763888888888,
+          "ci": {
+            "point": 0.6310763888888888,
+            "lo": 0.6150173611111112,
+            "hi": 0.64453125,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          }
+        },
+        "S_scripted->C_declared": {
+          "from": "S_scripted",
+          "to": "C_declared",
+          "layer": 11,
+          "auroc": 0.4001736111111111,
+          "ci": {
+            "point": 0.4001736111111111,
+            "lo": 0.38671875,
+            "hi": 0.4188368055555556,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          }
+        },
+        "S_scripted->B_empirical": {
+          "from": "S_scripted",
+          "to": "B_empirical",
+          "layer": 11,
+          "auroc": 1.0,
+          "ci": {
+            "point": 1.0,
+            "lo": 1.0,
+            "hi": 1.0,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          }
+        },
+        "S_scripted->A_chat": {
+          "from": "S_scripted",
+          "to": "A_chat",
+          "layer": 10,
+          "auroc": 0.5277777777777778,
+          "ci": {
+            "point": 0.5277777777777778,
+            "lo": 0.2222222222222222,
+            "hi": 0.8333333333333334,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 6
+          }
+        },
+        "A_chat->A_eval": {
+          "from": "A_chat",
+          "to": "A_eval",
+          "layer": 11,
+          "auroc": 0.7925347222222222,
+          "ci": {
+            "point": 0.7925347222222222,
+            "lo": 0.7643229166666666,
+            "hi": 0.8107638888888888,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          }
+        },
+        "A_chat->C_declared": {
+          "from": "A_chat",
+          "to": "C_declared",
+          "layer": 11,
+          "auroc": 0.4396701388888889,
+          "ci": {
+            "point": 0.4396701388888889,
+            "lo": 0.40406901041666665,
+            "hi": 0.4770073784722222,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          }
+        },
+        "A_chat->B_empirical": {
+          "from": "A_chat",
+          "to": "B_empirical",
+          "layer": 11,
+          "auroc": 0.4765625,
+          "ci": {
+            "point": 0.4765625,
+            "lo": 0.4379340277777778,
+            "hi": 0.5143229166666666,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          }
+        },
+        "A_chat->S_scripted": {
+          "from": "A_chat",
+          "to": "S_scripted",
+          "layer": 11,
+          "auroc": 0.5182291666666666,
+          "ci": {
+            "point": 0.5182291666666666,
+            "lo": 0.4769965277777778,
+            "hi": 0.5516493055555556,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          }
+        }
+      },
+      "cosine": {
+        "A_eval|C_declared": {
+          "layer": 11,
+          "cosine": 0.3195960896484238,
+          "rel_a": 0.9996267227200697,
+          "rel_b": 0.9993270304665858,
+          "normalised": 0.3197633689431546,
+          "best_layer_a": 11,
+          "best_layer_b": 11
+        },
+        "A_eval|B_empirical": {
+          "layer": 11,
+          "cosine": 0.04232740583045028,
+          "rel_a": 0.9996267227200697,
+          "rel_b": 0.9432383502152797,
+          "normalised": 0.04359051484087091,
+          "best_layer_a": 11,
+          "best_layer_b": 11
+        },
+        "A_eval|S_scripted": {
+          "layer": 11,
+          "cosine": -0.08894169646232665,
+          "rel_a": 0.9996267227200697,
+          "rel_b": 0.9554857862577059,
+          "normalised": -0.09100690913350164,
+          "best_layer_a": 11,
+          "best_layer_b": 11
+        },
+        "C_declared|S_scripted": {
+          "layer": 11,
+          "cosine": 0.1190746432555312,
+          "rel_a": 0.9993270304665858,
+          "rel_b": 0.9554857862577059,
+          "normalised": 0.12185780647870302,
+          "best_layer_a": 11,
+          "best_layer_b": 11
+        },
+        "B_empirical|C_declared": {
+          "layer": 11,
+          "cosine": 0.1281224309400392,
+          "rel_a": 0.9432383502152797,
+          "rel_b": 0.9993270304665858,
+          "normalised": 0.13196556693199116,
+          "best_layer_a": 11,
+          "best_layer_b": 11
+        },
+        "B_empirical|S_scripted": {
+          "layer": 11,
+          "cosine": 0.9124906259367321,
+          "rel_a": 0.9432383502152797,
+          "rel_b": 0.9554857862577059,
+          "normalised": 0.9611818715617287,
+          "best_layer_a": 11,
+          "best_layer_b": 11
+        },
+        "A_chat|A_eval": {
+          "layer": 10,
+          "cosine": 0.5046403737745175,
+          "rel_a": 0.8372582454978039,
+          "rel_b": 0.9996267227200697,
+          "normalised": 0.5516115459563382,
+          "best_layer_a": 10,
+          "best_layer_b": 11
+        },
+        "A_chat|C_declared": {
+          "layer": 10,
+          "cosine": 0.07166544906741826,
+          "rel_a": 0.8372582454978039,
+          "rel_b": 0.9993270304665858,
+          "normalised": 0.07834770738081909,
+          "best_layer_a": 10,
+          "best_layer_b": 11
+        },
+        "A_chat|B_empirical": {
+          "layer": 10,
+          "cosine": 0.007372611007022871,
+          "rel_a": 0.8372582454978039,
+          "rel_b": 0.9432383502152797,
+          "normalised": 0.008296231814579936,
+          "best_layer_a": 10,
+          "best_layer_b": 11
+        },
+        "A_chat|S_scripted": {
+          "layer": 10,
+          "cosine": 0.0006453014589383675,
+          "rel_a": 0.8372582454978039,
+          "rel_b": 0.9554857862577059,
+          "normalised": 0.0007214742159833782,
+          "best_layer_a": 10,
+          "best_layer_b": 11
+        }
+      }
+    },
+    "mean": {
+      "directions": {
+        "A_eval": {
+          "name": "A_eval",
+          "n_pairs": 192,
+          "n_groups": 24,
+          "n_train_groups": 12,
+          "n_test_groups": 12,
+          "per_layer": [
+            {
+              "layer": 0,
+              "auroc": 0.7261284722222222
+            },
+            {
+              "layer": 1,
+              "auroc": 0.7890625
+            },
+            {
+              "layer": 2,
+              "auroc": 0.9118923611111112
+            },
+            {
+              "layer": 3,
+              "auroc": 0.6158854166666666
+            },
+            {
+              "layer": 4,
+              "auroc": 0.6723090277777778
+            },
+            {
+              "layer": 5,
+              "auroc": 0.6197916666666666
+            },
+            {
+              "layer": 6,
+              "auroc": 0.9305555555555556
+            },
+            {
+              "layer": 7,
+              "auroc": 0.8576388888888888
+            },
+            {
+              "layer": 8,
+              "auroc": 0.8355034722222222
+            },
+            {
+              "layer": 9,
+              "auroc": 0.8151041666666666
+            },
+            {
+              "layer": 10,
+              "auroc": 0.7951388888888888
+            },
+            {
+              "layer": 11,
+              "auroc": 0.9565972222222222
+            },
+            {
+              "layer": 12,
+              "auroc": 0.859375
+            },
+            {
+              "layer": 13,
+              "auroc": 1.0
+            },
+            {
+              "layer": 14,
+              "auroc": 0.8003472222222222
+            },
+            {
+              "layer": 15,
+              "auroc": 0.7578125
+            },
+            {
+              "layer": 16,
+              "auroc": 0.84375
+            },
+            {
+              "layer": 17,
+              "auroc": 0.8125
+            },
+            {
+              "layer": 18,
+              "auroc": 0.765625
+            },
+            {
+              "layer": 19,
+              "auroc": 0.7513020833333334
+            },
+            {
+              "layer": 20,
+              "auroc": 0.7513020833333334
+            },
+            {
+              "layer": 21,
+              "auroc": 0.7447916666666666
+            },
+            {
+              "layer": 22,
+              "auroc": 0.6996527777777778
+            },
+            {
+              "layer": 23,
+              "auroc": 0.6861979166666666
+            },
+            {
+              "layer": 24,
+              "auroc": 0.6866319444444444
+            },
+            {
+              "layer": 25,
+              "auroc": 0.6844618055555556
+            },
+            {
+              "layer": 26,
+              "auroc": 0.7296006944444444
+            },
+            {
+              "layer": 27,
+              "auroc": 0.6393229166666666
+            },
+            {
+              "layer": 28,
+              "auroc": 0.7586805555555556
+            }
+          ],
+          "best_layer": 13,
+          "paraphrase_split": true,
+          "n_train_rows": 96,
+          "n_test_rows": 96,
+          "best_auroc": 1.0,
+          "best_auroc_ci": {
+            "point": 1.0,
+            "lo": 1.0,
+            "hi": 1.0,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          },
+          "reliability": {
+            "mean": 0.9998963543022301,
+            "lo": 0.9997582242488132,
+            "hi": 0.9999687017497141,
+            "n": 20
+          },
+          "shuffled_control": {
+            "mean": 0.49005986831974807,
+            "sd": 0.0371007705343654,
+            "lo": 0.4311313014626336,
+            "hi": 0.55042410492093,
+            "n": 25
+          }
+        },
+        "C_declared": {
+          "name": "C_declared",
+          "n_pairs": 192,
+          "n_groups": 24,
+          "n_train_groups": 12,
+          "n_test_groups": 12,
+          "per_layer": [
+            {
+              "layer": 0,
+              "auroc": 0.6280381944444444
+            },
+            {
+              "layer": 1,
+              "auroc": 0.8125
+            },
+            {
+              "layer": 2,
+              "auroc": 0.7977430555555556
+            },
+            {
+              "layer": 3,
+              "auroc": 0.5798611111111112
+            },
+            {
+              "layer": 4,
+              "auroc": 0.5807291666666666
+            },
+            {
+              "layer": 5,
+              "auroc": 0.5815972222222222
+            },
+            {
+              "layer": 6,
+              "auroc": 0.58203125
+            },
+            {
+              "layer": 7,
+              "auroc": 0.58203125
+            },
+            {
+              "layer": 8,
+              "auroc": 0.5828993055555556
+            },
+            {
+              "layer": 9,
+              "auroc": 0.5885416666666666
+            },
+            {
+              "layer": 10,
+              "auroc": 0.5933159722222222
+            },
+            {
+              "layer": 11,
+              "auroc": 0.6080729166666666
+            },
+            {
+              "layer": 12,
+              "auroc": 0.6332465277777778
+            },
+            {
+              "layer": 13,
+              "auroc": 0.6219618055555556
+            },
+            {
+              "layer": 14,
+              "auroc": 0.6354166666666666
+            },
+            {
+              "layer": 15,
+              "auroc": 0.6375868055555556
+            },
+            {
+              "layer": 16,
+              "auroc": 0.75
+            },
+            {
+              "layer": 17,
+              "auroc": 0.6831597222222222
+            },
+            {
+              "layer": 18,
+              "auroc": 0.6284722222222222
+            },
+            {
+              "layer": 19,
+              "auroc": 0.5863715277777778
+            },
+            {
+              "layer": 20,
+              "auroc": 0.6111111111111112
+            },
+            {
+              "layer": 21,
+              "auroc": 0.6319444444444444
+            },
+            {
+              "layer": 22,
+              "auroc": 0.6297743055555556
+            },
+            {
+              "layer": 23,
+              "auroc": 0.5933159722222222
+            },
+            {
+              "layer": 24,
+              "auroc": 0.5933159722222222
+            },
+            {
+              "layer": 25,
+              "auroc": 0.5985243055555556
+            },
+            {
+              "layer": 26,
+              "auroc": 0.5811631944444444
+            },
+            {
+              "layer": 27,
+              "auroc": 0.5685763888888888
+            },
+            {
+              "layer": 28,
+              "auroc": 0.6432291666666666
+            }
+          ],
+          "best_layer": 1,
+          "paraphrase_split": true,
+          "n_train_rows": 96,
+          "n_test_rows": 96,
+          "best_auroc": 0.8125,
+          "best_auroc_ci": {
+            "point": 0.8125,
+            "lo": 0.8125,
+            "hi": 0.8125,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          },
+          "reliability": {
+            "mean": 0.9999940237491302,
+            "lo": 0.9999857436787108,
+            "hi": 0.9999989716457333,
+            "n": 20
+          },
+          "shuffled_control": {
+            "mean": 0.4789755020045462,
+            "sd": 0.03382737036291566,
+            "lo": 0.43529247235459434,
+            "hi": 0.5457128883819014,
+            "n": 25
+          }
+        },
+        "B_empirical": {
+          "name": "B_empirical",
+          "n_pairs": 96,
+          "n_groups": 24,
+          "n_train_groups": 12,
+          "n_test_groups": 12,
+          "per_layer": [
+            {
+              "layer": 0,
+              "auroc": 0.9388020833333334
+            },
+            {
+              "layer": 1,
+              "auroc": 0.9878472222222222
+            },
+            {
+              "layer": 2,
+              "auroc": 1.0
+            },
+            {
+              "layer": 3,
+              "auroc": 0.7573784722222222
+            },
+            {
+              "layer": 4,
+              "auroc": 0.8328993055555556
+            },
+            {
+              "layer": 5,
+              "auroc": 0.859375
+            },
+            {
+              "layer": 6,
+              "auroc": 0.9344618055555556
+            },
+            {
+              "layer": 7,
+              "auroc": 0.9739583333333334
+            },
+            {
+              "layer": 8,
+              "auroc": 1.0
+            },
+            {
+              "layer": 9,
+              "auroc": 1.0
+            },
+            {
+              "layer": 10,
+              "auroc": 1.0
+            },
+            {
+              "layer": 11,
+              "auroc": 1.0
+            },
+            {
+              "layer": 12,
+              "auroc": 1.0
+            },
+            {
+              "layer": 13,
+              "auroc": 0.9991319444444444
+            },
+            {
+              "layer": 14,
+              "auroc": 1.0
+            },
+            {
+              "layer": 15,
+              "auroc": 1.0
+            },
+            {
+              "layer": 16,
+              "auroc": 1.0
+            },
+            {
+              "layer": 17,
+              "auroc": 1.0
+            },
+            {
+              "layer": 18,
+              "auroc": 1.0
+            },
+            {
+              "layer": 19,
+              "auroc": 1.0
+            },
+            {
+              "layer": 20,
+              "auroc": 1.0
+            },
+            {
+              "layer": 21,
+              "auroc": 1.0
+            },
+            {
+              "layer": 22,
+              "auroc": 1.0
+            },
+            {
+              "layer": 23,
+              "auroc": 1.0
+            },
+            {
+              "layer": 24,
+              "auroc": 1.0
+            },
+            {
+              "layer": 25,
+              "auroc": 1.0
+            },
+            {
+              "layer": 26,
+              "auroc": 1.0
+            },
+            {
+              "layer": 27,
+              "auroc": 1.0
+            },
+            {
+              "layer": 28,
+              "auroc": 0.8780381944444444
+            }
+          ],
+          "best_layer": 2,
+          "paraphrase_split": false,
+          "n_train_rows": 96,
+          "n_test_rows": 96,
+          "best_auroc": 1.0,
+          "best_auroc_ci": {
+            "point": 1.0,
+            "lo": 1.0,
+            "hi": 1.0,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          },
+          "reliability": {
+            "mean": 0.9604523229958509,
+            "lo": 0.8971257924319085,
+            "hi": 0.9924177541563813,
+            "n": 20
+          },
+          "shuffled_control": {
+            "mean": 0.48013157999800704,
+            "sd": 0.07147151373176512,
+            "lo": 0.35773198540589846,
+            "hi": 0.6075062649173144,
+            "n": 25
+          }
+        },
+        "S_scripted": {
+          "name": "S_scripted",
+          "n_pairs": 96,
+          "n_groups": 24,
+          "n_train_groups": 12,
+          "n_test_groups": 12,
+          "per_layer": [
+            {
+              "layer": 0,
+              "auroc": 0.9965277777777778
+            },
+            {
+              "layer": 1,
+              "auroc": 1.0
+            },
+            {
+              "layer": 2,
+              "auroc": 1.0
+            },
+            {
+              "layer": 3,
+              "auroc": 0.6245659722222222
+            },
+            {
+              "layer": 4,
+              "auroc": 0.6857638888888888
+            },
+            {
+              "layer": 5,
+              "auroc": 0.7026909722222222
+            },
+            {
+              "layer": 6,
+              "auroc": 0.7447916666666666
+            },
+            {
+              "layer": 7,
+              "auroc": 0.7964409722222222
+            },
+            {
+              "layer": 8,
+              "auroc": 0.8333333333333334
+            },
+            {
+              "layer": 9,
+              "auroc": 0.9370659722222222
+            },
+            {
+              "layer": 10,
+              "auroc": 0.9496527777777778
+            },
+            {
+              "layer": 11,
+              "auroc": 0.96875
+            },
+            {
+              "layer": 12,
+              "auroc": 1.0
+            },
+            {
+              "layer": 13,
+              "auroc": 1.0
+            },
+            {
+              "layer": 14,
+              "auroc": 1.0
+            },
+            {
+              "layer": 15,
+              "auroc": 1.0
+            },
+            {
+              "layer": 16,
+              "auroc": 1.0
+            },
+            {
+              "layer": 17,
+              "auroc": 1.0
+            },
+            {
+              "layer": 18,
+              "auroc": 1.0
+            },
+            {
+              "layer": 19,
+              "auroc": 1.0
+            },
+            {
+              "layer": 20,
+              "auroc": 1.0
+            },
+            {
+              "layer": 21,
+              "auroc": 1.0
+            },
+            {
+              "layer": 22,
+              "auroc": 1.0
+            },
+            {
+              "layer": 23,
+              "auroc": 1.0
+            },
+            {
+              "layer": 24,
+              "auroc": 1.0
+            },
+            {
+              "layer": 25,
+              "auroc": 1.0
+            },
+            {
+              "layer": 26,
+              "auroc": 1.0
+            },
+            {
+              "layer": 27,
+              "auroc": 1.0
+            },
+            {
+              "layer": 28,
+              "auroc": 0.8993055555555556
+            }
+          ],
+          "best_layer": 1,
+          "paraphrase_split": false,
+          "n_train_rows": 96,
+          "n_test_rows": 96,
+          "best_auroc": 1.0,
+          "best_auroc_ci": {
+            "point": 1.0,
+            "lo": 1.0,
+            "hi": 1.0,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          },
+          "reliability": {
+            "mean": 0.9663971256745019,
+            "lo": 0.8828725628561253,
+            "hi": 0.9954380850880125,
+            "n": 20
+          },
+          "shuffled_control": {
+            "mean": 0.4885342266196569,
+            "sd": 0.07192623033536846,
+            "lo": 0.35700331533579616,
+            "hi": 0.5971739130434782,
+            "n": 25
+          }
+        },
+        "A_chat": {
+          "name": "A_chat",
+          "n_pairs": 24,
+          "n_groups": 12,
+          "n_train_groups": 6,
+          "n_test_groups": 6,
+          "per_layer": [
+            {
+              "layer": 0,
+              "auroc": 1.0
+            },
+            {
+              "layer": 1,
+              "auroc": 1.0
+            },
+            {
+              "layer": 2,
+              "auroc": 1.0
+            },
+            {
+              "layer": 3,
+              "auroc": 1.0
+            },
+            {
+              "layer": 4,
+              "auroc": 0.6944444444444444
+            },
+            {
+              "layer": 5,
+              "auroc": 0.8333333333333334
+            },
+            {
+              "layer": 6,
+              "auroc": 1.0
+            },
+            {
+              "layer": 7,
+              "auroc": 0.8055555555555556
+            },
+            {
+              "layer": 8,
+              "auroc": 0.75
+            },
+            {
+              "layer": 9,
+              "auroc": 0.7222222222222222
+            },
+            {
+              "layer": 10,
+              "auroc": 0.8333333333333334
+            },
+            {
+              "layer": 11,
+              "auroc": 0.9444444444444444
+            },
+            {
+              "layer": 12,
+              "auroc": 1.0
+            },
+            {
+              "layer": 13,
+              "auroc": 0.9722222222222222
+            },
+            {
+              "layer": 14,
+              "auroc": 1.0
+            },
+            {
+              "layer": 15,
+              "auroc": 0.9722222222222222
+            },
+            {
+              "layer": 16,
+              "auroc": 1.0
+            },
+            {
+              "layer": 17,
+              "auroc": 1.0
+            },
+            {
+              "layer": 18,
+              "auroc": 1.0
+            },
+            {
+              "layer": 19,
+              "auroc": 1.0
+            },
+            {
+              "layer": 20,
+              "auroc": 1.0
+            },
+            {
+              "layer": 21,
+              "auroc": 1.0
+            },
+            {
+              "layer": 22,
+              "auroc": 0.9722222222222222
+            },
+            {
+              "layer": 23,
+              "auroc": 0.9444444444444444
+            },
+            {
+              "layer": 24,
+              "auroc": 0.9166666666666666
+            },
+            {
+              "layer": 25,
+              "auroc": 1.0
+            },
+            {
+              "layer": 26,
+              "auroc": 1.0
+            },
+            {
+              "layer": 27,
+              "auroc": 1.0
+            },
+            {
+              "layer": 28,
+              "auroc": 0.8611111111111112
+            }
+          ],
+          "best_layer": 0,
+          "paraphrase_split": true,
+          "n_train_rows": 12,
+          "n_test_rows": 12,
+          "best_auroc": 1.0,
+          "best_auroc_ci": {
+            "point": 1.0,
+            "lo": 1.0,
+            "hi": 1.0,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 6
+          },
+          "reliability": {
+            "mean": 0.8723242788547182,
+            "lo": 0.6134420976839016,
+            "hi": 0.9991701994942966,
+            "n": 20
+          },
+          "shuffled_control": {
+            "mean": 0.5024105755355756,
+            "sd": 0.1411564624484939,
+            "lo": 0.28531468531468535,
+            "hi": 0.7583333333333332,
+            "n": 25
+          }
+        }
+      },
+      "cross_auroc": {
+        "A_eval->C_declared": {
+          "from": "A_eval",
+          "to": "C_declared",
+          "layer": 1,
+          "auroc": 0.6796875,
+          "ci": {
+            "point": 0.6796875,
+            "lo": 0.6662326388888888,
+            "hi": 0.7057291666666666,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          }
+        },
+        "A_eval->B_empirical": {
+          "from": "A_eval",
+          "to": "B_empirical",
+          "layer": 2,
+          "auroc": 0.2881944444444444,
+          "ci": {
+            "point": 0.2881944444444444,
+            "lo": 0.17360026041666665,
+            "hi": 0.4079969618055555,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          }
+        },
+        "A_eval->S_scripted": {
+          "from": "A_eval",
+          "to": "S_scripted",
+          "layer": 1,
+          "auroc": 0.3984375,
+          "ci": {
+            "point": 0.3984375,
+            "lo": 0.30078125,
+            "hi": 0.5069769965277776,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          }
+        },
+        "A_eval->A_chat": {
+          "from": "A_eval",
+          "to": "A_chat",
+          "layer": 0,
+          "auroc": 0.9722222222222222,
+          "ci": {
+            "point": 0.9722222222222222,
+            "lo": 0.8888888888888888,
+            "hi": 1.0,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 6
+          }
+        },
+        "C_declared->A_eval": {
+          "from": "C_declared",
+          "to": "A_eval",
+          "layer": 13,
+          "auroc": 0.6875,
+          "ci": {
+            "point": 0.6875,
+            "lo": 0.6875,
+            "hi": 0.6875,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          }
+        },
+        "C_declared->B_empirical": {
+          "from": "C_declared",
+          "to": "B_empirical",
+          "layer": 2,
+          "auroc": 0.7052951388888888,
+          "ci": {
+            "point": 0.7052951388888888,
+            "lo": 0.641916232638889,
+            "hi": 0.7604166666666666,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          }
+        },
+        "C_declared->S_scripted": {
+          "from": "C_declared",
+          "to": "S_scripted",
+          "layer": 1,
+          "auroc": 0.7565104166666666,
+          "ci": {
+            "point": 0.7565104166666666,
+            "lo": 0.71875,
+            "hi": 0.7864583333333334,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          }
+        },
+        "C_declared->A_chat": {
+          "from": "C_declared",
+          "to": "A_chat",
+          "layer": 0,
+          "auroc": 0.8333333333333334,
+          "ci": {
+            "point": 0.8333333333333334,
+            "lo": 0.7222222222222222,
+            "hi": 1.0,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 6
+          }
+        },
+        "B_empirical->A_eval": {
+          "from": "B_empirical",
+          "to": "A_eval",
+          "layer": 13,
+          "auroc": 0.4301215277777778,
+          "ci": {
+            "point": 0.4301215277777778,
+            "lo": 0.4058159722222222,
+            "hi": 0.4366319444444444,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          }
+        },
+        "B_empirical->C_declared": {
+          "from": "B_empirical",
+          "to": "C_declared",
+          "layer": 1,
+          "auroc": 0.5329861111111112,
+          "ci": {
+            "point": 0.5329861111111112,
+            "lo": 0.52734375,
+            "hi": 0.5529513888888888,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          }
+        },
+        "B_empirical->S_scripted": {
+          "from": "B_empirical",
+          "to": "S_scripted",
+          "layer": 1,
+          "auroc": 1.0,
+          "ci": {
+            "point": 1.0,
+            "lo": 1.0,
+            "hi": 1.0,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          }
+        },
+        "B_empirical->A_chat": {
+          "from": "B_empirical",
+          "to": "A_chat",
+          "layer": 0,
+          "auroc": 0.3888888888888889,
+          "ci": {
+            "point": 0.3888888888888889,
+            "lo": 0.16666666666666666,
+            "hi": 0.6111111111111112,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 6
+          }
+        },
+        "S_scripted->A_eval": {
+          "from": "S_scripted",
+          "to": "A_eval",
+          "layer": 13,
+          "auroc": 0.4292534722222222,
+          "ci": {
+            "point": 0.4292534722222222,
+            "lo": 0.40363498263888886,
+            "hi": 0.4370659722222222,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          }
+        },
+        "S_scripted->C_declared": {
+          "from": "S_scripted",
+          "to": "C_declared",
+          "layer": 1,
+          "auroc": 0.53515625,
+          "ci": {
+            "point": 0.53515625,
+            "lo": 0.5282118055555556,
+            "hi": 0.5533854166666666,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          }
+        },
+        "S_scripted->B_empirical": {
+          "from": "S_scripted",
+          "to": "B_empirical",
+          "layer": 2,
+          "auroc": 1.0,
+          "ci": {
+            "point": 1.0,
+            "lo": 1.0,
+            "hi": 1.0,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          }
+        },
+        "S_scripted->A_chat": {
+          "from": "S_scripted",
+          "to": "A_chat",
+          "layer": 0,
+          "auroc": 0.3888888888888889,
+          "ci": {
+            "point": 0.3888888888888889,
+            "lo": 0.16666666666666666,
+            "hi": 0.6111111111111112,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 6
+          }
+        },
+        "A_chat->A_eval": {
+          "from": "A_chat",
+          "to": "A_eval",
+          "layer": 13,
+          "auroc": 0.7243923611111112,
+          "ci": {
+            "point": 0.7243923611111112,
+            "lo": 0.7048611111111112,
+            "hi": 0.7430555555555556,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          }
+        },
+        "A_chat->C_declared": {
+          "from": "A_chat",
+          "to": "C_declared",
+          "layer": 1,
+          "auroc": 0.6844618055555556,
+          "ci": {
+            "point": 0.6844618055555556,
+            "lo": 0.6657986111111112,
+            "hi": 0.7226671006944444,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          }
+        },
+        "A_chat->B_empirical": {
+          "from": "A_chat",
+          "to": "B_empirical",
+          "layer": 2,
+          "auroc": 0.29296875,
+          "ci": {
+            "point": 0.29296875,
+            "lo": 0.2109375,
+            "hi": 0.3715494791666666,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          }
+        },
+        "A_chat->S_scripted": {
+          "from": "A_chat",
+          "to": "S_scripted",
+          "layer": 1,
+          "auroc": 0.4796006944444444,
+          "ci": {
+            "point": 0.4796006944444444,
+            "lo": 0.4153645833333333,
+            "hi": 0.5616427951388888,
+            "n_boot": 2000,
+            "n_degenerate": 0,
+            "n_groups": 12
+          }
+        }
+      },
+      "cosine": {
+        "A_eval|C_declared": {
+          "layer": 13,
+          "cosine": 0.14676219239221538,
+          "rel_a": 0.9998963543022301,
+          "rel_b": 0.9999940237491302,
+          "normalised": 0.14677023718693738,
+          "best_layer_a": 13,
+          "best_layer_b": 1
+        },
+        "A_eval|B_empirical": {
+          "layer": 13,
+          "cosine": 0.027229264159030844,
+          "rel_a": 0.9998963543022301,
+          "rel_b": 0.9604523229958509,
+          "normalised": 0.02778564655893677,
+          "best_layer_a": 13,
+          "best_layer_b": 2
+        },
+        "A_eval|S_scripted": {
+          "layer": 13,
+          "cosine": 0.043601460580976345,
+          "rel_a": 0.9998963543022301,
+          "rel_b": 0.9663971256745019,
+          "normalised": 0.04435532139541102,
+          "best_layer_a": 13,
+          "best_layer_b": 1
+        },
+        "C_declared|S_scripted": {
+          "layer": 1,
+          "cosine": 0.024723773193666455,
+          "rel_a": 0.9999940237491302,
+          "rel_b": 0.9663971256745019,
+          "normalised": 0.025150014155626035,
+          "best_layer_a": 1,
+          "best_layer_b": 1
+        },
+        "B_empirical|C_declared": {
+          "layer": 2,
+          "cosine": 0.008578607231279213,
+          "rel_a": 0.9604523229958509,
+          "rel_b": 0.9999940237491302,
+          "normalised": 0.008753468562381236,
+          "best_layer_a": 2,
+          "best_layer_b": 1
+        },
+        "B_empirical|S_scripted": {
+          "layer": 2,
+          "cosine": 0.9443658796209177,
+          "rel_a": 0.9604523229958509,
+          "rel_b": 0.9663971256745019,
+          "normalised": 0.9802222741271672,
+          "best_layer_a": 2,
+          "best_layer_b": 1
+        },
+        "A_chat|A_eval": {
+          "layer": 0,
+          "cosine": 0.9303667284199946,
+          "rel_a": 0.8723242788547182,
+          "rel_b": 0.9998963543022301,
+          "normalised": 0.9961797248866592,
+          "best_layer_a": 0,
+          "best_layer_b": 13
+        },
+        "A_chat|C_declared": {
+          "layer": 0,
+          "cosine": 0.24394931281010768,
+          "rel_a": 0.8723242788547182,
+          "rel_b": 0.9999940237491302,
+          "normalised": 0.2611932304241935,
+          "best_layer_a": 0,
+          "best_layer_b": 1
+        },
+        "A_chat|B_empirical": {
+          "layer": 0,
+          "cosine": -0.047487640975791376,
+          "rel_a": 0.8723242788547182,
+          "rel_b": 0.9604523229958509,
+          "normalised": -0.05188044710347126,
+          "best_layer_a": 0,
+          "best_layer_b": 2
+        },
+        "A_chat|S_scripted": {
+          "layer": 0,
+          "cosine": -0.04831394649472382,
+          "rel_a": 0.8723242788547182,
+          "rel_b": 0.9663971256745019,
+          "normalised": -0.05262059072039863,
+          "best_layer_a": 0,
+          "best_layer_b": 1
+        }
+      }
+    }
+  },
+  "offline": true,
+  "verdict": {
+    "reportable": false,
+    "checks": {
+      "negative_control": {
+        "worst": [
+          "C_declared",
+          0.4835019604099542
+        ],
+        "tolerance": 0.05,
+        "pass": true
+      },
+      "reproduction_floor": {
+        "A_eval_best_auroc": 0.8940972222222222,
+        "floor": 0.7,
+        "pass": true
+      },
+      "no_leakage": {
+        "pass": true
+      }
+    },
+    "failures": [
+      "offline run: scripted trajectories and template simulators are not evidence about any model"
+    ],
+    "cross_A_to_B": 0.46875,
+    "cross_B_to_A": 0.6796875,
+    "statement": "exp0 NOT REPORTABLE -- validity gate failed:\n  - offline run: scripted trajectories and template simulators are not evidence about any model"
+  }
+}
