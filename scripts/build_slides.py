@@ -301,7 +301,7 @@ slide("Why a gate", """  <div class="eyebrow">What we are building, and why firs
 # 08 -------------------------------------------------------------------------- architecture
 slide("Methodology", f"""  <div class="eyebrow">What we built</div>
   <h2>One action sequence. Three substrates. One seam.</h2>
-  {FIG.format(src="architecture-render.png", w="86%", alt="System architecture",
+  {FIG.format(src="architecture.png", w="86%", alt="System architecture",
               cap="Everything upstream is shared: same task, prompt, turn budget and tool schemas. "
                   "The arms differ only in what a tool call returns.")}""")
 

@@ -63,6 +63,17 @@ def _style() -> None:
     })
 
 
+#: The deck and the README embed rasters of the same figures the paper vectorises. Writing them
+#: from the same call is what keeps them from drifting: a hand-exported copy stayed on the two-arm
+#: architecture long after the figure had three arms.
+DOCS_IMG = ROOT / "docs" / "img"
+
+
+def _also_png(fig, name: str) -> None:
+    DOCS_IMG.mkdir(parents=True, exist_ok=True)
+    fig.savefig(DOCS_IMG / f"{name}.png", dpi=190)
+
+
 def fig_layers(result_file: str = "exp0-qwen3-8b.json") -> Path | None:
     """Per-layer held-out AUROC for every direction, with the chance line marked."""
     d = _load(result_file)
@@ -87,6 +98,7 @@ def fig_layers(result_file: str = "exp0-qwen3-8b.json") -> Path | None:
     fig.tight_layout()
     out = FIGDIR / "layers.pdf"
     fig.savefig(out)
+    _also_png(fig, "layers")
     plt.close(fig)
     return out
 
@@ -147,6 +159,7 @@ def fig_scale() -> Path | None:
     fig.tight_layout()
     out = FIGDIR / "scale.pdf"
     fig.savefig(out)
+    _also_png(fig, "scale")
     plt.close(fig)
     return out
 
@@ -194,6 +207,7 @@ def fig_errors() -> Path | None:
     fig.tight_layout()
     out = FIGDIR / "errors.pdf"
     fig.savefig(out)
+    _also_png(fig, "errors")
     plt.close(fig)
     return out
 
@@ -324,6 +338,7 @@ def fig_architecture() -> Path:
     out = FIGDIR / "architecture.pdf"
     fig.savefig(out)
     fig.savefig(FIGDIR / "architecture.svg")
+    _also_png(fig, "architecture")
     plt.close(fig)
     return out
 

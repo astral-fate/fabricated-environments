@@ -90,7 +90,7 @@ logs for every experiment: [`results/`](results/), indexed in
 
 ## How it works
 
-![System architecture](paper/figures/architecture-render.png)
+![System architecture](docs/img/architecture.png)
 
 One recorded action sequence is replayed against three substrates that differ **only** in what a
 tool call returns:
