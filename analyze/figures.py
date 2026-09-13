@@ -199,69 +199,131 @@ def fig_errors() -> Path | None:
 
 
 def fig_architecture() -> Path:
-    """Schematic of the measurement pipeline.
+    """Schematic of the measurement pipeline, drawn rather than photographed.
 
-    Drawn rather than photographed from a whiteboard because the single most common
-    misunderstanding of this design is where the manipulation enters. The figure exists to make
-    one thing unmistakable: everything upstream of the arm boundary is shared, and the arms differ
-    only in what a tool call returns.
+    The most common misunderstanding of this design is where the manipulation enters, so the figure
+    exists to make one thing unmistakable: everything upstream of the arm boundary is shared, and
+    the arms differ **only** in what a tool call returns.
+
+    Three properties of the drawing are load-bearing rather than decorative.
+
+    **The two measurement lanes never touch.** The action log leaves the arms and reaches the scope
+    detector without passing through any model; the transcript prefixes go to the probed model and
+    never return to the behavioural measure. Drawing them as separate lanes is the honest picture,
+    because a figure that routed behaviour through the probe would depict a circular measurement --
+    one model judging another inside the very contrast under study.
+
+    **Every arrow runs from evidence toward a conclusion.** An earlier version had an arrow into the
+    decision box pointing the wrong way, which reads as the decision determining the measurement.
+
+    **exp3 draws from the frozen corpus, not from the probe.** It is a methodological check on
+    whether the transcript is a viable manipulation surface at all, and it neither reads activations
+    nor touches an arm. An arrow from the probe path would misstate what it does.
+
+    Emits SVG alongside PDF from one source: LaTeX includes the PDF, and the SVG can be scaled or
+    dropped into slides without regenerating anything.
     """
     from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
 
-    fig, ax = plt.subplots(figsize=(7.0, 3.5))
-    ax.set_xlim(0, 10)
-    ax.set_ylim(0, 5)
+    fig, ax = plt.subplots(figsize=(7.4, 4.3))
+    ax.set_xlim(0, 13.2)
+    ax.set_ylim(0, 7.4)
     ax.axis("off")
 
-    def box(x, y, w, h, label, colour, fontsize=7.5, alpha=0.15):
-        ax.add_patch(FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.06",
-                                    linewidth=1.1, edgecolor=colour,
-                                    facecolor=colour, alpha=alpha))
+    def box(x, y, w, h, label, colour, fontsize=6.3, alpha=0.15):
+        ax.add_patch(FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.06", linewidth=1.0,
+                                    edgecolor=colour, facecolor=colour, alpha=alpha))
         ax.text(x + w / 2, y + h / 2, label, ha="center", va="center",
-                fontsize=fontsize, linespacing=1.35)
+                fontsize=fontsize, linespacing=1.3)
 
-    def arrow(x1, y1, x2, y2, colour=OKABE["grey"], style="-|>"):
-        ax.add_patch(FancyArrowPatch((x1, y1), (x2, y2), arrowstyle=style,
-                                     mutation_scale=9, linewidth=0.9, color=colour))
+    def arrow(x1, y1, x2, y2, colour=OKABE["grey"], lw=0.85, ls="-", conn=None):
+        kw = {"connectionstyle": conn} if conn else {}
+        ax.add_patch(FancyArrowPatch((x1, y1), (x2, y2), arrowstyle="-|>", mutation_scale=8,
+                                     linewidth=lw, color=colour, linestyle=ls,
+                                     shrinkA=1, shrinkB=1, **kw))
 
-    # shared upstream
-    box(0.15, 3.5, 1.9, 1.0, "task family\n3 difficulty\nclasses", OKABE["grey"])
-    box(2.35, 3.5, 1.9, 1.0, "agent\nepisode loop\n(shared prompt)", OKABE["grey"])
+    nl = chr(10)
 
-    # the seam
-    ax.add_patch(FancyBboxPatch((4.5, 0.35), 2.3, 4.3, boxstyle="round,pad=0.08",
-                                linewidth=1.3, edgecolor=OKABE["vermillion"],
+    # ---- shared upstream ---------------------------------------------------
+    box(0.1, 4.7, 1.8, 1.05,
+        nl.join(["task family", "3 classes x 8 seeds", "= 24 tasks"]), OKABE["grey"])
+    box(0.1, 3.2, 1.8, 1.05,
+        nl.join(["actor", "Qwen3-32B", "shared prompt,", "tools, turn budget"]), OKABE["grey"])
+    arrow(1.0, 4.7, 1.0, 4.25)
+
+    # ---- the seam ----------------------------------------------------------
+    # Label sits ABOVE the dashed border; inside, it was struck through by the border itself.
+    ax.add_patch(FancyBboxPatch((2.45, 2.55), 2.6, 4.05, boxstyle="round,pad=0.08",
+                                linewidth=1.2, edgecolor=OKABE["vermillion"],
                                 facecolor="none", linestyle="--"))
-    ax.text(5.65, 4.44, "the only seam", ha="center", va="center", fontsize=7.5,
-            color=OKABE["vermillion"], style="italic")
-    box(4.65, 3.25, 2.0, 0.95, "REAL arm\ninstrumented filesystem\n(no egress)", OKABE["green"])
-    box(4.65, 2.05, 2.0, 0.95, "SIM arm\nLLM-fabricated\ntool outputs", OKABE["blue"])
-    box(4.65, 0.85, 2.0, 0.95, "scripted arm\ntemplate-fabricated\n(transfer control)", OKABE["purple"])
+    ax.text(3.75, 6.92, "the only seam: what a tool call returns", ha="center", va="center",
+            fontsize=6.2, color=OKABE["vermillion"], style="italic")
+    box(2.6, 5.35, 2.3, 0.9,
+        nl.join(["REAL", "instrumented filesystem", "grounded, consistent"]), OKABE["green"])
+    box(2.6, 4.05, 2.3, 0.9,
+        nl.join(["SCRIPTED", "template fabrication", "fabricated, consistent"]), OKABE["purple"])
+    box(2.6, 2.75, 2.3, 0.9,
+        nl.join(["SIM", "LLM fabrication", "fabricated, incoherent"]), OKABE["blue"])
+    for y in (5.8, 4.5, 3.2):
+        arrow(1.9, 3.72, 2.6, y)
 
-    arrow(2.05, 4.0, 2.35, 4.0)
-    arrow(4.25, 4.0, 4.65, 3.72)
-    arrow(4.25, 4.0, 4.65, 2.52)
-    arrow(4.25, 4.0, 4.65, 1.32)
+    # ---- one bus out of the seam, then two lanes ---------------------------
+    # Six individual arrows from three arms to two destinations produced an unreadable tangle.
+    # Every arm feeds both lanes identically, so a single collector says it more clearly.
+    bus_x = 5.45
+    ax.plot([bus_x, bus_x], [3.2, 5.8], color=OKABE["grey"], linewidth=0.9, zorder=1)
+    for y in (5.8, 4.5, 3.2):
+        arrow(4.9, y, bus_x, y)
+    ax.plot([bus_x], [4.5], marker="o", markersize=2.6, color=OKABE["grey"], zorder=2)
 
-    # downstream
-    box(7.05, 2.6, 1.5, 1.4, "matched\ntranscript\nprefixes", OKABE["grey"])
-    box(7.05, 0.85, 1.5, 1.3, "residual\nstream\nper layer", OKABE["orange"])
-    box(8.75, 1.7, 1.1, 1.5, "mean-diff\ndirections\nA C B S\n+ gate", OKABE["vermillion"])
+    # ---- behavioural lane: no model appears anywhere in it -----------------
+    box(6.1, 5.45, 2.15, 0.9, nl.join(["action log", "tool, args, path"]), OKABE["grey"])
+    box(8.6, 5.45, 2.15, 0.9, nl.join(["scope detector", "pure function, no model"]),
+        OKABE["green"])
+    box(11.05, 5.45, 1.35, 0.9, nl.join(["exp1", "out-of-scope", "rate"]), OKABE["green"],
+        fontsize=6.0)
+    arrow(bus_x, 5.8, 6.1, 5.9)
+    arrow(8.25, 5.9, 8.6, 5.9)
+    arrow(10.75, 5.9, 11.05, 5.9)
 
-    arrow(6.65, 3.72, 7.05, 3.35)
-    arrow(6.65, 2.52, 7.05, 3.15)
-    arrow(6.65, 1.32, 7.05, 2.95)
-    arrow(7.8, 2.6, 7.8, 2.15)
-    arrow(8.55, 1.5, 8.75, 2.1)
+    # ---- representational lane: the probe path -----------------------------
+    box(6.1, 3.5, 2.15, 0.9, nl.join(["transcript prefixes", "matched by construction"]),
+        OKABE["grey"])
+    box(6.1, 2.05, 2.15, 0.9, nl.join(["probed model", "residual stream, per layer"]),
+        OKABE["orange"])
+    box(8.6, 2.05, 2.15, 1.05, nl.join(["mean-difference", "directions", "A   C   B   S"]),
+        OKABE["vermillion"])
+    box(11.05, 3.5, 1.35, 0.9, nl.join(["exp0", "separability", "gate"]), OKABE["vermillion"],
+        fontsize=6.0)
+    box(11.05, 2.05, 1.35, 0.9, nl.join(["exp2", "credence vs", "conduct"]), OKABE["orange"],
+        fontsize=6.0)
+    arrow(bus_x, 4.5, 6.1, 3.95)
+    arrow(7.18, 3.5, 7.18, 2.95)
+    arrow(8.25, 2.57, 8.6, 2.57)
+    arrow(10.0, 3.1, 11.05, 3.7)
+    arrow(10.75, 2.57, 11.05, 2.57)
 
-    # the action log, which bypasses the probe path entirely
-    box(7.05, 4.15, 2.8, 0.65, "action log $\\rightarrow$ scope detector (pure function)",
-        OKABE["green"], fontsize=7)
-    arrow(6.65, 4.0, 7.05, 4.4)
+    # exp2 takes BOTH lanes as inputs. Routed around the exp0 box on the far right rather than
+    # through it, which is what the straight line did.
+    arrow(12.4, 5.9, 12.4, 2.57, colour=OKABE["orange"], ls=(0, (2.5, 1.8)),
+          conn="angle,angleA=0,angleB=90,rad=0")
+    ax.text(12.95, 4.3, "conduct", fontsize=5.8, color=OKABE["orange"],
+            rotation=90, va="center", ha="center")
+
+    # ---- exp3: a methodological check on the frozen corpus ------------------
+    box(0.1, 0.35, 4.95, 1.05,
+        nl.join(["exp3   transcript-side injection -> belief probe   (P7)",
+                 "frozen REAL corpus; no arm, no activations read"]),
+        OKABE["grey"], fontsize=6.0, alpha=0.09)
+    # From the REAL arm, routed down the outside of the seam. Not from the probe path: exp3 reads
+    # no activations, and an arrow from there would misstate the design.
+    arrow(2.6, 5.8, 2.55, 1.4, ls=(0, (2, 2)),
+          conn="angle,angleA=180,angleB=90,rad=0")
 
     fig.tight_layout()
     out = FIGDIR / "architecture.pdf"
     fig.savefig(out)
+    fig.savefig(FIGDIR / "architecture.svg")
     plt.close(fig)
     return out
 

@@ -37,6 +37,10 @@ SUITES: list[tuple[str, list[str]]] = [
     ("real arm", ["-m", "pytest", "tests/test_real_arm.py", "-q"]),
     ("resume", ["-m", "pytest", "tests/test_resume.py", "-q"]),
     ("probe", ["-m", "pytest", "tests/test_probe.py", "-q"]),
+    ("behaviour", ["-m", "pytest", "tests/test_behaviour.py", "-q"]),
+    ("credence link", ["-m", "pytest", "tests/test_credence_link.py", "-q"]),
+    ("framing", ["-m", "pytest", "tests/test_framing.py", "-q"]),
+    ("exp1 end-to-end", ["scripts/selftest_exp1.py"]),
 ]
 
 

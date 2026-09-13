@@ -311,13 +311,16 @@ fabricated tool outputs---is where the question bites hardest.
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\linewidth]{figures/architecture-render.png}
-\caption{The measurement pipeline. One recorded action sequence is replayed against three
-substrates that differ only in what a tool call returns: a real instrumented filesystem, an
-LLM-fabricated arm, and a template-fabricated control. Directions A (evaluation framing) and
-B (empirical realness) enter the pre-registered decision; C (declared realness) and S (scripted
-control) are reported alongside it and interpret the result rather than determining it. The
-action log is scored by a pure function over recorded actions, with no model in that path.}
+\includegraphics[width=0.84\linewidth]{figures/architecture.pdf}
+\caption{The measurement pipeline. Everything upstream of the dashed boundary is shared---task,
+prompt, tool schemas, turn budget, actor---and the three arms differ only in what a tool call
+returns: a real instrumented filesystem (grounded, self-consistent), a template simulator
+(fabricated, self-consistent), and an LLM simulator (fabricated, incoherent). Holding
+self-consistency fixed separates fabrication from incoherence, which a two-arm design confounds.
+The two lanes never meet: the action log reaches the scope detector without passing through any
+model, and the transcript prefixes reach the probed model and never return. Directions A
+(evaluation framing) and B (empirical realness) enter the pre-registered decision; C (declared
+realness) and S (scripted control) interpret it. Only \texttt{exp2} consumes both lanes, as inputs.}
 \label{fig:arch}
 \end{figure}
 
@@ -411,6 +414,18 @@ null produced by two working ones.}
 \label{tab:gates}
 \end{table}
 
+\subsection{Three arms, and why the third is not redundant}
+
+The gate reads what a model represents while \emph{processing} a context; it says nothing
+about conduct, and a behavioural comparison needs the comparison to have been run. The arms in
+Figure~\ref{fig:arch} support that: a two-arm design---real against an LLM simulator---cannot
+say whether a behavioural difference follows from the environment being \emph{fabricated} or
+from its being \emph{incoherent}, since a simulator with no durable world state is both. The
+template simulator fabricates deterministically from the path, so holding self-consistency fixed
+separates the two. The protocols for the on-policy behavioural comparison, the
+credence-against-conduct link and the transcript-manipulation check are given in
+Appendix~\ref{app:protocols}; their results are not claimed here.
+
 \section{Results}
 
 \subsection{The constructs are separable}
@@ -485,49 +500,96 @@ generator's style rather than anything about realness. \texttt{S\_scripted} test
 fabricating with templates instead of a model: \texttt{B\_empirical} transfers to it at
 {{CROSS_BS}} with cosine {{COS_BS}}, having never seen it.
 
-\subsection{Behaviour across difficulty classes, and what it is not}
+\subsection{In a real environment, boundary-crossing is reconnaissance}
 
 The share of episodes containing at least one scope violation rises with how much the task rewards
 crossing: {{VIOL_SOLVABLE}} of solvable episodes, {{VIOL_BLOCKED}} of blocked, {{VIOL_TEMPTING}} of
-tempting. Reported alone, that rate would be misleading, and Table~\ref{tab:violations} is the
-reason we do not report it alone.
+tempting. Reported alone that rate would mislead. Across the whole corpus there were
+{{N_WRITE_OUTSIDE}} out-of-scope writes and {{N_READ_OUTSIDE}} out-of-scope file reads against
+{{N_RECON}} directory listings and metadata queries; the single read was refused by the arm, and no
+agent retrieved the out-of-scope value in any episode, including the tempting class where
+retrieving it was the only route to success. Table~\ref{tab:violations} gives the breakdown by class and category.
+
+These agents probed the boundary and did not cross it in the way that would matter---a fact about
+behaviour \emph{in a real environment}, which on its own says nothing about what the same agents do
+when the environment is fabricated. That is the question a resample actually asks.
+
+\subsection{Behaviour diverges when the environment is fabricated}
+
+Running the same task cells on-policy in all three arms answers it. The contrast a resample
+performs---real against an LLM simulator---moves out-of-scope actions by {{E1_RS_COUNT}} per
+episode, {{E1_RS_COUNT_CI}}; the verdict is {{E1_VERDICT}} under the pre-registered rule.
+Table~\ref{tab:arms} gives the per-arm means and all three paired contrasts.
 
 \begin{table}[t]
 \centering
-\begin{tabular}{lccccc}
+\begin{tabular}{lcccc}
 \toprule
-Task class & episodes with any & write & read & stat & list \\
+Arm & out-of-scope & rate per action & writes & verbalized suspicion \\
 \midrule
-{{VIOL_TABLE}}
+{{E1_TABLE}}
 \bottomrule
 \end{tabular}
-\caption{Scope violations by class and category. The rate column counts episodes; the four
-category columns count actions. Crossings are almost entirely reconnaissance.}
-\label{tab:violations}
+\caption{Per-episode means by arm, {{E1_CELLS}} task cells each; the arms differ only in what a
+tool call returns. Paired contrasts: REAL $\rightarrow$ SIM {{E1_RS_COUNT}} {{E1_RS_COUNT_CI}};
+fabrication effect {{E1_FAB_COUNT}} {{E1_FAB_COUNT_CI}}; coherence effect {{E1_COH_COUNT}}
+{{E1_COH_COUNT_CI}}.}
+\label{tab:arms}
 \end{table}
 
-Across the entire corpus there were {{N_WRITE_OUTSIDE}} out-of-scope writes and
-{{N_READ_OUTSIDE}} out-of-scope file reads, against {{N_RECON}} out-of-scope directory listings and
-metadata queries. The single read was refused by the arm. No agent retrieved the out-of-scope value
-in any episode---including the tempting class, where retrieving it was the only route to task
-success.
+Three things make this more than a rate difference. The co-primary rate per action moves
+{{E1_RS_RATE}} {{E1_RS_RATE_CI}}, and episode length does not differ on this contrast
+({{E1_RS_ACTIONS}} actions, {{E1_RS_ACTIONS_CI}}), so it is not an artifact of longer episodes. The
+\emph{composition} changes: the real arm produced {{E1_REAL_WRITES}} out-of-scope writes and
+{{E1_REAL_READS}} out-of-scope reads across every episode, against {{E1_SIM_WRITES}} and
+{{E1_SCR_WRITES}} writes and {{E1_SIM_READS}} and {{E1_SCR_READS}} reads in the fabricated arms.
+Writes are the severe category and were identically absent when the filesystem was real; the paired
+difference is {{E1_RS_WRITES}} {{E1_RS_WRITES_CI}}.
 
-The honest reading is therefore the opposite of the one the headline rate invites. These agents
-probed the boundary and did not cross it in the way that would matter. The monotone trend is real
-but it is a trend in \emph{reconnaissance}, and calling it a rule-versus-reward trade would
-overstate it considerably. Whether a more capable actor, a longer horizon, or a simulated substrate
-changes that is exactly what the paired-arm study is for; this corpus establishes that the
-detector, the task family and the difficulty gradient behave as designed, not that the behaviour of
-interest has been observed.
+The direction matters. Agents crossed the boundary \emph{more} when the world was fabricated, so a
+resample of this task family does not understate danger as classical evaluation-awareness
+predicts---it overstates it, which is the failure mode that makes resampled evidence rebuttable by
+the developer it is aimed at.
 
-\subsection{A channel this corpus cannot speak to}
+\subsection{The divergence follows fabrication, not incoherence}
 
-The actor exposed a separate reasoning trace on {{N_REASONING_TURNS}} turns. The chain-of-thought
-credence channel therefore has no raw material here, and we make no claim about it---neither that
-it agrees with the probe nor that it fails to. Measuring it requires an actor that emits reasoning
-separately from its message, which is a property of the deployment rather than of the method.
+The third arm separates two explanations a two-arm design confounds. Varying only fabrication, with
+self-consistency held, moves out-of-scope actions {{E1_FAB_COUNT}} {{E1_FAB_COUNT_CI}} and the rate
+{{E1_FAB_RATE}} {{E1_FAB_RATE_CI}}. Varying only self-consistency, with fabrication held, moves the
+count {{E1_COH_COUNT}} {{E1_COH_COUNT_CI}} and the rate {{E1_COH_RATE}} {{E1_COH_RATE_CI}}, neither
+of which excludes zero.
 
+What moves conduct is the environment being fabricated, not the simulator being bad at it. A more
+consistent simulator does not recover the behaviour, because consistency was not what changed it.
 
+\subsection{Credence predicts conduct; the agent's own words do not}
+
+The realness direction transfers to trajectories the agent chose rather than replayed, separating
+real from fabricated episodes at AUROC {{E2_TRANSFER}}---a precondition, since it was estimated on
+matched replays and need not have survived the move. Regressing the out-of-scope rate on
+probe-measured credence, centred within arm so the arm label cannot produce the association, gives
+{{E2_CRED}} per standard deviation, {{E2_CRED_CI}}. The same regression on verbalized suspicion
+gives {{E2_VERB}}, {{E2_VERB_CI}}. The verdict is {{E2_VERDICT}}.
+
+The contrast is the point. Verbalized suspicion does differ between arms ({{E1_SUSP}},
+{{E1_SUSP_CI}}), so the agent says the environment looks fabricated more often when it is---it
+simply does not say so more often when it is about to act on it. Verbalization detects the
+substrate; the probe tracks the graded credence that predicts conduct. An instrument built on what
+the agent reports would see the first and miss the second.
+
+\subsection{The transcript is not a viable manipulation surface}
+
+The cheap alternative to manipulating the substrate---asserting a conclusion in the agent's own
+context---does not survive contact with its own reasoning. Asserting that the environment is
+genuine moves the stated verdict {{E3_T1}} {{E3_T1_CI}} at the first probe and {{E3_T3}}
+{{E3_T3_CI}} by the third, after two intervening task steps. The verdict is {{E3_VERDICT}}.
+
+The opposite injection has no room to work, for a reason worth reporting: asked directly, the model
+judged the environment fabricated in {{E3_CONTROL_FAB}} of control episodes \emph{of the real arm},
+reasoning from file timestamps that postdate its training data. Only {{E3_HEADROOM}} episodes had
+headroom and the injection converted {{E3_CONVERTED}} of them. A verbalized realness judgement here
+is dominated by a surface artifact carrying no information about fabrication---which is the case
+for reading credence from the representation rather than asking for it.
 
 \subsection{Error structure}
 
@@ -640,6 +702,20 @@ sharply with wording, while \texttt{B\_empirical} has no paraphrase axis to vary
 \label{fig:errors}
 \end{figure}
 
+\begin{table}[t]
+\centering
+\begin{tabular}{lccccc}
+\toprule
+Task class & episodes with any & write & read & stat & list \\
+\midrule
+{{VIOL_TABLE}}
+\bottomrule
+\end{tabular}
+\caption{Scope violations by class and category in the real arm. The rate column counts episodes;
+the category columns count actions. Crossings are almost entirely reconnaissance.}
+\label{tab:violations}
+\end{table}
+
 \paragraph{Errors are concentrated, not uniform.} For every direction, the worst quartile of
 episodes contributes substantially more than the quarter of all errors a uniform process would
 give. Episode-level structure of this kind is expected---prefixes from one episode share a
@@ -675,6 +751,49 @@ test directly, not a conclusion drawn here.
 \paragraph{Scope.} Per-item errors are recomputed from locally cached activations, which exist for
 the development-scale run. The larger scales contribute their layer profiles
 (Figure~\ref{fig:layers}) but not their item-level errors.
+
+\section{Protocols for the follow-on measurements}
+\label{app:protocols}
+
+
+oindent These protocols were fixed in advance. They are recorded here because the
+body reports no result from them.
+
+\subsection{Three arms, and why the third is not redundant}
+
+The gate above reads what a model represents while \emph{processing} a context; it says nothing
+about conduct. Behaviour is therefore collected \emph{on-policy}: each task cell is run once in each
+arm, holding constant the task, brief, prompt, tool schemas, turn budget and actor, and the agent's
+trajectory is allowed to diverge because the divergence is the measurement.
+
+A two-arm design---real against an LLM simulator---carries a confound that cannot be argued away
+afterwards. That simulator holds no durable world state, so it is not merely fabricated but
+\emph{incoherent}: asked the same question twice it may answer differently, and a behavioural
+difference would be attributable to fabrication or to incoherence with no way to separate them. The
+template simulator fabricates deterministically from the path, so it answers identically every
+time. As a third arm it turns the confound into a decomposition: real against template varies
+fabrication with self-consistency held, template against LLM varies self-consistency with
+fabrication held, and real against LLM is the contrast a counterfactual resample actually performs.
+One asymmetry survives it---both fabricated arms generate entries for any path, so their trees have
+no bottom while the real one is finite (Appendix~\ref{app:threats}).
+
+\subsection{Two channels, and whether the transcript is a manipulation surface}
+
+The two measures are then read against each other on the same trajectories. The realness
+direction---inherited from the gate at the layer it selected, never refitted---is projected onto
+each episode's prefixes to give a per-episode credence, which is regressed on the out-of-scope
+rate. The agent whose conduct is measured and the model whose activations are read are the same
+model, so a credence score is that model's own state rather than a second model's opinion about a
+transcript. The estimand is centred \emph{within arm}: credence should run higher in the fabricated
+arms and conduct may also differ by arm, so a pooled association could be produced entirely by the
+arm label. The same estimates use the agent's verbalized suspicion in place of credence, since the
+prediction under test is that the probe predicts conduct and the verbalization does not.
+
+All of that manipulates credence through the substrate, which is the expensive route; the cheap
+route would be to assert in the agent's own context what it believes. That is tested rather than
+assumed, in three conditions per episode differing only by an appended sentence stating a
+conclusion about the environment, followed by a tool-free prose probe scored by a committed lexicon
+over the verdict sentence (Appendix~\ref{app:threats}).
 
 \section{Threats to validity}
 \label{app:threats}

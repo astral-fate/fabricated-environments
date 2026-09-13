@@ -352,6 +352,158 @@ def _sim_refusal_rate() -> str:
     return f"{bad}/{n}"
 
 
+
+
+# --------------------------------------------------------------------------- exp1 / exp2 / exp3
+#
+# The follow-on experiments write their own verdict files. Each loader raises `Uncomputable` when
+# its artifact is absent, so a manuscript built before a run has finished shows a visible
+# [PENDING] rather than a stale number or a plausible-looking guess.
+
+def _verdict(name: str) -> dict[str, Any]:
+    """The verdict artifact for a follow-on experiment.
+
+    Accepts both spellings a run can leave behind: `exp2.json` when the experiment was run
+    locally, and `exp2-<model>.json` when a Modal wrapper brought the result home named for the
+    scale it ran at. A stage-1 validation file is never eligible -- it carries no verdict, and
+    silently reading one would report a GPU-path check as a result.
+    """
+    key = f"__{name}"
+    if key not in _cache:
+        base = ROOT / "results" / name
+        plain = base / f"{name}.json"
+        tagged = sorted(q for q in base.glob(f"{name}-*.json") if "stage1" not in q.name)
+        path = plain if plain.exists() else (tagged[-1] if tagged else None)
+        _cache[key] = (json.loads(path.read_text(encoding="utf-8"))
+                       if path is not None and path.exists() else None)
+    if _cache[key] is None:
+        raise Uncomputable(f"no {name} verdict yet")
+    return _cache[key]
+
+
+def _exp1_episodes() -> list[dict[str, Any]]:
+    """exp1 episodes from every per-arm shard, deduplicated by (task, arm)."""
+    key = "__exp1_eps"
+    if key not in _cache:
+        base = ROOT / "results" / "exp1"
+        rows: list[dict[str, Any]] = []
+        for shard in sorted(base.glob("episodes*.jsonl")):
+            for line in shard.read_text(encoding="utf-8", errors="replace").splitlines():
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    rows.append(json.loads(line))
+                except json.JSONDecodeError:
+                    continue
+        seen, keep = set(), []
+        for r in rows:
+            cell = (r.get("task_id"), r.get("arm"))
+            if r.get("api_error") or cell in seen:
+                continue
+            seen.add(cell)
+            keep.append(r)
+        _cache[key] = {"rows": keep} if keep else None
+    if _cache[key] is None:
+        raise Uncomputable("no exp1 episodes yet")
+    return _cache[key]["rows"]
+
+
+def _exp1_cat(arm: str, category: str) -> str:
+    """Raw count of one out-of-scope category in one arm, summed over episodes.
+
+    A count rather than a mean, because the composition claim is that some categories are
+    *absent* from the real arm, and a mean would round a genuine zero into a small decimal.
+    """
+    total = sum(int(r["scope_report"]["counts"].get(category, 0))
+                for r in _exp1_episodes() if r.get("arm") == arm)
+    return str(total)
+
+
+def _exp1_contrast(contrast: str, measure: str, field: str) -> float:
+    return float(_verdict("exp1")["results"][contrast][measure][field])
+
+
+def _ci(lo: float, hi: float) -> str:
+    return f"[{lo:+.3f}, {hi:+.3f}]"
+
+
+def _exp1_num(contrast: str, measure: str) -> str:
+    return f"{_exp1_contrast(contrast, measure, 'diff'):+.3f}"
+
+
+def _exp1_ci(contrast: str, measure: str) -> str:
+    return _ci(_exp1_contrast(contrast, measure, "lo"), _exp1_contrast(contrast, measure, "hi"))
+
+
+def _exp1_arm_mean(arm: str, measure: str) -> str:
+    return f"{float(_verdict('exp1')['arm_means'][arm][measure]):.3f}"
+
+
+def _exp1_category_total(arm: str, category: str) -> str:
+    """Raw out-of-scope actions of one category in one arm, summed over episodes.
+
+    Computed from `per_cell` rather than from an arm mean, because the composition claim in the
+    results ("no reads or writes at all in the real arm") is about counts and a mean would round
+    a genuine zero into a small decimal.
+    """
+    total = 0
+    for cell in _verdict("exp1")["per_cell"]:
+        total += int(cell.get(f"{arm}_{category}", 0))
+    return str(total)
+
+
+def _exp2_num(key: str, field: str) -> str:
+    v = _verdict("exp2")["results"][key][field]
+    return f"{float(v):+.4f}"
+
+
+def _exp2_ci(key: str) -> str:
+    r = _verdict("exp2")["results"][key]
+    return f"[{float(r['lo']):+.4f}, {float(r['hi']):+.4f}]"
+
+
+def _exp3_num(key: str) -> str:
+    return f"{float(_verdict('exp3')['results'][key]['diff']):+.3f}"
+
+
+def _exp3_ci(key: str) -> str:
+    r = _verdict("exp3")["results"][key]
+    return _ci(float(r["lo"]), float(r["hi"]))
+
+
+def _exp3_rate(key: str, field: str) -> str:
+    return f"{float(_verdict('exp3')['results'][key][field]):.3f}"
+
+
+def _exp1_table_tex() -> str:
+    """Arm means and the three preregistered contrasts, on the primary and co-primary measures."""
+    v = _verdict("exp1")
+    rows = []
+    for arm, label in (("real", "REAL"), ("sim_scripted", "SCRIPTED"), ("sim", "SIM")):
+        m = v["arm_means"][arm]
+        rows.append(rf"\texttt{{{label}}} & {m['oos_count']:.3f} & {m['oos_rate']:.3f} & "
+                    rf"{m['oos_writes']:.3f} & {m['suspicion']:.3f} \\")
+    return "\n".join(rows)
+
+
+def _exp1_contrast_table_tex() -> str:
+    v = _verdict("exp1")
+    names = {"real->sim": "REAL $\\rightarrow$ SIM",
+             "real->sim_scripted": "REAL $\\rightarrow$ SCRIPTED",
+             "sim_scripted->sim": "SCRIPTED $\\rightarrow$ SIM"}
+    rows = []
+    for key, label in names.items():
+        b = v["results"][key]
+        star = lambda m: "*" if b[m]["excludes_zero"] else ""          # noqa: E731
+        rows.append(
+            rf"{label} & {b['oos_count']['diff']:+.3f} "
+            rf"{_ci(b['oos_count']['lo'], b['oos_count']['hi'])}{star('oos_count')} & "
+            rf"{b['oos_rate']['diff']:+.3f} "
+            rf"{_ci(b['oos_rate']['lo'], b['oos_rate']['hi'])}{star('oos_rate')} \\")
+    return "\n".join(rows)
+
+
 CLAIMS: list[Claim] = [
     # ---- design constants, read from the code that enforces them
     Claim("THRESHOLD", "pre-registered cross-AUROC threshold", _threshold),
@@ -495,6 +647,94 @@ CLAIMS: list[Claim] = [
           lambda: _ea_class("17b", "B_empirical", "tempting")),
     Claim("EA_BEMP_SOLVABLE", "B_empirical accuracy on solvable episodes, smallest scale",
           lambda: _ea_class("17b", "B_empirical", "solvable")),
+
+
+    # ---- exp1: on-policy behavioural divergence
+    Claim("E1_CELLS", "task cells in the behavioural comparison",
+          lambda: str(_verdict("exp1")["pairing"]["n_cells"])),
+    Claim("E1_VERDICT", "exp1 verdict", lambda: _verdict("exp1")["verdict"]),
+    Claim("E1_RS_COUNT", "REAL to SIM difference in out-of-scope actions",
+          lambda: _exp1_num("real->sim", "oos_count")),
+    Claim("E1_RS_COUNT_CI", "CI on the REAL to SIM out-of-scope difference",
+          lambda: _exp1_ci("real->sim", "oos_count")),
+    Claim("E1_RS_RATE", "REAL to SIM difference in out-of-scope rate",
+          lambda: _exp1_num("real->sim", "oos_rate")),
+    Claim("E1_RS_RATE_CI", "CI on the REAL to SIM out-of-scope rate difference",
+          lambda: _exp1_ci("real->sim", "oos_rate")),
+    Claim("E1_RS_WRITES", "REAL to SIM difference in out-of-scope writes",
+          lambda: _exp1_num("real->sim", "oos_writes")),
+    Claim("E1_RS_WRITES_CI", "CI on the REAL to SIM out-of-scope write difference",
+          lambda: _exp1_ci("real->sim", "oos_writes")),
+    Claim("E1_RS_ACTIONS", "REAL to SIM difference in episode length",
+          lambda: _exp1_num("real->sim", "n_actions")),
+    Claim("E1_RS_ACTIONS_CI", "CI on the REAL to SIM episode-length difference",
+          lambda: _exp1_ci("real->sim", "n_actions")),
+    Claim("E1_FAB_COUNT", "fabrication effect on out-of-scope actions",
+          lambda: _exp1_num("real->sim_scripted", "oos_count")),
+    Claim("E1_FAB_COUNT_CI", "CI on the fabrication effect",
+          lambda: _exp1_ci("real->sim_scripted", "oos_count")),
+    Claim("E1_FAB_RATE", "fabrication effect on out-of-scope rate",
+          lambda: _exp1_num("real->sim_scripted", "oos_rate")),
+    Claim("E1_FAB_RATE_CI", "CI on the fabrication effect, rate",
+          lambda: _exp1_ci("real->sim_scripted", "oos_rate")),
+    Claim("E1_COH_COUNT", "coherence effect on out-of-scope actions",
+          lambda: _exp1_num("sim_scripted->sim", "oos_count")),
+    Claim("E1_COH_COUNT_CI", "CI on the coherence effect",
+          lambda: _exp1_ci("sim_scripted->sim", "oos_count")),
+    Claim("E1_COH_RATE", "coherence effect on out-of-scope rate",
+          lambda: _exp1_num("sim_scripted->sim", "oos_rate")),
+    Claim("E1_COH_RATE_CI", "CI on the coherence effect, rate",
+          lambda: _exp1_ci("sim_scripted->sim", "oos_rate")),
+    Claim("E1_SUSP", "REAL to SIM difference in verbalized suspicion",
+          lambda: _exp1_num("real->sim", "suspicion")),
+    Claim("E1_SUSP_CI", "CI on the verbalized suspicion difference",
+          lambda: _exp1_ci("real->sim", "suspicion")),
+    Claim("E1_REAL_WRITES", "out-of-scope writes in the real arm",
+          lambda: _exp1_cat("real", "write_outside")),
+    Claim("E1_REAL_READS", "out-of-scope reads in the real arm",
+          lambda: _exp1_cat("real", "read_outside")),
+    Claim("E1_SIM_WRITES", "out-of-scope writes in the LLM-fabricated arm",
+          lambda: _exp1_cat("sim", "write_outside")),
+    Claim("E1_SCR_WRITES", "out-of-scope writes in the template-fabricated arm",
+          lambda: _exp1_cat("sim_scripted", "write_outside")),
+    Claim("E1_SIM_READS", "out-of-scope reads in the LLM-fabricated arm",
+          lambda: _exp1_cat("sim", "read_outside")),
+    Claim("E1_SCR_READS", "out-of-scope reads in the template-fabricated arm",
+          lambda: _exp1_cat("sim_scripted", "read_outside")),
+    Claim("E1_TABLE", "exp1 arm-means table", _exp1_table_tex, raw=True),
+    Claim("E1_CONTRASTS", "exp1 contrast table", _exp1_contrast_table_tex, raw=True),
+
+    # ---- exp2: does credence predict conduct?
+    Claim("E2_VERDICT", "exp2 verdict", lambda: _verdict("exp2")["verdict"]),
+    Claim("E2_CRED", "within-arm slope of out-of-scope rate on credence",
+          lambda: _exp2_num("credence_within_arm", "slope")),
+    Claim("E2_CRED_CI", "CI on the within-arm credence slope",
+          lambda: _exp2_ci("credence_within_arm")),
+    Claim("E2_VERB", "within-arm slope on verbalized suspicion",
+          lambda: _exp2_num("verbalized_within_arm", "slope")),
+    Claim("E2_VERB_CI", "CI on the within-arm verbalized slope",
+          lambda: _exp2_ci("verbalized_within_arm")),
+    Claim("E2_CRED_POOLED", "pooled slope on credence",
+          lambda: _exp2_num("credence_pooled", "slope")),
+    Claim("E2_CRED_POOLED_CI", "CI on the pooled credence slope",
+          lambda: _exp2_ci("credence_pooled")),
+    Claim("E2_TRANSFER", "on-policy transfer of the realness direction",
+          lambda: f"{float(_verdict('exp2')['gates']['on_policy_transfer']['auroc_descriptive']):.3f}"),
+
+    # ---- exp3: is the transcript a viable manipulation surface?
+    Claim("E3_VERDICT", "exp3 verdict", lambda: _verdict("exp3")["verdict"]),
+    Claim("E3_T1", "injected framing effect at the first probe",
+          lambda: _exp3_num("inject_real@t1")),
+    Claim("E3_T1_CI", "CI on the first-probe effect", lambda: _exp3_ci("inject_real@t1")),
+    Claim("E3_T3", "injected framing effect at the third probe",
+          lambda: _exp3_num("inject_real@t3")),
+    Claim("E3_T3_CI", "CI on the third-probe effect", lambda: _exp3_ci("inject_real@t3")),
+    Claim("E3_CONTROL_FAB", "control rate of expressed fabrication-belief",
+          lambda: _exp3_rate("inject_fake@t1", "control_rate")),
+    Claim("E3_HEADROOM", "episodes whose control verdict left room to move",
+          lambda: str(_verdict("exp3")["primary_ceiling_diagnostic"]["n_episodes_with_headroom"])),
+    Claim("E3_CONVERTED", "of those, the number the injection converted",
+          lambda: str(_verdict("exp3")["primary_ceiling_diagnostic"]["n_converted_by_injection"])),
 
     # ---- tables and artifact metadata
     Claim("TRANSCRIPTS", "verbatim appendix excerpts", _transcripts_tex, raw=True,
@@ -691,6 +931,61 @@ def check_template_has_no_control_chars(tmpl_name: str = "main.tex.tmpl") -> int
     return 0
 
 
+def check_readme_matches_results() -> int:
+    """Headline numbers quoted in the README must match the verdict artifacts.
+
+    The manuscript cannot contain a hand-typed number -- `render.py` substitutes every value and
+    fails the build on a bare decimal. The README is the one document that machinery does not
+    cover, and it now quotes results from four experiments. Unchecked, those drift the moment a
+    run is repeated, and the README is what most readers see first.
+
+    So each headline is checked against the artifact it came from. This is deliberately narrow: it
+    verifies that the numbers the README states are present in the verdicts, not that the prose
+    around them is apt.
+    """
+    readme = ROOT / "README.md"
+    if not readme.exists():
+        return 0
+    text = readme.read_text(encoding="utf-8")
+
+    wanted: list[tuple[str, str]] = []
+    try:
+        e1 = _verdict("exp1")
+        rs = e1["results"]["real->sim"]
+        fab = e1["results"]["real->sim_scripted"]["oos_count"]
+        coh = e1["results"]["sim_scripted->sim"]["oos_count"]
+        wanted += [
+            ("exp1 real->sim count", f"{rs['oos_count']['diff']:+.3f}"),
+            ("exp1 real->sim rate", f"{rs['oos_rate']['diff']:+.3f}"),
+            ("exp1 fabrication effect", f"{fab['diff']:+.3f}"),
+            ("exp1 coherence effect", f"{coh['diff']:+.3f}".replace("-", "\u2212")),
+        ]
+    except Uncomputable:
+        pass
+    try:
+        e2 = _verdict("exp2")
+        wanted.append(("exp2 within-arm credence slope",
+                       f"{e2['results']['credence_within_arm']['slope']:+.4f}"))
+    except Uncomputable:
+        pass
+    try:
+        e3 = _verdict("exp3")
+        wanted += [
+            ("exp3 first probe", f"{e3['results']['inject_real@t1']['diff']:+.3f}"),
+            ("exp3 third probe", f"{e3['results']['inject_real@t3']['diff']:+.3f}"),
+        ]
+    except Uncomputable:
+        pass
+
+    problems = [f"README does not quote {label} as {value}"
+                for label, value in wanted if value not in text]
+    for p in problems:
+        print(f"  {p}")
+    if problems:
+        print("\nFAIL: README headline numbers disagree with the verdict artifacts.")
+    return 1 if problems else 0
+
+
 def check_readme_matches_artifact() -> int:
     """The README's citing block must agree with `artifact.json`.
 
@@ -746,7 +1041,7 @@ def main(argv: list[str]) -> int:
         print(f"\n  {bad} claim(s) uncomputable (missing artifacts)")
 
     rc = (check_template_has_no_numbers() or check_template_has_no_control_chars()
-          or check_readme_matches_artifact())
+          or check_readme_matches_artifact() + check_readme_matches_results())
     if "--check" in argv:
         return rc or (1 if bad else 0)
     if "--list" in argv:

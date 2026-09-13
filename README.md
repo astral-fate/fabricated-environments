@@ -43,8 +43,48 @@ Two further results make the null interpretable rather than bare:
 - **`B_empirical` is not a prose-provenance detector.** It transfers to a template simulator it
   never saw (cross-AUROC 0.704, cos +0.469), so it is not merely detecting one generator's style.
 
-Full numbers, per-layer curves, bootstrap intervals and validity-gate output:
-[`results/exp0/`](results/exp0/).
+---
+
+## Three results behind the gate
+
+The gate asked whether the construct exists. These ask whether it matters.
+
+**Agents act differently when the environment is actually fabricated.** Each task cell was run
+on-policy in all three arms — grounded, template-fabricated, LLM-fabricated — holding task, prompt,
+tool schemas, turn budget and actor constant. Out-of-scope actions rise **+2.417 per episode
+[+1.167, +3.709]** from real to LLM-fabricated, and the rate per action rises **+0.428
+[+0.231, +0.624]** with no difference in episode length, so it is not an artifact of longer runs.
+The composition changes rather than the volume: **0 out-of-scope writes and 0 out-of-scope reads in
+the real arm across every episode**, against 12 writes and 86 reads in the fabricated arms.
+
+Agents crossed the boundary *more* when the world was fake, so a resample of this task family
+**overstates** danger — the failure mode that makes resampled evidence rebuttable by the developer
+it is aimed at.
+
+**It is fabrication that moves conduct, not the simulator being bad at it.** The third arm exists
+to split a confound a two-arm design cannot: holding self-consistency fixed and varying only
+fabrication moves out-of-scope actions +2.958 [+0.708, +5.500]; holding fabrication fixed and
+varying only self-consistency moves it −0.542 [−3.084, +1.751], which includes zero. A more
+consistent simulator does not recover the behaviour, because consistency was not what changed it.
+
+**The probe predicts conduct; the agent's own words do not.** Within arm — so the arm label cannot
+manufacture the association — the out-of-scope rate rises **+0.3318 per standard deviation of
+probe-measured credence [+0.1092, +0.5210]**, while the same regression on the agent's verbalized
+suspicion gives +0.0756 [−0.1470, +0.3209]. Verbalized suspicion *does* differ between arms
+(+0.500), so the agent says the environment looks fake more often when it is — it just does not say
+so more often when it is about to act on it. An instrument built on what the agent reports would
+see the first and miss the second.
+
+**The transcript is not a viable manipulation surface.** Asserting a conclusion in the agent's own
+context moves its stated belief +0.417 [+0.167, +0.625] at the first probe and +0.208
+[−0.042, +0.417] by the third, after intervening work — it takes, then the model regenerates its
+own framing over it. Worth noting separately: asked directly, the model called the **real**
+filesystem simulated in 0.917 of control episodes, reasoning from timestamps that postdate its
+training data.
+
+Full numbers, per-layer curves, bootstrap intervals, validity-gate output, episode logs and run
+logs for every experiment: [`results/`](results/), indexed in
+[`results/README.md`](results/README.md).
 
 ---
 
@@ -221,10 +261,3 @@ Apart Research & CeSIA, AI Incident Response Sprint — Track 5 (Open).
 | Commit behind the reported numbers | `54ac8c4e4715` |
 | DOI | not yet minted |
 
-These live in [`paper/artifact.json`](paper/artifact.json) and are substituted into the manuscript
-at build time. A field that has no value yet — the DOI — renders as a visible `[PENDING]` in the
-PDF rather than as a plausible-looking placeholder a reader might mistake for a real archive link.
-
-**Reproducing the exact numbers in the paper:** check out the commit above and run
-`bash paper/build.sh`. The build recomputes every claim from `results/` and fails if any value in
-the manuscript disagrees with its artifact.

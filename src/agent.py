@@ -188,7 +188,14 @@ def run_episode(
                         ep.n_invalid_tool += 1
                 results.append((call, out, ok))
                 recorded_calls.append({"name": call.name, "args": args})
-                recorded_results.append({"ok": ok, "chars": len(out), "preview": out[:400]})
+                # `chars` is always the true length; `preview` is the recorded text. The cap is
+                # 4000 rather than 400 because a later experiment reads activations from these
+                # trajectories rebuilt as text, and a 400-character cap truncates the arms
+                # ASYMMETRICALLY -- real outputs are typically a couple of hundred characters,
+                # while a fabricated arm inventing directory entries runs far longer. The
+                # truncation would then be an arm difference sitting inside the contrast. 4000
+                # matches `LLMSimArm.max_chars`, so a fabricated output is recorded in full.
+                recorded_results.append({"ok": ok, "chars": len(out), "preview": out[:4000]})
 
             ep.turns.append(Turn(index=index, text=step.text, calls=recorded_calls,
                                  results=recorded_results, usage=step.usage,
