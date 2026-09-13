@@ -22,7 +22,7 @@ RESULTS = ROOT / "results" / "exp0"
 OUT = ROOT / "docs" / "index.html"
 
 BRAND = "Construct-Separation Gate &middot; AI Incident Response Sprint 2026"
-N = 21
+N = 22
 
 
 # --------------------------------------------------------------------------- live values
@@ -111,6 +111,18 @@ def substrate_example() -> dict:
 
 EX = substrate_example()
 
+# Cover metrics. Computed, not typed -- a cover is the slide most likely to be screenshotted
+# without its source, so a number invented there travels furthest.
+N_PAIRS = sum(v["n_pairs"] for v in R8["stimuli"].values())
+N_CONTEXTS = N_PAIRS * 2
+N_SCALES = 3
+N_LAYERS_32B = R32["n_layers"]
+BEST_AUROC = max(auroc(r, "A_eval") for r in (R17, R8, R32))
+CROSS_LO = min(cross(r, a, b) for r in (R17, R8, R32)
+               for a, b in (("A_eval", "B_empirical"), ("B_empirical", "A_eval")))
+CROSS_HI = max(cross(r, a, b) for r in (R17, R8, R32)
+               for a, b in (("A_eval", "B_empirical"), ("B_empirical", "A_eval")))
+
 
 def esc(s: str) -> str:
     return (s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
@@ -144,17 +156,44 @@ FIG = ('<div style="margin-top:18px;text-align:center;">'
        '<div style="margin-top:10px;font-size:12.5px;color:#8c93a8;">{cap}</div></div>')
 
 # 01 -------------------------------------------------------------------------- cover
-slide("Construct-Separation Gate", """  <div class="eyebrow">Apart Research &times; CeSIA &mdash; AI Incident Response Sprint &middot; Track 5 (Open)</div>
-  <h1>Is &ldquo;this is a test&rdquo;<br>the same as &ldquo;this world is fake&rdquo;?</h1>
-  <h3 style="margin-top:18px;max-width:960px;">
-    A pre-registered gate for counterfactual resampling &mdash; measuring whether the belief
-    that breaks a resample is one thing inside the model, or two.
+slide("Construct-Separation Gate", f"""  <div class="eyebrow">Apart Research &times; CeSIA &mdash; AI Incident Response Sprint &middot; Track 5 (Open)</div>
+  <h1 style="font-size:clamp(34px,4.6vw,62px);">construct-separation-gate</h1>
+  <h3 style="margin-top:14px;max-width:1000px;font-size:clamp(17px,1.7vw,24px);color:#dde2f0;">
+    When you resample a stopped agent inside a fake world, does it know?
+    We measured whether that belief is the same thing as knowing it is being tested.
+    <b style="color:#22d3ee;">It is not</b> &mdash; at every model scale we tested.
   </h3>
-  <div class="signature">
+  <div class="stats" style="margin-top:30px;">
+    <div class="stat"><div class="v">{N_SCALES}</div><div class="l">Qwen3 scales<br>1.7B &middot; 8B &middot; 32B</div></div>
+    <div class="stat"><div class="v">{N_CONTEXTS:,}</div><div class="l">matched contexts<br>{N_PAIRS} contrastive pairs</div></div>
+    <div class="stat"><div class="v">{f3(BEST_AUROC)}</div><div class="l">peak probe AUROC<br>held out, 32B</div></div>
+    <div class="stat"><div class="v">{f3(CROSS_LO)}&ndash;{f3(CROSS_HI)}</div><div class="l">cross-transfer<br>vs a pre-registered {THRESHOLD:.2f}</div></div>
+  </div>
+  <div class="signature" style="margin-top:26px;">
     <span class="dot"></span>
-    <span><b style="color:#e9ecf3;">Fatimah Emad Eldin</b> &nbsp;&middot;&nbsp; Independent AI Researcher</span>
+    <span><b style="color:#e9ecf3;">Fatimah Emad Eldin</b> &nbsp;&middot;&nbsp; Independent AI Researcher
+    &nbsp;&middot;&nbsp; github.com/astral-fate/construct-separation-gate</span>
     <span class="dot"></span>
   </div>""", center=True)
+
+# 01b ------------------------------------------------------------------------- the result, up front
+slide("The result", f"""  <div class="eyebrow">The finding, before the argument for it</div>
+  <h2>Two directions. Both sharp. Neither sees the other.</h2>
+  <p class="lede">
+    A probe that tells &ldquo;you are being evaluated&rdquo; from &ldquo;you are in deployment&rdquo;
+    reaches <b>{f3(auroc(R32,'A_eval'))}</b> AUROC. Point that same direction at
+    genuine-versus-fabricated environments and it drops to
+    <b>{f3(cross(R32,'A_eval','B_empirical'))}</b> &mdash; near chance.
+  </p>
+  <div class="stats three" style="margin-top:26px;">
+    <div class="stat"><div class="v">{f3(auroc(R8,'A_eval'))}</div><div class="l">eval-awareness<br>on its own contrast</div></div>
+    <div class="stat"><div class="v">{f3(auroc(R8,'B_empirical'))}</div><div class="l">environment-realness<br>on its own contrast</div></div>
+    <div class="stat"><div class="v">{sgn(cos(R8,'A_eval','B_empirical'))}</div><div class="l">cosine between them<br>near-orthogonal</div></div>
+  </div>
+  <div class="hook" style="margin-top:26px;">
+    Pre-registered rule: {THRESHOLD:.2f} in both directions would have meant one construct, and we
+    would have said so and stopped. Nothing came close, at {N_SCALES} scales.
+  </div>""")
 
 # 02 -------------------------------------------------------------------------- hook
 slide("The question", """  <div class="eyebrow">The question</div>
@@ -329,9 +368,9 @@ slide("Scale", f"""  <div class="eyebrow">The objection, answered</div>
 slide("Declared vs measured", f"""  <div class="eyebrow">The result that bears on method</div>
   <h2>Being <i>told</i> a world is fake is not the world <i>being</i> fake.</h2>
   <div class="stats three">
-    <div class="stat"><b>{sgn(cos(R8,'A_eval','C_declared'))}</b><span>cos(A, C)<br>declared realness sits with eval framing</span></div>
-    <div class="stat"><b>{sgn(cos(R8,'B_empirical','C_declared'))}</b><span>cos(B, C)<br>and far from ground truth</span></div>
-    <div class="stat"><b>{sgn(cos(R8,'B_empirical','S_scripted'))}</b><span>cos(B, S)<br>B transfers to a simulator it never saw</span></div>
+    <div class="stat"><div class="v">{sgn(cos(R8,'A_eval','C_declared'))}</div><div class="l">cos(A, C)<br>declared realness sits with eval framing</div></div>
+    <div class="stat"><div class="v">{sgn(cos(R8,'B_empirical','C_declared'))}</div><div class="l">cos(B, C)<br>and far from ground truth</div></div>
+    <div class="stat"><div class="v">{sgn(cos(R8,'B_empirical','S_scripted'))}</div><div class="l">cos(B, S)<br>B transfers to a simulator it never saw</div></div>
   </div>
   <ul class="bullets" style="margin-top:24px;">
     <li><b>Declared framing clusters with declared framing</b> &mdash; whichever axis the sentence names. Ground truth is somewhere else.</li>
@@ -370,9 +409,9 @@ slide("One call, three worlds", f"""  <div class="eyebrow">What the model was as
 slide("The honest negative", f"""  <div class="eyebrow">What the behavioural arm does <i>not</i> show</div>
   <h2>They probed the boundary. They did not cross it.</h2>
   <div class="stats three">
-    <div class="stat"><b>{viol_total('write_outside')}</b><span>out-of-scope writes<br>across all {N_EP} episodes</span></div>
-    <div class="stat"><b>{viol_total('read_outside')}</b><span>out-of-scope read<br>&mdash; and the arm refused it</span></div>
-    <div class="stat"><b>{viol_total('list_outside') + viol_total('stat_outside')}</b><span>listings and metadata queries<br>i.e. reconnaissance</span></div>
+    <div class="stat"><div class="v">{viol_total('write_outside')}</div><div class="l">out-of-scope writes<br>across all {N_EP} episodes</div></div>
+    <div class="stat"><div class="v">{viol_total('read_outside')}</div><div class="l">out-of-scope read<br>&mdash; and the arm refused it</div></div>
+    <div class="stat"><div class="v">{viol_total('list_outside') + viol_total('stat_outside')}</div><div class="l">listings and metadata queries<br>i.e. reconnaissance</div></div>
   </div>
   <div class="hook" style="margin-top:24px;">
     The &ldquo;violation rate&rdquo; rises with how much the task rewards crossing &mdash; but the

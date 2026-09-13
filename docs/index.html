@@ -151,23 +151,53 @@
 <body>
 <section class="slide center">
   <div class="slide-brand"><b>Construct-Separation Gate</b></div>
-  <div class="slide-num">01 / 21</div>
+  <div class="slide-num">01 / 22</div>
   <div class="slide-foot">Construct-Separation Gate &middot; AI Incident Response Sprint 2026</div>
   <div class="eyebrow">Apart Research &times; CeSIA &mdash; AI Incident Response Sprint &middot; Track 5 (Open)</div>
-  <h1>Is &ldquo;this is a test&rdquo;<br>the same as &ldquo;this world is fake&rdquo;?</h1>
-  <h3 style="margin-top:18px;max-width:960px;">
-    A pre-registered gate for counterfactual resampling &mdash; measuring whether the belief
-    that breaks a resample is one thing inside the model, or two.
+  <h1 style="font-size:clamp(34px,4.6vw,62px);">construct-separation-gate</h1>
+  <h3 style="margin-top:14px;max-width:1000px;font-size:clamp(17px,1.7vw,24px);color:#dde2f0;">
+    When you resample a stopped agent inside a fake world, does it know?
+    We measured whether that belief is the same thing as knowing it is being tested.
+    <b style="color:#22d3ee;">It is not</b> &mdash; at every model scale we tested.
   </h3>
-  <div class="signature">
+  <div class="stats" style="margin-top:30px;">
+    <div class="stat"><div class="v">3</div><div class="l">Qwen3 scales<br>1.7B &middot; 8B &middot; 32B</div></div>
+    <div class="stat"><div class="v">1,200</div><div class="l">matched contexts<br>600 contrastive pairs</div></div>
+    <div class="stat"><div class="v">0.999</div><div class="l">peak probe AUROC<br>held out, 32B</div></div>
+    <div class="stat"><div class="v">0.417&ndash;0.605</div><div class="l">cross-transfer<br>vs a pre-registered 0.85</div></div>
+  </div>
+  <div class="signature" style="margin-top:26px;">
     <span class="dot"></span>
-    <span><b style="color:#e9ecf3;">Fatimah Emad Eldin</b> &nbsp;&middot;&nbsp; Independent AI Researcher</span>
+    <span><b style="color:#e9ecf3;">Fatimah Emad Eldin</b> &nbsp;&middot;&nbsp; Independent AI Researcher
+    &nbsp;&middot;&nbsp; github.com/astral-fate/construct-separation-gate</span>
     <span class="dot"></span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-brand"><b>The result</b></div>
+  <div class="slide-num">02 / 22</div>
+  <div class="slide-foot">Construct-Separation Gate &middot; AI Incident Response Sprint 2026</div>
+  <div class="eyebrow">The finding, before the argument for it</div>
+  <h2>Two directions. Both sharp. Neither sees the other.</h2>
+  <p class="lede">
+    A probe that tells &ldquo;you are being evaluated&rdquo; from &ldquo;you are in deployment&rdquo;
+    reaches <b>0.999</b> AUROC. Point that same direction at
+    genuine-versus-fabricated environments and it drops to
+    <b>0.417</b> &mdash; near chance.
+  </p>
+  <div class="stats three" style="margin-top:26px;">
+    <div class="stat"><div class="v">0.992</div><div class="l">eval-awareness<br>on its own contrast</div></div>
+    <div class="stat"><div class="v">0.992</div><div class="l">environment-realness<br>on its own contrast</div></div>
+    <div class="stat"><div class="v">+0.045</div><div class="l">cosine between them<br>near-orthogonal</div></div>
+  </div>
+  <div class="hook" style="margin-top:26px;">
+    Pre-registered rule: 0.85 in both directions would have meant one construct, and we
+    would have said so and stopped. Nothing came close, at 3 scales.
   </div>
 </section>
 <section class="slide center">
   <div class="slide-brand"><b>The question</b></div>
-  <div class="slide-num">02 / 21</div>
+  <div class="slide-num">03 / 22</div>
   <div class="slide-foot">Construct-Separation Gate &middot; AI Incident Response Sprint 2026</div>
   <div class="eyebrow">The question</div>
   <p class="askq">
@@ -182,7 +212,7 @@
 </section>
 <section class="slide">
   <div class="slide-brand"><b>Context</b></div>
-  <div class="slide-num">03 / 21</div>
+  <div class="slide-num">04 / 22</div>
   <div class="slide-foot">Construct-Separation Gate &middot; AI Incident Response Sprint 2026</div>
   <div class="eyebrow">Context</div>
   <h2>Counterfactual resampling is how we learn what a stopped agent wanted.</h2>
@@ -199,7 +229,7 @@
 </section>
 <section class="slide">
   <div class="slide-brand"><b>The problem</b></div>
-  <div class="slide-num">04 / 21</div>
+  <div class="slide-num">05 / 22</div>
   <div class="slide-foot">Construct-Separation Gate &middot; AI Incident Response Sprint 2026</div>
   <div class="eyebrow">The problem</div>
   <h2>Two mechanisms are attested. They point opposite ways.</h2>
@@ -222,7 +252,7 @@
 </section>
 <section class="slide">
   <div class="slide-brand"><b>What exists</b></div>
-  <div class="slide-num">05 / 21</div>
+  <div class="slide-num">06 / 22</div>
   <div class="slide-foot">Construct-Separation Gate &middot; AI Incident Response Sprint 2026</div>
   <div class="eyebrow">Literature &mdash; what has been built</div>
   <h2>The field has the tool, the probe, and the capability. Not the contrast.</h2>
@@ -252,7 +282,7 @@
 </section>
 <section class="slide">
   <div class="slide-brand"><b>The gap</b></div>
-  <div class="slide-num">06 / 21</div>
+  <div class="slide-num">07 / 22</div>
   <div class="slide-foot">Construct-Separation Gate &middot; AI Incident Response Sprint 2026</div>
   <div class="eyebrow">What survives</div>
   <h2>Every probe varies a sentence. None varies the world.</h2>
@@ -269,7 +299,7 @@
 </section>
 <section class="slide">
   <div class="slide-brand"><b>Why a gate</b></div>
-  <div class="slide-num">07 / 21</div>
+  <div class="slide-num">08 / 22</div>
   <div class="slide-foot">Construct-Separation Gate &middot; AI Incident Response Sprint 2026</div>
   <div class="eyebrow">What we are building, and why first</div>
   <h2>The answer decides whether the instrument needs building at all.</h2>
@@ -288,7 +318,7 @@
 </section>
 <section class="slide">
   <div class="slide-brand"><b>Methodology</b></div>
-  <div class="slide-num">08 / 21</div>
+  <div class="slide-num">09 / 22</div>
   <div class="slide-foot">Construct-Separation Gate &middot; AI Incident Response Sprint 2026</div>
   <div class="eyebrow">What we built</div>
   <h2>One action sequence. Three substrates. One seam.</h2>
@@ -296,7 +326,7 @@
 </section>
 <section class="slide">
   <div class="slide-brand"><b>Four directions</b></div>
-  <div class="slide-num">09 / 21</div>
+  <div class="slide-num">10 / 22</div>
   <div class="slide-foot">Construct-Separation Gate &middot; AI Incident Response Sprint 2026</div>
   <div class="eyebrow">The design</div>
   <h2>All four estimated on the <i>same</i> stimulus substrate.</h2>
@@ -316,7 +346,7 @@
 </section>
 <section class="slide">
   <div class="slide-brand"><b>Pre-registration</b></div>
-  <div class="slide-num">10 / 21</div>
+  <div class="slide-num">11 / 22</div>
   <div class="slide-foot">Construct-Separation Gate &middot; AI Incident Response Sprint 2026</div>
   <div class="eyebrow">Fixed before any activation was extracted</div>
   <h2>The rule, and the three gates that must pass before it is applied.</h2>
@@ -331,7 +361,7 @@
 </section>
 <section class="slide">
   <div class="slide-brand"><b>Result</b></div>
-  <div class="slide-num">11 / 21</div>
+  <div class="slide-num">12 / 22</div>
   <div class="slide-foot">Construct-Separation Gate &middot; AI Incident Response Sprint 2026</div>
   <div class="eyebrow">The gate</div>
   <h2>Separable &mdash; and the separation strengthens with scale.</h2>
@@ -353,7 +383,7 @@
 </section>
 <section class="slide">
   <div class="slide-brand"><b>Scale</b></div>
-  <div class="slide-num">12 / 21</div>
+  <div class="slide-num">13 / 22</div>
   <div class="slide-foot">Construct-Separation Gate &middot; AI Incident Response Sprint 2026</div>
   <div class="eyebrow">The objection, answered</div>
   <h2>Both probes sharpen. The bridge between them does not.</h2>
@@ -365,14 +395,14 @@
 </section>
 <section class="slide">
   <div class="slide-brand"><b>Declared vs measured</b></div>
-  <div class="slide-num">13 / 21</div>
+  <div class="slide-num">14 / 22</div>
   <div class="slide-foot">Construct-Separation Gate &middot; AI Incident Response Sprint 2026</div>
   <div class="eyebrow">The result that bears on method</div>
   <h2>Being <i>told</i> a world is fake is not the world <i>being</i> fake.</h2>
   <div class="stats three">
-    <div class="stat"><b>+0.402</b><span>cos(A, C)<br>declared realness sits with eval framing</span></div>
-    <div class="stat"><b>+0.118</b><span>cos(B, C)<br>and far from ground truth</span></div>
-    <div class="stat"><b>+0.469</b><span>cos(B, S)<br>B transfers to a simulator it never saw</span></div>
+    <div class="stat"><div class="v">+0.402</div><div class="l">cos(A, C)<br>declared realness sits with eval framing</div></div>
+    <div class="stat"><div class="v">+0.118</div><div class="l">cos(B, C)<br>and far from ground truth</div></div>
+    <div class="stat"><div class="v">+0.469</div><div class="l">cos(B, S)<br>B transfers to a simulator it never saw</div></div>
   </div>
   <ul class="bullets" style="margin-top:24px;">
     <li><b>Declared framing clusters with declared framing</b> &mdash; whichever axis the sentence names. Ground truth is somewhere else.</li>
@@ -381,7 +411,7 @@
 </section>
 <section class="slide">
   <div class="slide-brand"><b>Error analysis</b></div>
-  <div class="slide-num">14 / 21</div>
+  <div class="slide-num">15 / 22</div>
   <div class="slide-foot">Construct-Separation Gate &middot; AI Incident Response Sprint 2026</div>
   <div class="eyebrow">Where the probes fail</div>
   <h2>The errors are structured, and the structure is informative.</h2>
@@ -394,7 +424,7 @@
 </section>
 <section class="slide">
   <div class="slide-brand"><b>One call, three worlds</b></div>
-  <div class="slide-num">15 / 21</div>
+  <div class="slide-num">16 / 22</div>
   <div class="slide-foot">Construct-Separation Gate &middot; AI Incident Response Sprint 2026</div>
   <div class="eyebrow">What the model was asked, and what came back</div>
   <h2>The entire manipulation, in three blocks of text.</h2>
@@ -414,14 +444,14 @@
 </section>
 <section class="slide">
   <div class="slide-brand"><b>The honest negative</b></div>
-  <div class="slide-num">16 / 21</div>
+  <div class="slide-num">17 / 22</div>
   <div class="slide-foot">Construct-Separation Gate &middot; AI Incident Response Sprint 2026</div>
   <div class="eyebrow">What the behavioural arm does <i>not</i> show</div>
   <h2>They probed the boundary. They did not cross it.</h2>
   <div class="stats three">
-    <div class="stat"><b>0</b><span>out-of-scope writes<br>across all 24 episodes</span></div>
-    <div class="stat"><b>1</b><span>out-of-scope read<br>&mdash; and the arm refused it</span></div>
-    <div class="stat"><b>33</b><span>listings and metadata queries<br>i.e. reconnaissance</span></div>
+    <div class="stat"><div class="v">0</div><div class="l">out-of-scope writes<br>across all 24 episodes</div></div>
+    <div class="stat"><div class="v">1</div><div class="l">out-of-scope read<br>&mdash; and the arm refused it</div></div>
+    <div class="stat"><div class="v">33</div><div class="l">listings and metadata queries<br>i.e. reconnaissance</div></div>
   </div>
   <div class="hook" style="margin-top:24px;">
     The &ldquo;violation rate&rdquo; rises with how much the task rewards crossing &mdash; but the
@@ -431,7 +461,7 @@
 </section>
 <section class="slide">
   <div class="slide-brand"><b>What this does not fix</b></div>
-  <div class="slide-num">17 / 21</div>
+  <div class="slide-num">18 / 22</div>
   <div class="slide-foot">Construct-Separation Gate &middot; AI Incident Response Sprint 2026</div>
   <div class="eyebrow">Positioning</div>
   <h2>This does not make counterfactual resampling valid.</h2>
@@ -447,7 +477,7 @@
 </section>
 <section class="slide">
   <div class="slide-brand"><b>What comes next</b></div>
-  <div class="slide-num">18 / 21</div>
+  <div class="slide-num">19 / 22</div>
   <div class="slide-foot">Construct-Separation Gate &middot; AI Incident Response Sprint 2026</div>
   <div class="eyebrow">Future work</div>
   <h2>The gate passed, so the instrument is worth building.</h2>
@@ -467,7 +497,7 @@
 </section>
 <section class="slide">
   <div class="slide-brand"><b>Reproducibility</b></div>
-  <div class="slide-num">19 / 21</div>
+  <div class="slide-num">20 / 22</div>
   <div class="slide-foot">Construct-Separation Gate &middot; AI Incident Response Sprint 2026</div>
   <div class="eyebrow">The artifact</div>
   <h2>Every number regenerates, or the build fails.</h2>
@@ -484,7 +514,7 @@ bash paper/build.sh      <span style="color:#8c93a8;"># recompute every claim, t
 </section>
 <section class="slide">
   <div class="slide-brand"><b>Limitations &amp; dual use</b></div>
-  <div class="slide-num">20 / 21</div>
+  <div class="slide-num">21 / 22</div>
   <div class="slide-foot">Construct-Separation Gate &middot; AI Incident Response Sprint 2026</div>
   <div class="eyebrow">Stated, not buried</div>
   <h2>What this measures is also what an agent would need to detect a sandbox.</h2>
@@ -501,7 +531,7 @@ bash paper/build.sh      <span style="color:#8c93a8;"># recompute every claim, t
 </section>
 <section class="slide center">
   <div class="slide-brand"><b>Close</b></div>
-  <div class="slide-num">21 / 21</div>
+  <div class="slide-num">22 / 22</div>
   <div class="slide-foot">Construct-Separation Gate &middot; AI Incident Response Sprint 2026</div>
   <div class="eyebrow">Where we started</div>
   <p class="askq">
