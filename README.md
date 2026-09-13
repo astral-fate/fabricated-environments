@@ -185,6 +185,46 @@ the signature of a token-presence detector rather than a construct.
 
 ## Citing
 
-Paper and artifact metadata live in [`paper/artifact.json`](paper/artifact.json). Values that are
-not yet assigned render as a visible `[PENDING]` in the manuscript rather than as a plausible-looking
-placeholder.
+**Paper.** *Evaluation-Awareness and Environment-Realness Are Separable Directions: A
+Construct-Separation Gate for Counterfactual Resampling.* Fatimah Emad Eldin, 13 September 2026.
+Apart Research & CeSIA, AI Incident Response Sprint — Track 5 (Open).
+
+```bibtex
+@misc{eldin2026separable,
+  title        = {Evaluation-Awareness and Environment-Realness Are Separable Directions:
+                  A Construct-Separation Gate for Counterfactual Resampling},
+  author       = {Emad Eldin, Fatimah},
+  year         = {2026},
+  month        = sep,
+  note         = {Apart Research \& CeSIA, AI Incident Response Sprint --- Track 5 (Open)},
+  howpublished = {\url{https://github.com/astral-fate/construct-separation-gate}},
+}
+```
+
+**Artifact.** Cite the commit, not the branch — every number in the paper is regenerated from
+`results/` at build time, so the commit is what fixes the values a reader will see.
+
+```bibtex
+@software{eldin2026csg,
+  title   = {construct-separation-gate: a pre-registered construct-separation gate for
+             counterfactual resampling},
+  author  = {Emad Eldin, Fatimah},
+  year    = {2026},
+  url     = {https://github.com/astral-fate/construct-separation-gate},
+  version = {54ac8c4e4715},
+}
+```
+
+| Field | Value |
+|---|---|
+| Repository | <https://github.com/astral-fate/construct-separation-gate> |
+| Commit behind the reported numbers | `54ac8c4e4715` |
+| DOI | not yet minted |
+
+These live in [`paper/artifact.json`](paper/artifact.json) and are substituted into the manuscript
+at build time. A field that has no value yet — the DOI — renders as a visible `[PENDING]` in the
+PDF rather than as a plausible-looking placeholder a reader might mistake for a real archive link.
+
+**Reproducing the exact numbers in the paper:** check out the commit above and run
+`bash paper/build.sh`. The build recomputes every claim from `results/` and fails if any value in
+the manuscript disagrees with its artifact.

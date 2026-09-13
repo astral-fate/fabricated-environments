@@ -691,6 +691,46 @@ def check_template_has_no_control_chars(tmpl_name: str = "main.tex.tmpl") -> int
     return 0
 
 
+def check_readme_matches_artifact() -> int:
+    """The README's citing block must agree with `artifact.json`.
+
+    The README quotes the repository URL and the commit the reported numbers came from, in prose
+    and in two BibTeX entries. Those are hand-typed, so they drift -- an earlier revision described
+    the artifact fields as unassigned for some time after they had been assigned, which is the
+    exact failure the manuscript's placeholder machinery exists to prevent, reappearing in the one
+    document that machinery does not cover.
+
+    So it is checked the same way: `artifact.json` is the source of truth, and a README that
+    disagrees fails the build rather than being trusted.
+    """
+    readme = ROOT / "README.md"
+    art = PAPER / "artifact.json"
+    if not readme.exists() or not art.exists():
+        return 0
+    meta = json.loads(art.read_text(encoding="utf-8"))
+    text = readme.read_text(encoding="utf-8")
+
+    problems: list[str] = []
+    url, commit = meta.get("url"), meta.get("commit")
+    if url and url not in text:
+        problems.append(f"README does not contain artifact.json url {url!r}")
+    if commit and commit not in text:
+        problems.append(f"README does not contain artifact.json commit {commit!r}")
+
+    # A commit-shaped token in the README that is NOT the recorded one is stale by definition.
+    for found in set(re.findall(r"\b[0-9a-f]{12}\b", text)):
+        if commit and found != commit:
+            problems.append(f"README cites commit {found!r}, artifact.json says {commit!r}")
+
+    if problems:
+        print("\nFAIL: README disagrees with paper/artifact.json:")
+        for p in problems:
+            print(f"  {p}")
+        print("  artifact.json is the source of truth; update the README's citing block.")
+        return 1
+    return 0
+
+
 def main(argv: list[str]) -> int:
     print("Recomputing every claim from results/\n")
     values = compute()
@@ -705,7 +745,8 @@ def main(argv: list[str]) -> int:
     if bad:
         print(f"\n  {bad} claim(s) uncomputable (missing artifacts)")
 
-    rc = check_template_has_no_numbers() or check_template_has_no_control_chars()
+    rc = (check_template_has_no_numbers() or check_template_has_no_control_chars()
+          or check_readme_matches_artifact())
     if "--check" in argv:
         return rc or (1 if bad else 0)
     if "--list" in argv:
