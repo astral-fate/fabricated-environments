@@ -1,6 +1,6 @@
 {
-  "url": null,
+  "url": "https://github.com/astral-fate/construct-separation-gate",
   "doi": null,
-  "commit": null,
-  "_note": "Null fields render as a visible [PENDING] in the manuscript rather than a plausible-looking placeholder. Fill in when the repository is made public; a paper that quietly ships a fake URL is worse than one that admits the artifact is not yet released."
+  "commit": "54ac8c4e4715",
+  "_note": "Null fields render as a visible [PENDING] in the manuscript rather than a plausible-looking placeholder. The repository is private until the sprint submission; `doi` stays null until one is minted, and the paper will say [PENDING] for it rather than imply an archive that does not exist."
 }
