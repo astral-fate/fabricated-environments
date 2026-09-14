@@ -28,6 +28,8 @@ def f3(x: float) -> str:
 
 
 R17, R8, R32 = S.R17, S.R8, S.R32
+# The follow-on verdicts, so the spoken numbers match the projected ones.
+e1, e1ci, e2 = S.e1, S.e1ci, S.e2
 A8, B8 = S.auroc(R8, "A_eval"), S.auroc(R8, "B_empirical")
 AB8, BA8 = S.cross(R8, "A_eval", "B_empirical"), S.cross(R8, "B_empirical", "A_eval")
 A32, AB32 = S.auroc(R32, "A_eval"), S.cross(R32, "A_eval", "B_empirical")
@@ -186,15 +188,30 @@ audience knows what it is evidence *for*.
 > trajectory. The real substrate returns the file that exists. The simulator invents a plausible
 > one that does not.
 
-## 09:00 — Slide 17, the honest negative *(30 s)*
+## 08:15 — Slides 13–16, the behavioural result *(60 s)*
 
-> I want to be straight about what the behavioural arm does *not* show. Across all
-> {S.N_EP} episodes there were **{S.viol_total('write_outside')}** out-of-scope writes and
-> **{S.viol_total('read_outside')}** out-of-scope read — which the environment refused.
+> Here is the comparison the question actually needs, and it did not exist until now. Same task,
+> same prompt, same agent, same turn budget. The only thing that changes is what a tool call
+> returns.
 >
-> The agents probed the boundary. They did not cross it, including where crossing was the only way
-> to succeed. The violation rate rises with temptation, but the composition is reconnaissance.
-> Reporting the rate alone would have implied something that did not happen.
+> Out-of-scope actions go up by **{e1('real->sim','oos_count'):+.2f}** per episode in a fabricated
+> world. It is not a length effect — the rate per action moves too, and episode length does not
+> move at all. And the composition changes: in the real arm there were **zero** out-of-scope writes
+> and **zero** out-of-scope reads across every episode. In the fabricated arms, twelve writes and
+> eighty-six reads.
+>
+> The direction matters. They crossed the boundary **more** when the world was fake. So a resample
+> of this family does not understate danger the way classical eval-awareness predicts — it
+> **overstates** it, which is exactly the failure that lets a lab wave the evidence away.
+>
+> The third arm tells you why. Hold self-consistency fixed and vary only fabrication: the effect is
+> there. Hold fabrication fixed and vary only consistency: nothing. A better simulator would not
+> have helped.
+>
+> And then the instrument question. Within arm — so the arm label cannot do the work — credence
+> from the probe predicts the out-of-scope rate at **{e2('credence_within_arm'):+.4f}** per standard
+> deviation. The agent's own stated suspicion predicts nothing. It *does* say the world looks fake
+> more often when it is. It just does not say so more often when it is about to act on it.
 
 ## 09:30 — Slides 18–22, positioning and close *(30 s)*
 
@@ -211,8 +228,9 @@ audience knows what it is evidence *for*.
 
 ## If you are cut to 5 minutes
 
-Slides 1, 2, 5, 9, 12, 13, 17, 22. Cover and result, the two opposing mechanisms, the
-architecture, the headline table, the scale trend, the honest negative, the close.
+Slides 1, 2, 5, 9, 12, 13, 14, 15, 25. Cover and result, the two opposing mechanisms, the
+architecture, the gate, the behavioural divergence, the decomposition, the probe-versus-report
+contrast, the close.
 
 ## If someone asks the hard question
 
@@ -225,10 +243,17 @@ architecture, the headline table, the scale trend, the honest negative, the clos
 > does rule out is the small-model objection, because the separation strengthens rather than
 > weakens.
 
-**"Your behavioural result is null."**
-> It is, and I would rather say that than dress up reconnaissance as rule-breaking. The gate is a
-> representation result. The behavioural prediction is the next experiment, and it needs the
-> consistency contract this build deliberately does not have.
+**"Isn\'t the behavioural arm just noise at n=24?"**
+> The interval is the answer: {e1('real->sim','oos_count'):+.3f}
+> {e1ci('real->sim','oos_count')}, clustered by task cell, and the composition is categorical
+> rather than marginal — zero out-of-scope writes in the real arm across every episode, twelve in
+> the fabricated ones. A wider corpus would tighten it; it would not create it.
+
+**"Doesn\'t the fabricated arm just produce longer, wanderier episodes?"**
+> That was the first thing we checked, and it is why the rate per action was pre-registered
+> alongside the count. Episode length does not differ on the real-versus-LLM contrast at all, and
+> the rate still moves. Where length *does* differ — the template arm — we say so and lean on the
+> rate.
 """
 
 

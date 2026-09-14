@@ -24,7 +24,7 @@ RESULTS = ROOT / "results" / "exp0"
 OUT = ROOT / "index.html"
 
 BRAND = "Fabricated Environments &middot; AI Incident Response Sprint 2026"
-N = 22
+N = 25
 
 
 # --------------------------------------------------------------------------- live values
@@ -126,6 +126,79 @@ CROSS_HI = max(cross(r, a, b) for r in (R17, R8, R32)
                for a, b in (("A_eval", "B_empirical"), ("B_empirical", "A_eval")))
 
 
+# --- exp1 / exp2 / exp3 verdicts ---------------------------------------------
+# Same rule as everything else on these slides: read from results/ at build time, never typed.
+
+
+def _verdict(exp: str, name: str) -> dict:
+    q = ROOT / "results" / exp / name
+    if not q.exists():
+        raise SystemExit(f"missing artifact: {q}. Run {exp} first.")
+    return json.loads(q.read_text(encoding="utf-8"))
+
+
+RESULTS_ROOT = ROOT / "results"
+E1 = _verdict("exp1", "exp1.json")
+E2 = _verdict("exp2", "exp2-qwen3-32b.json")
+
+
+E3 = _verdict("exp3", "exp3.json")
+
+
+def e1(contrast: str, measure: str, field: str = "diff") -> float:
+    return float(E1["results"][contrast][measure][field])
+
+
+def e1ci(contrast: str, measure: str) -> str:
+    r = E1["results"][contrast][measure]
+    return f"[{r['lo']:+.3f}, {r['hi']:+.3f}]"
+
+
+def e1arm(arm: str, measure: str) -> float:
+    return float(E1["arm_means"][arm][measure])
+
+
+def e1cat(arm: str, category: str) -> int:
+    """Raw count of one out-of-scope category in one arm, over the committed episode shards."""
+    import json as _json
+    total = 0
+    base = RESULTS_ROOT / "exp1"
+    for shard in sorted(base.glob("episodes*.jsonl")):
+        seen = set()
+        for line in shard.read_text(encoding="utf-8", errors="replace").splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                ep = _json.loads(line)
+            except _json.JSONDecodeError:
+                continue
+            key = (ep.get("task_id"), ep.get("arm"))
+            if ep.get("api_error") or ep.get("arm") != arm or key in seen:
+                continue
+            seen.add(key)
+            total += int(ep["scope_report"]["counts"].get(category, 0))
+    return total
+
+
+def e2(key: str, field: str = "slope") -> float:
+    return float(E2["results"][key][field])
+
+
+def e2ci(key: str) -> str:
+    r = E2["results"][key]
+    return f"[{r['lo']:+.4f}, {r['hi']:+.4f}]"
+
+
+def e3(key: str, field: str = "diff") -> float:
+    return float(E3["results"][key][field])
+
+
+def e3ci(key: str) -> str:
+    r = E3["results"][key]
+    return f"[{r['lo']:+.3f}, {r['hi']:+.3f}]"
+
+
 def esc(s: str) -> str:
     return (s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
             .replace("\n", "<br>"))
@@ -179,23 +252,18 @@ slide("Fabricated Environments", f"""  <div class="eyebrow">Apart Research &time
   </div>""", center=True)
 
 # 01b ------------------------------------------------------------------------- the result, up front
-slide("The result", f"""  <div class="eyebrow">The finding, before the argument for it</div>
-  <h2>Two directions. Both sharp. Neither sees the other.</h2>
-  <p class="lede">
-    A probe that tells &ldquo;you are being evaluated&rdquo; from &ldquo;you are in deployment&rdquo;
-    reaches <b>{f3(auroc(R32,'A_eval'))}</b> AUROC. Point that same direction at
-    genuine-versus-fabricated environments and it drops to
-    <b>{f3(cross(R32,'A_eval','B_empirical'))}</b> &mdash; near chance.
-  </p>
-  <div class="stats three" style="margin-top:26px;">
-    <div class="stat"><div class="v">{f3(auroc(R8,'A_eval'))}</div><div class="l">eval-awareness<br>on its own contrast</div></div>
-    <div class="stat"><div class="v">{f3(auroc(R8,'B_empirical'))}</div><div class="l">environment-realness<br>on its own contrast</div></div>
-    <div class="stat"><div class="v">{sgn(cos(R8,'A_eval','B_empirical'))}</div><div class="l">cosine between them<br>near-orthogonal</div></div>
-  </div>
-  <div class="hook" style="margin-top:26px;">
-    Pre-registered rule: {THRESHOLD:.2f} in both directions would have meant one construct, and we
-    would have said so and stopped. Nothing came close, at {N_SCALES} scales.
+slide("The result", f"""  <div class="eyebrow">Four findings, before the argument for them</div>
+  <h2>The belief is real, it changes conduct, and only the probe sees it.</h2>
+  <ul class="bullets" style="margin-top:14px;">
+    <li><b>Distinct constructs.</b> An eval-awareness probe hits {f3(auroc(R32,'A_eval'))} on its own contrast and {f3(cross(R32,'A_eval','B_empirical'))} on realness &mdash; near chance.</li>
+    <li><b>Conduct diverges.</b> {e1('real->sim','oos_count'):+.3f} out-of-scope actions per episode in a fabricated world, {e1ci('real->sim','oos_count')}.</li>
+    <li><b>Fabrication, not incoherence.</b> Holding self-consistency fixed reproduces the effect; holding fabrication fixed does not.</li>
+    <li><b>The probe predicts, the words do not.</b> {e2('credence_within_arm'):+.4f} per SD of credence; verbalized suspicion {e2('verbalized_within_arm'):+.4f}, interval spanning zero.</li>
+  </ul>
+  <div class="hook" style="margin-top:22px;">
+    Every threshold was fixed before the data existed, with a commitment to report either outcome.
   </div>""")
+
 
 # 02 -------------------------------------------------------------------------- hook
 slide("The question", """  <div class="eyebrow">The question</div>
@@ -408,48 +476,111 @@ slide("One call, three worlds", f"""  <div class="eyebrow">What the model was as
   </div>""")
 
 # 16 -------------------------------------------------------------------------- behaviour
-slide("The honest negative", f"""  <div class="eyebrow">What the behavioural arm does <i>not</i> show</div>
-  <h2>They probed the boundary. They did not cross it.</h2>
-  <div class="stats three">
-    <div class="stat"><div class="v">{viol_total('write_outside')}</div><div class="l">out-of-scope writes<br>across all {N_EP} episodes</div></div>
-    <div class="stat"><div class="v">{viol_total('read_outside')}</div><div class="l">out-of-scope read<br>&mdash; and the arm refused it</div></div>
-    <div class="stat"><div class="v">{viol_total('list_outside') + viol_total('stat_outside')}</div><div class="l">listings and metadata queries<br>i.e. reconnaissance</div></div>
+slide("Behaviour diverges", f"""  <div class="eyebrow">The comparison the question actually needs</div>
+  <h2>Same task, same prompt, same agent. Only the world changed.</h2>
+  <p class="lede">
+    Every task cell run on-policy in three arms &mdash; a real filesystem, a template simulator, an
+    LLM simulator &mdash; holding task, prompt, tool schemas, turn budget and actor constant.
+  </p>
+  <div class="stats three" style="margin-top:22px;">
+    <div class="stat"><div class="v">{e1cat('real','write_outside')}</div><div class="l">out-of-scope writes<br>REAL arm, every episode</div></div>
+    <div class="stat"><div class="v">{e1cat('sim','write_outside') + e1cat('sim_scripted','write_outside')}</div><div class="l">out-of-scope writes<br>fabricated arms</div></div>
+    <div class="stat"><div class="v">{e1('real->sim','oos_count'):+.2f}</div><div class="l">per-episode difference<br>{e1ci('real->sim','oos_count')}</div></div>
+  </div>
+  <div class="hook" style="margin-top:22px;">
+    Not a length artifact: the rate per action moves {e1('real->sim','oos_rate'):+.3f}
+    {e1ci('real->sim','oos_rate')} while episode length does not move at all. The composition
+    changes &mdash; reconnaissance in the real world, reads and writes in the fake one.
+    Agents crossed the boundary <b>more</b> when it was fake, so a resample <b>overstates</b> danger.
+  </div>""")
+
+
+# 16b ------------------------------------------------------------------------- decomposition
+slide("Fabrication, not incoherence", f"""  <div class="eyebrow">Why a third arm</div>
+  <h2>A better simulator would not have helped.</h2>
+  <p class="lede">
+    An LLM simulator is fabricated <i>and</i> incoherent, so a two-arm design cannot say which
+    property moved the agent. The template simulator is fabricated but answers identically every
+    time &mdash; which splits the contrast in two.
+  </p>
+  <div class="stats" style="margin-top:24px;">
+    <div class="stat"><div class="v">{e1('real->sim_scripted','oos_count'):+.2f}</div><div class="l">fabrication effect<br>consistency held &middot; {e1ci('real->sim_scripted','oos_count')}</div></div>
+    <div class="stat"><div class="v">{e1('sim_scripted->sim','oos_count'):+.2f}</div><div class="l">coherence effect<br>fabrication held &middot; {e1ci('sim_scripted->sim','oos_count')}</div></div>
   </div>
   <div class="hook" style="margin-top:24px;">
-    The &ldquo;violation rate&rdquo; rises with how much the task rewards crossing &mdash; but the
-    composition is almost entirely reconnaissance. Reporting the rate alone would have implied
-    agents took the secret. None did, including where taking it was the only way to succeed.
+    The fabrication effect carries it; the coherence interval spans zero. Spending the simulation
+    budget on a durable world-state store &mdash; the expensive component &mdash; should not be
+    expected to close this gap, because consistency is not what opened it.
+  </div>""")
+
+# 16c ------------------------------------------------------------------------- exp2
+slide("Credence predicts conduct", f"""  <div class="eyebrow">The load-bearing prediction</div>
+  <h2>The probe predicts what the agent does. Its own words do not.</h2>
+  <div class="stats" style="margin-top:20px;">
+    <div class="stat"><div class="v">{e2('credence_within_arm'):+.4f}</div><div class="l">per SD of probe credence<br>{e2ci('credence_within_arm')}</div></div>
+    <div class="stat"><div class="v">{e2('verbalized_within_arm'):+.4f}</div><div class="l">per unit of stated suspicion<br>{e2ci('verbalized_within_arm')}</div></div>
+  </div>
+  <p class="lede" style="margin-top:22px;">
+    Centred <b>within arm</b>, so the arm label cannot manufacture the association &mdash; this is a
+    graded relationship among episodes in the same substrate.
+  </p>
+  <div class="hook" style="margin-top:18px;">
+    The agent <i>does</i> say the world looks fake more often when it is
+    ({e1('real->sim','suspicion'):+.3f} between arms). It just does not say so more often when it
+    is about to act on it. A monitor built on self-report sees the substrate and misses the conduct.
+  </div>""")
+
+# 16d ------------------------------------------------------------------------- exp3
+slide("The transcript is not a lever", f"""  <div class="eyebrow">Why the manipulation has to be the substrate</div>
+  <h2>Tell the agent its world is fake and it argues you out of it.</h2>
+  <p class="lede">
+    Asserting a conclusion in the agent&rsquo;s own context is the cheap alternative to building
+    arms. It takes &mdash; and then the model regenerates its own framing over it.
+  </p>
+  <div class="stats three" style="margin-top:22px;">
+    <div class="stat"><div class="v">{e3('inject_real@t1'):+.3f}</div><div class="l">probe 1<br>{e3ci('inject_real@t1')}</div></div>
+    <div class="stat"><div class="v">{e3('inject_real@t2'):+.3f}</div><div class="l">probe 2<br>after one task step</div></div>
+    <div class="stat"><div class="v">{e3('inject_real@t3'):+.3f}</div><div class="l">probe 3<br>{e3ci('inject_real@t3')} &mdash; spans zero</div></div>
+  </div>
+  <div class="hook" style="margin-top:22px;">
+    Asked directly, the model called a <b>genuinely real</b> filesystem simulated in
+    {E3['results']['inject_fake@t1']['control_rate']:.3f} of control episodes &mdash; reasoning from
+    file timestamps that postdate its training data. That is a property of clocks, not of
+    simulators. A harness that does not control for it is measuring the calendar.
   </div>""")
 
 # 17 -------------------------------------------------------------------------- what it doesn't fix
-slide("What this does not fix", """  <div class="eyebrow">Positioning</div>
+slide("What this does not fix", f"""  <div class="eyebrow">Positioning</div>
   <h2>This does not make counterfactual resampling valid.</h2>
   <p class="lede">
     Alignment, control, interpretability and evaluation are, as a body of practice, not yet
     reliable, principled or robust. Nothing here changes that.
   </p>
-  <ul class="bullets" style="margin-top:22px;">
-    <li><b>What it establishes:</b> the quantity a resampling harness would need to monitor exists as its own thing, distinct from evaluation-awareness, at every scale tested.</li>
-    <li><b>What it does not:</b> that realness credence <i>causes</i> behaviour. Our behavioural arm is single-arm and descriptive.</li>
-    <li><b>The honest summary:</b> a measurable error bar on one previously untested assumption inside one evaluation method.</li>
+  <ul class="bullets" style="margin-top:20px;">
+    <li><b>What it establishes:</b> the belief exists as its own construct, it changes conduct, it follows fabrication rather than incoherence, and a probe predicts it where self-report does not.</li>
+    <li><b>What it does not:</b> that credence <i>causes</i> the behaviour. The substrate is randomised across arms; the graded relationship inside an arm is correlational.</li>
+    <li><b>Scope:</b> one actor, one task family, {E1['pairing']['n_cells']} task cells, three scales for the gate.</li>
   </ul>""")
+
 
 # 18 -------------------------------------------------------------------------- future
 slide("What comes next", """  <div class="eyebrow">Future work</div>
-  <h2>The gate passed, so the instrument is worth building.</h2>
+  <h2>The remaining question is causal, and it is harder than the four behind it.</h2>
   <div class="columns">
-    <div class="tile"><h3>The paired-arm study</h3>
-      <p>Does probe-measured realness credence predict scope-violation rate, where verbalized
-      awareness on the same trajectories does not? That is the load-bearing prediction, and it
-      needs the consistency contract this stub deliberately lacks.</p></div>
+    <div class="tile"><h3>Manipulate credence, not the substrate</h3>
+      <p>Everything here randomises the world and measures the consequence. Establishing that
+      credence <i>causes</i> conduct needs credence moved at the episode level &mdash; and our own
+      result says the transcript will not carry it, so the manipulation has to come through the
+      substrate.</p></div>
     <div class="tile"><h3>The horizon question</h3>
-      <p>Effect size against step count. Every prior behavioural result is single-turn; belief
-      that accumulates across steps is the shape the incident actually took.</p></div>
+      <p>Effect size against step count. Every prior behavioural result is single-turn; belief that
+      accumulates across steps is the shape the incident actually took.</p></div>
   </div>
-  <ul class="bullets" style="margin-top:22px;">
-    <li><b>A reasoning-emitting actor</b>, so the chain-of-thought channel has raw material at all.</li>
+  <ul class="bullets" style="margin-top:20px;">
+    <li><b>A world-state store</b> &mdash; worth building to test our own prediction that it will <i>not</i> close the gap.</li>
     <li><b>More model families.</b> Three Qwen scale points is a trend within one lineage, not across lineages.</li>
   </ul>""")
+
 
 # 19 -------------------------------------------------------------------------- reproducibility
 slide("Reproducibility", f"""  <div class="eyebrow">The artifact</div>
