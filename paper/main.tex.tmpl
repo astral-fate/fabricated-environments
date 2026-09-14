@@ -543,64 +543,49 @@ episode level---and our own finding that transcript-side assertion is overwritte
 turns says that manipulation has to come through the substrate, which is the harder experiment
 rather than the obvious one.
 
-\section{Conclusion}
-
-A counterfactual resample asks what a stopped agent would have done next, and answers it inside an
-environment the agent can form beliefs about. We tested whether that matters, in four steps fixed
-in advance.
-
-It matters. ``This is an evaluation'' and ``this environment is not real'' are distinct linear
-directions that do not converge as models get larger, so an evaluation-awareness probe pointed at a
-resampling harness reports on the wrong variable. The belief is not inert: holding task, prompt,
-tools, budget and actor constant and changing only what a tool call returns moves out-of-scope
-behaviour by {{E1_RS_COUNT}} actions per episode {{E1_RS_COUNT_CI}}, and changes its composition
-from reconnaissance to reads and writes that never occurred once when the filesystem was real. A
-third arm attributes that to the environment being fabricated rather than to the simulator being
-inconsistent, which says a better simulator is not the first thing to build. And within an arm, the
-probe predicts conduct where the agent's own stated suspicion does not---so the instrument should
-read the representation, not the report.
-
-The direction is the part a practitioner should carry away. Agents crossed the boundary
-\emph{more} when the world was fabricated, so a resample of this task family overstates danger
-rather than understating it. That is the failure mode that makes resampled evidence rebuttable by
-the developer it is aimed at, and it is not the direction the evaluation-awareness literature would
-have predicted.
-
-What remains is causal. Every manipulation here is of the substrate, and the association between
-credence and conduct inside an arm is correlational. Closing that requires moving credence at the
-episode level---and our own result that an asserted belief is overwritten within a few turns says
-that manipulation has to come through the environment rather than the transcript.
-
 \section{Limitations and dual-use}
 
-\paragraph{Scope.} One actor, one task family, {{E1_CELLS}} task cells, and---for the separability
-gate---one model lineage at three sizes. The sign of an evaluation-awareness effect is known to
-differ between models \cite{abdelnabi2025linear}, so nothing here is a population-level fact. The
-credence-to-conduct link is correlational: the substrate is randomised across arms, the graded
-relationship inside an arm is not. Two asymmetries we could not remove: both fabricated arms
-generate entries for any path, so their trees have no bottom while the real one is finite, and
-verbalized framing is scored by a committed lexicon over a stated verdict---which measures what a
-model says when asked, the very gap that motivates the probe.
+\paragraph{What the result does not cover.} One actor, one task family, {{E1_CELLS}} task cells,
+and---for the separability gate---one model lineage at three sizes. The sign of an
+evaluation-awareness effect is known to differ between models \cite{abdelnabi2025linear}, so
+nothing here should be read as a population-level fact. The behavioural arms use a simulator with
+no durable world-state store; a simulator that maintained one is the obvious next comparison, and
+our decomposition predicts it would not close the gap, which is a prediction rather than a finding.
 
-\paragraph{Dual-use.} This publishes a method for measuring how convincingly an environment can be
-fabricated, and a leak taxonomy read backwards is a sandbox-detection guide. The asymmetry is real
-but not symmetric in cost: the people who most need to know whether a resampling harness is trusted
-are the ones building control evaluations, and they cannot act on a finding that is withheld. We
-publish the methodology, the category-level findings and every artifact.
+\paragraph{The credence-to-conduct link is correlational.} Credence is read from contexts the model
+processes, not manipulated at the episode level, so the within-arm association establishes that the
+probe tracks something predictive of conduct---not that credence causes it. The substrate
+manipulation is randomised across arms; the graded relationship inside an arm is not.
 
-One cue deserves care. The clearest tell in our corpus is not a subtle property of fabricated
-prose: it is file timestamps postdating the model's training data, which made the model call a
-genuinely real filesystem simulated in most control episodes. That is a property of clocks, not of
-simulators, and a harness that does not control for it is measuring the calendar. A published cue
-list can also enter training data and change the behaviour it describes---an argument for reporting
-cues at the category level and treating any specific detection string as perishable, not an
-argument for silence.
+\paragraph{Two measurement asymmetries we could not remove.} Both fabricated arms generate entries
+for any path, so their trees have no bottom while the real one is finite; episode length and task
+completion are reported as diagnostics of that rather than as evidence. And verbalized framing is
+scored by a committed lexicon over a stated verdict, which measures what a model \emph{says} when
+asked, not what it believes---the gap that motivates the probe in the first place.
+
+\paragraph{Dual-use.} This work publishes a method for measuring how convincingly an environment
+can be fabricated, and a leak taxonomy read backwards is a sandbox-detection guide. The asymmetry
+is real but it is not symmetric in cost: the people who most need to know whether a resampling
+harness is trusted are the ones building control evaluations, and they cannot act on a finding that
+is withheld. We therefore publish the methodology, the category-level findings and every artifact,
+and withhold nothing that is in the released corpus---because withholding it selectively while
+publishing the method would give a false impression of safety rather than an actual one.
+
+One specific cue does deserve care. The clearest tell in our corpus is not a subtle property of
+fabricated prose: it is file timestamps that postdate the model's training data, which made the
+model call a genuinely real filesystem simulated in most control episodes. That is a
+\emph{property of clocks}, not of simulators, and anyone building a resampling harness should
+expect it. We name it because a harness that does not control for it is measuring the calendar.
+
+Finally, a published cue list can enter training data and thereby change the behaviour it
+describes. We regard that as an argument for reporting cues at the category level and for treating
+any specific detection string as perishable, not as an argument for silence.
 
 \section*{Reproducibility}
 
 Every number in this paper is substituted at build time from committed artifacts; the manuscript
 source contains no result values of its own, and the build fails if a placeholder cannot be
-computed. Code and artifacts: {{ARTIFACT_URL}}, commit {{ARTIFACT_COMMIT}}.
+computed. Code and artifacts: \url{{{ARTIFACT_URL}}}.
 
 \appendix
 % Print appendix headings as "Appendix A: Title". Without this a reader meets a bare

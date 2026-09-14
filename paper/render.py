@@ -737,8 +737,6 @@ CLAIMS: list[Claim] = [
     Claim("SCALE_TABLE", "cross-scale results table", _scale_table_tex, raw=True),
     Claim("GATE_TABLE", "validity gate table", _gate_table_tex, raw=True),
     Claim("ARTIFACT_URL", "repository URL", lambda: _artifact("url"), pending_ok=True),
-    Claim("ARTIFACT_COMMIT", "commit the artifacts were produced at",
-          lambda: _artifact("commit"), pending_ok=True),
 ]
 
 
