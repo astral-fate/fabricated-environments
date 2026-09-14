@@ -334,27 +334,9 @@ evaluation-awareness direction classifies the realness contrast at {{CROSS_AB}} 
 and the realness direction classifies the evaluation contrast at {{CROSS_BA}} {{CROSS_BA_CI}}---
 both far below the pre-registered {{THRESHOLD}}. The cosine between them is {{COS_AB}}.
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=0.82\linewidth]{figures/layers.pdf}
-\caption{Held-out AUROC by layer for each direction at the headline scale; markers show the layer
-each direction peaks at. The maxima sit on broad plateaus rather than spikes, so the choice of
-best layer is not load-bearing.}
-\label{fig:layers}
-\end{figure}
-
 Figure~
 Figure~\ref{fig:layers} shows the depth profile behind those maxima, and
 Figure~\ref{fig:scale} plots the trend the table reports.
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=\linewidth]{figures/scale.pdf}
-\caption{Left: each direction on its own contrast (solid) against cross-transfer onto the other
-(dashed), with the pre-registered separability threshold marked. Right: cosine between direction
-pairs. Both probes sharpen with scale while transfer between them does not follow.}
-\label{fig:scale}
-\end{figure}
 
 \subsection{The result is stable across scale}
 
@@ -617,6 +599,24 @@ computed. Code and artifacts: {{ARTIFACT_URL}}, commit {{ARTIFACT_COMMIT}}.
 \noindent This appendix carries, at full length, the measurements the body
 summarises. It states no claim the body does not.
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.82\linewidth]{figures/layers.pdf}
+\caption{Held-out AUROC by layer for each direction at the headline scale; markers show the layer
+each direction peaks at. The maxima sit on broad plateaus rather than spikes, so the choice of
+best layer is not load-bearing.}
+\label{fig:layers}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/scale.pdf}
+\caption{Left: each direction on its own contrast (solid) against cross-transfer onto the other
+(dashed), with the pre-registered separability threshold marked. Right: cosine between direction
+pairs. Both probes sharpen with scale while transfer between them does not follow.}
+\label{fig:scale}
+\end{figure}
+
 \section{Error analysis}
 \label{app:errors}
 
@@ -688,7 +688,6 @@ the development-scale run. The larger scales contribute their layer profiles
 
 \section{Protocols for the follow-on measurements}
 \label{app:protocols}
-
 
 oindent These protocols were fixed in advance. They are recorded here because the
 body reports no result from them.
