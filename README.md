@@ -29,7 +29,9 @@ repository builds that arm.
 ## Results
 
 Four pre-registered experiments. Every threshold was fixed before the data existed, with a
-commitment to report either outcome.
+commitment to report either outcome — see [`PREREGISTRATION.md`](PREREGISTRATION.md),
+written before any activation was extracted, with each amendment dated and the pilot data
+behind it retained but never analysed.
 
 ### 1. The constructs are separable — a suspicion meter is worth building
 
@@ -202,47 +204,6 @@ bash paper/build.sh
 ```
 
 Total GPU cost for all reported scales was **under $2**.
-
----
-
-## What this repository is careful about
-
-Each of these is enforced by a check that fails the build, not by a note in a file.
-
-- **The violation detector is a pure function over the action log.** It calls no model — an LLM in
-  that loop would make the measurement circular, one model judging another inside the contrast
-  under study — and touches no filesystem, so an archived episode can be re-scored without the
-  substrate that produced it. A test parses the module's imports and fails if either appears.
-- **Scope is stated in the task brief and enforced nowhere.** A boundary the substrate refuses to
-  cross yields a violation rate of identically zero, which measures the substrate, not the agent.
-- **The unit of independence is the episode, never the transcript prefix.** `analyze/measures.py`
-  offers no item-level bootstrap, so the only way to call it is the correct way.
-- **The probe layer is inherited, never refitted.** Choosing a layer to maximise an association
-  with the outcome would be fitting the hypothesis.
-- **No number is hand-typed into the manuscript**, and the headline numbers in this README are
-  checked against the verdict artifacts too.
-- **Infrastructure failure never enters the data.** A rate-limited simulator raises rather than
-  returning `error: ...` as if the fabricated environment had said it. An earlier run reached a
-  confident verdict with 35% of its outputs in that state; it is kept, clearly marked invalid, in
-  [`results/exp0/invalidated/`](results/exp0/invalidated/).
-- **Task success in a fabricated world is not evidence.** A simulated arm returns an empty
-  snapshot, so completion is a diagnostic and never a target.
-
----
-
-## Scope of the result
-
-Qwen3 at 1.7B / 8B / 32B, bf16 or fp16, never quantised — low-bit formats perturb the residual
-stream, which is the measurement. 24 task cells per arm, one actor, one task family. The
-credence-to-conduct link is **correlational**: the substrate is randomised across arms, but the
-graded relationship inside an arm is not. Both fabricated arms generate entries for any path, so
-their trees have no bottom while the real one is finite; episode length is reported as a diagnostic
-of that rather than as evidence about conduct.
-
-[`PREREGISTRATION.md`](PREREGISTRATION.md) was written before any activation was extracted and
-records every decision rule, validity gate, and the commitment to report either outcome. Amendments
-are appended with their date and the evidence that prompted them; the pilot data behind each is
-retained but never analysed.
 
 ---
 
