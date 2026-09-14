@@ -3,7 +3,7 @@
     python scripts/supervise_exp1.py                     # all three arms, in parallel
     python scripts/supervise_exp1.py --arms real         # one arm only
 
-Everything after `--` is passed straight to `experiments/exp1_behavioural_divergence.py`.
+Everything after `--` is passed straight to `experiments/exp1_behavioural_divergence/run.py`.
 
 Why this is not `scripts/supervise.py`
 --------------------------------------
@@ -62,8 +62,8 @@ import time
 from dataclasses import dataclass, field
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
-EXP = ROOT / "experiments" / "exp1_behavioural_divergence.py"
+ROOT = Path(__file__).resolve().parent.parent.parent
+EXP = ROOT / "experiments" / "exp1_behavioural_divergence" / "run.py"
 
 ARMS = ("real", "sim_scripted", "sim")
 

@@ -128,18 +128,37 @@ def ci(d: dict[str, Any]) -> str:
 
 # --------------------------------------------------------------------------- claim bodies
 
+def _exp0_module():
+    """exp0's runner, loaded by path.
+
+    The constants below are read from the code that enforces them rather than retyped here: a
+    threshold quoted in the manuscript that the experiment does not actually use is exactly the
+    drift this substitution machinery exists to prevent.
+    """
+    import importlib.util
+
+    key = "__exp0_module"
+    if key not in _cache:
+        path = ROOT / "experiments" / "exp0_construct_separation" / "run.py"
+        spec = importlib.util.spec_from_file_location("exp0_run", path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        _cache[key] = module
+    return _cache[key]
+
+
 def _threshold() -> str:
-    import exp0_construct_separation as exp0
+    exp0 = _exp0_module()
     return f"{exp0.CROSS_AUROC_THRESHOLD:.2f}"
 
 
 def _floor() -> str:
-    import exp0_construct_separation as exp0
+    exp0 = _exp0_module()
     return f"{exp0.REPRODUCTION_FLOOR:.2f}"
 
 
 def _shuffle_tol() -> str:
-    import exp0_construct_separation as exp0
+    exp0 = _exp0_module()
     return f"{exp0.SHUFFLE_TOLERANCE:.2f}"
 
 

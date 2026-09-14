@@ -22,13 +22,13 @@ import subprocess
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 OUT = ROOT / "results" / "exp1-selftest"
 
 
 def main() -> int:
     shutil.rmtree(OUT, ignore_errors=True)
-    cmd = [sys.executable, "-u", str(ROOT / "experiments" / "exp1_behavioural_divergence.py"),
+    cmd = [sys.executable, "-u", str(ROOT / "experiments" / "exp1_behavioural_divergence" / "run.py"),
            "--offline", "--out", str(OUT), "--seeds", "1", "--max-turns", "8"]
     proc = subprocess.run(cmd, cwd=str(ROOT), text=True, capture_output=True, timeout=600)
     if proc.returncode != 0:

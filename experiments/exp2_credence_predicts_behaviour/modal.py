@@ -24,7 +24,7 @@ import sys
 
 import modal
 
-ROOT = pathlib.Path(__file__).resolve().parent.parent
+ROOT = pathlib.Path(__file__).resolve().parent.parent.parent
 
 hf_cache = modal.Volume.from_name("realness-hf-cache", create_if_missing=True)
 results_vol = modal.Volume.from_name("realness-results", create_if_missing=True)
@@ -92,7 +92,7 @@ def run_exp2(model: str, dtype: str, artifact: str, actor: str,
           + ("  (stage-1 validation; not used)" if stage1_only else ""), flush=True)
 
     cmd = [
-        sys.executable, "-u", "experiments/exp2_credence_predicts_behaviour.py",
+        sys.executable, "-u", "experiments/exp2_credence_predicts_behaviour/run.py",
         "--model", model, "--dtype", dtype,
         "--exp0-artifact", artifact, "--actor", actor,
         "--batch-size", str(batch_size), "--max-prefixes", str(max_prefixes),

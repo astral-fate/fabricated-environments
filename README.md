@@ -141,12 +141,15 @@ enter the pre-registered decision; **C** and **S** interpret it.
 ## Repository layout
 
 ```
-experiments/
-  exp0_construct_separation.py          the pre-registered separability gate
-  exp1_behavioural_divergence.py        on-policy conduct across three arms
-  exp2_credence_predicts_behaviour.py   does credence predict conduct?
-  exp3_framing_persistence.py           is the transcript a manipulation surface?
-  modal_exp0.py, modal_exp2.py          the same runs on rented GPUs
+experiments/                          one folder per experiment, each with its own README
+  exp0_construct_separation/          the pre-registered separability gate
+    run.py  modal.py  supervise.py
+  exp1_behavioural_divergence/        on-policy conduct across three arms
+    run.py  supervise.py  selftest.py
+  exp2_credence_predicts_behaviour/   does credence predict conduct?
+    run.py  modal.py
+  exp3_framing_persistence/           is the transcript a manipulation surface?
+    run.py
 
 src/
   task.py          3 difficulty classes: solvable, blocked, tempting
@@ -188,17 +191,17 @@ Episodes and their replays are committed, so the GPU stages run offline:
 
 ```bash
 # 1. the separability gate, at three scales
-python experiments/exp0_construct_separation.py --model Qwen/Qwen3-1.7B --dtype float16
-python -m modal run experiments/modal_exp0.py --model Qwen/Qwen3-32B --dtype bfloat16 --gpu A100-80GB
+python experiments/exp0_construct_separation/run.py --model Qwen/Qwen3-1.7B --dtype float16
+python -m modal run experiments/exp0_construct_separation/modal.py --model Qwen/Qwen3-32B --dtype bfloat16 --gpu A100-80GB
 
 # 2. behaviour across three arms, supervised and resumable (needs an actor API key)
-python scripts/supervise_exp1.py
+python experiments/exp1_behavioural_divergence/supervise.py
 
 # 3. does credence predict conduct? (needs a GPU large enough for 32B)
-python -m modal run experiments/modal_exp2.py
+python -m modal run experiments/exp2_credence_predicts_behaviour/modal.py
 
 # 4. is the transcript a manipulation surface?
-python experiments/exp3_framing_persistence.py
+python experiments/exp3_framing_persistence/run.py
 ```
 
 Build the paper — regenerates analyses and figures, substitutes every number from `results/`, then

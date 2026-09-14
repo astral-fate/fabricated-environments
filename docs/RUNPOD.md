@@ -46,12 +46,12 @@ unzip realness-code.zip -d realness && cd realness
 pip install -r requirements.txt
 python scripts/check.py                      # 177 tests; no GPU, no network, no keys
 
-python experiments/exp0_construct_separation.py \
+python experiments/exp0_construct_separation/run.py \
     --model Qwen/Qwen3-8B  --dtype bfloat16 --batch-size 2
 cp results/exp0/exp0.json results/exp0/exp0-8b.json
 
 # only on an 80 GB card
-python experiments/exp0_construct_separation.py \
+python experiments/exp0_construct_separation/run.py \
     --model Qwen/Qwen3-32B --dtype bfloat16 --batch-size 1
 cp results/exp0/exp0.json results/exp0/exp0-32b.json
 ```

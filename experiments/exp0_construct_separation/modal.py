@@ -33,7 +33,7 @@ import sys
 
 import modal
 
-ROOT = pathlib.Path(__file__).resolve().parent.parent
+ROOT = pathlib.Path(__file__).resolve().parent.parent.parent
 
 # Weights are cached in a Volume so a second run -- or the 32B run after the 8B one -- does not
 # re-download tens of gigabytes. This is the single biggest cost saving available here: download
@@ -96,7 +96,7 @@ def run_exp0(model: str, dtype: str, batch_size: int, max_prefixes: int) -> dict
     out.unlink(missing_ok=True)
 
     cmd = [
-        sys.executable, "-u", "experiments/exp0_construct_separation.py",
+        sys.executable, "-u", "experiments/exp0_construct_separation/run.py",
         "--model", model, "--dtype", dtype,
         "--batch-size", str(batch_size), "--max-prefixes", str(max_prefixes),
         "--seeds", "8", "--max-turns", "9", "--min-episodes", "20",

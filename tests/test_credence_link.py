@@ -164,7 +164,7 @@ def _exp2():
     import importlib.util
     sys.path.insert(0, str(ROOT / "src"))
     spec = importlib.util.spec_from_file_location(
-        "exp2", ROOT / "experiments" / "exp2_credence_predicts_behaviour.py")
+        "exp2", ROOT / "experiments" / "exp2_credence_predicts_behaviour" / "run.py")
     mod = importlib.util.module_from_spec(spec)
     try:
         spec.loader.exec_module(mod)

@@ -2,7 +2,7 @@
 
     python scripts/supervise.py -- --seeds 8 --max-turns 9
 
-Everything after `--` is passed straight to `experiments/exp0_construct_separation.py`.
+Everything after `--` is passed straight to `experiments/exp0_construct_separation/run.py`.
 
 Why this is not `scripts/watchdog.py`
 -------------------------------------
@@ -60,8 +60,8 @@ import sys
 import time
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
-EXP = ROOT / "experiments" / "exp0_construct_separation.py"
+ROOT = Path(__file__).resolve().parent.parent.parent
+EXP = ROOT / "experiments" / "exp0_construct_separation" / "run.py"
 OUT = ROOT / "results" / "exp0"
 LOG = OUT / "real-run.log"
 STATE = OUT / "supervisor.jsonl"

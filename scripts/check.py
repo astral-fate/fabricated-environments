@@ -40,7 +40,7 @@ SUITES: list[tuple[str, list[str]]] = [
     ("behaviour", ["-m", "pytest", "tests/test_behaviour.py", "-q"]),
     ("credence link", ["-m", "pytest", "tests/test_credence_link.py", "-q"]),
     ("framing", ["-m", "pytest", "tests/test_framing.py", "-q"]),
-    ("exp1 end-to-end", ["scripts/selftest_exp1.py"]),
+    ("exp1 end-to-end", ["experiments/exp1_behavioural_divergence/selftest.py"]),
 ]
 
 
