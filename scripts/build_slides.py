@@ -21,7 +21,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 RESULTS = ROOT / "results" / "exp0"
 OUT = ROOT / "docs" / "index.html"
 
-BRAND = "Construct-Separation Gate &middot; AI Incident Response Sprint 2026"
+BRAND = "Fabricated Environments &middot; AI Incident Response Sprint 2026"
 N = 22
 
 
@@ -133,7 +133,7 @@ CSS = (ROOT / "scripts" / "assets" / "house_css.txt").read_text(encoding="utf-8"
 CSS = CSS[CSS.index('"""') + 3:CSS.rindex('"""')]
 CSS = CSS.replace(
     "<title>Permitted Operations - Covert Channels in Shared Agent Infrastructure</title>",
-    "<title>Construct-Separation Gate &mdash; Is an evaluation the same as a fake world?</title>")
+    "<title>Agents Behave Differently in Fabricated Environments</title>")
 
 slides: list[str] = []
 
@@ -156,8 +156,8 @@ FIG = ('<div style="margin-top:18px;text-align:center;">'
        '<div style="margin-top:10px;font-size:12.5px;color:#8c93a8;">{cap}</div></div>')
 
 # 01 -------------------------------------------------------------------------- cover
-slide("Construct-Separation Gate", f"""  <div class="eyebrow">Apart Research &times; CeSIA &mdash; AI Incident Response Sprint &middot; Track 5 (Open)</div>
-  <h1 style="font-size:clamp(34px,4.6vw,62px);">construct-separation-gate</h1>
+slide("Fabricated Environments", f"""  <div class="eyebrow">Apart Research &times; CeSIA &mdash; AI Incident Response Sprint &middot; Track 5 (Open)</div>
+  <h1 style="font-size:clamp(34px,4.6vw,62px);">fabricated-environments</h1>
   <h3 style="margin-top:14px;max-width:1000px;font-size:clamp(17px,1.7vw,24px);color:#dde2f0;">
     When you resample a stopped agent inside a fake world, does it know?
     We measured whether that belief is the same thing as knowing it is being tested.
@@ -172,7 +172,7 @@ slide("Construct-Separation Gate", f"""  <div class="eyebrow">Apart Research &ti
   <div class="signature" style="margin-top:26px;">
     <span class="dot"></span>
     <span><b style="color:#e9ecf3;">Fatimah Emad Eldin</b> &nbsp;&middot;&nbsp; Independent AI Researcher
-    &nbsp;&middot;&nbsp; github.com/astral-fate/construct-separation-gate</span>
+    &nbsp;&middot;&nbsp; github.com/astral-fate/fabricated-environments</span>
     <span class="dot"></span>
   </div>""", center=True)
 
@@ -459,7 +459,7 @@ slide("Reproducibility", f"""  <div class="eyebrow">The artifact</div>
     <li><b>A discarded run is kept, marked invalid</b>, with its three disqualifications written down.</li>
     <li><b>All three scales cost under $1</b> of rented GPU. Episodes and replays ship cached, so reproduction needs no API key.</li>
   </ul>
-  <div class="code" style="margin-top:20px;">git clone https://github.com/astral-fate/construct-separation-gate
+  <div class="code" style="margin-top:20px;">git clone https://github.com/astral-fate/fabricated-environments
 python check.py          <span style="color:#8c93a8;"># 8 suites, 177 tests, no GPU or network</span>
 bash paper/build.sh      <span style="color:#8c93a8;"># recompute every claim, then compile</span></div>""")
 
@@ -491,7 +491,7 @@ slide("Close", f"""  <div class="eyebrow">Where we started</div>
   </div>
   <div class="signature" style="margin-top:30px;">
     <span class="dot"></span>
-    <span><b style="color:#e9ecf3;">github.com/astral-fate/construct-separation-gate</b></span>
+    <span><b style="color:#e9ecf3;">github.com/astral-fate/fabricated-environments</b></span>
     <span class="dot"></span>
   </div>""", center=True)
 

@@ -25,7 +25,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "docs" / "index.html"
-OUT = ROOT / "docs" / "construct-separation-gate-slides.pdf"
+OUT = ROOT / "docs" / "fabricated-environments-slides.pdf"
 
 CHROME_CANDIDATES = [
     r"C:\Program Files\Google\Chrome\Application\chrome.exe",

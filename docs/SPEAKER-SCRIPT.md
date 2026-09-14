@@ -10,7 +10,7 @@ project, state the result, then spend the rest earning it.
 
 ## 00:00 — Slide 1, cover *(15 seconds)*
 
-> This is **construct-separation-gate**.
+> This is **fabricated-environments**.
 >
 > When an agent does something dangerous and you stop it, the way you find out what it *would*
 > have done next is to continue its trajectory in an environment you built. The problem is that

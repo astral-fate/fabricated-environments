@@ -1,4 +1,4 @@
-# construct-separation-gate
+# fabricated-environments
 
 **When you continue a halted agent inside a simulated environment to see what it *would* have done
 — does the agent act differently because the environment is fake?**
@@ -248,24 +248,23 @@ retained but never analysed.
 
 ## Citing
 
-*Evaluation-Awareness and Environment-Realness Are Separable Directions: A Construct-Separation
-Gate for Counterfactual Resampling.* Fatimah Emad Eldin, September 2026.
+*Agents Behave Differently in Fabricated Environments: Evaluation-Awareness Probes Cannot See It.* Fatimah Emad Eldin, September 2026.
 Apart Research & CeSIA, AI Incident Response Sprint — Track 5 (Open).
 
 ```bibtex
-@misc{eldin2026separable,
-  title        = {Evaluation-Awareness and Environment-Realness Are Separable Directions:
-                  A Construct-Separation Gate for Counterfactual Resampling},
+@misc{eldin2026fabricated,
+  title        = {Agents Behave Differently in Fabricated Environments:
+                  Evaluation-Awareness Probes Cannot See It},
   author       = {Emad Eldin, Fatimah},
   year         = {2026},
   month        = sep,
   note         = {Apart Research \& CeSIA, AI Incident Response Sprint --- Track 5 (Open)},
-  howpublished = {\url{https://github.com/astral-fate/construct-separation-gate}},
+  howpublished = {\url{https://github.com/astral-fate/fabricated-environments}},
 }
 ```
 
 | Field | Value |
 |---|---|
-| Repository | <https://github.com/astral-fate/construct-separation-gate> |
+| Repository | <https://github.com/astral-fate/fabricated-environments> |
 | Commit behind the reported numbers | `54ac8c4e4715` |
 | DOI | not yet minted |

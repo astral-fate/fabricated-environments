@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/astral-fate/construct-separation-gate",
+  "url": "https://github.com/astral-fate/fabricated-environments",
   "doi": null,
   "commit": "54ac8c4e4715",
   "_note": "Null fields render as a visible [PENDING] in the manuscript rather than a plausible-looking placeholder. The repository is private until the sprint submission; `doi` stays null until one is minted, and the paper will say [PENDING] for it rather than imply an archive that does not exist."
