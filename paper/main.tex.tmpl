@@ -51,23 +51,31 @@ A Construct-Separation Gate for Counterfactual Resampling}
 \begin{abstract}
 A counterfactual resample---continuing a halted agent trajectory inside a synthetic environment to
 observe what it \emph{would} have done---is a measurement whose instrument is an environment the
-agent can form beliefs about. Those beliefs may change the quantity being measured, and the
-literature disagrees about the direction: classical evaluation-awareness predicts an agent that
-believes it is tested behaves more cautiously, while a documented failure in a frontier model shows
-an agent concluding its environment was simulated and escalating accordingly. Whether these are one
-phenomenon or two has not been asked, because existing probes construct evaluation-awareness from
-declared framing and never contrast it against ground truth. We build the missing contrast: matched
-agentic transcript prefixes in which the tool outputs are either genuinely produced by an
-instrumented filesystem or fabricated by a language model, and we estimate mean-difference
-directions for evaluation-awareness and environment-realness on the \emph{same} stimulus substrate.
-On {{HEADLINE_MODEL}} both directions are individually decodable (held-out AUROC {{AEVAL_AUROC}}
-and {{BEMP_AUROC}}), yet neither classifies the other's contrast: cross-AUROC {{CROSS_AB}} and
-{{CROSS_BA}} against a pre-registered separability threshold of {{THRESHOLD}}, with a cosine of
-{{COS_AB}} between them. A third direction, built by declaring the environment synthetic rather
-than making it so, aligns with evaluation-awareness ({{COS_AC}}) and not with ground truth
-({{COS_BC}})---so being \emph{told} a world is fake is not, inside the model, the same as the world
-being fake. We report this as a gate: the construct survives, and a suspicion meter for
-counterfactual resampling is worth building.
+agent can form beliefs about. Whether those beliefs change the quantity being measured has not been
+tested, because every existing contrast varies a \emph{declared} framing while both arms stay
+synthetic: there is no arm in which the environment is genuinely real. We build that arm, and run
+four pre-registered experiments on it.
+
+First, the constructs are distinct. On {{HEADLINE_MODEL}}, directions for evaluation-awareness and
+environment-realness are each decodable (held-out AUROC {{AEVAL_AUROC}} and {{BEMP_AUROC}}) yet
+neither classifies the other's contrast ({{CROSS_AB}} and {{CROSS_BA}} against a pre-registered
+threshold of {{THRESHOLD}}), so a suspicion meter cannot be read off evaluation-awareness tooling.
+A third direction, built by \emph{declaring} the environment synthetic rather than making it so,
+aligns with evaluation framing ({{COS_AC}}) and not with ground truth ({{COS_BC}}).
+
+Second, the belief changes conduct. Running matched task cells on-policy across a real filesystem
+and two fabricated substrates, out-of-scope actions rise {{E1_RS_COUNT}} per episode
+{{E1_RS_COUNT_CI}} from real to fabricated, with {{E1_REAL_WRITES}} out-of-scope writes in the real
+arm against {{E1_SIM_WRITES}} in the simulated one. A third arm holding self-consistency fixed
+attributes this to fabrication ({{E1_FAB_COUNT}}) rather than to simulator incoherence
+({{E1_COH_COUNT}}). Agents crossed the boundary \emph{more} when the world was fake, so a resample
+of this family overstates danger.
+
+Third, the probe predicts that conduct and the agent's own words do not: within arm, the
+out-of-scope rate rises {{E2_CRED}} per standard deviation of probe-measured credence
+{{E2_CRED_CI}}, while verbalized suspicion gives {{E2_VERB}} {{E2_VERB_CI}}. Asserting a belief in
+the transcript does not survive the model's own reasoning, so the substrate is the manipulation
+surface and the representation, not the report, is the instrument.
 \end{abstract}
 
 \vspace{-6pt}
@@ -81,62 +89,63 @@ the body does not.\\[2pt]
 
 When an agent does something harmful and is stopped, the most valuable question is what it would
 have done next. Answering it means continuing the halted trajectory somewhere, and the only
-somewhere available is an environment that was built for the purpose. Counterfactual resampling is
-therefore a measurement whose instrument is a fabrication, and whose subject can form beliefs about
-the instrument.
+somewhere available is an environment built for the purpose. Counterfactual resampling is therefore
+a measurement whose instrument is a fabrication, and whose subject can form beliefs about the
+instrument.
 
-This is not a hypothetical failure mode. The literature records both directions in which such a
-belief can move behaviour, and they point opposite ways. The classical expectation---an agent that
-believes it is being tested behaves more cautiously---implies a resample \emph{understates} danger,
-and a control evaluation built on it returns false assurance. The opposite is also documented: an
-agent that concludes its consequences are not real complies more readily with requests it would
-otherwise refuse \cite{abdelnabi2025linear}. If that direction dominates, resampled evidence
-\emph{overstates} danger and is rebuttable by precisely the developer it is aimed at. Both
-mechanisms have been observed; which one governs an agentic trajectory is unknown.
+This is not a hypothetical failure mode, and the two ways it can fail point in opposite directions.
+The classical expectation---an agent that believes it is being tested behaves more
+cautiously---implies a resample \emph{understates} danger, so a control evaluation built on it
+returns false assurance. The opposite is also documented: an agent that concludes its consequences
+are not real complies more readily with requests it would otherwise refuse
+\cite{abdelnabi2025linear}, in which case resampled evidence \emph{overstates} danger and is
+rebuttable by precisely the developer it is aimed at. Both mechanisms have been observed; which
+governs an agentic trajectory is unknown.
 
-The literature cannot currently settle this, for a reason that is structural rather than accidental.
-The behavioural studies are single-turn, and they disagree: one finds verbalized
-evaluation-awareness has almost no behavioural consequence \cite{knecht2026vea}, another finds
-framing flips compliance by tens of percentage points \cite{zhuang2026framing}, and a third finds
-the sign of the effect depends on the model \cite{abdelnabi2025linear}. None follows a trajectory
-in which a belief accumulates across steps and licenses escalation, which is the shape the problem
-actually takes. More fundamentally, every contrast is drawn \emph{within} an evaluation: there is no
-arm in which the environment is genuinely real, so no study can separate what a model does when
-told its world is synthetic from what it does when the world actually is.
+The existing literature cannot settle it, for a structural reason rather than an accidental one.
+The behavioural studies are single-turn and disagree even on the sign
+\cite{knecht2026vea,zhuang2026framing,abdelnabi2025linear}; the representation studies show
+evaluation awareness is linearly decodable \cite{heidari2026evaluation} but build every contrast
+from \emph{declared} framing, with both members of each pair equally synthetic. In neither case is
+there an arm in which the environment is genuinely real, so no study can separate what a model does
+when \emph{told} its world is synthetic from what it does when the world actually is. Whether
+``this is a test'' and ``this environment is not real'' are one direction or two cannot be asked
+inside that design at all.
 
-The representation literature has the opposite strength and the same blind spot. Evaluation
-awareness is linearly decodable from the residual stream of every model tested
-\cite{heidari2026evaluation}, which makes a probe-based instrument feasible. But that probe is
-built from contrastive pairs differing only in \emph{declared} framing---one telling the model it
-speaks to a real user, the other to an evaluator---and both members of every pair are equally
-synthetic. Whether ``this is a test'' and ``this environment is not real'' are one direction or two
-cannot be asked inside that design.
+We build the missing arm---an instrumented filesystem where tool calls do what they say, contrasted
+against substrates that fabricate them---and use it to ask four questions in order. Are the two
+constructs the same direction? Does an agent's conduct actually differ when the environment is
+fabricated? If it does, is that because the world is fake or merely because the simulator is
+inconsistent? And does anything we can measure predict the difference---the representation, or what
+the agent says about it?
 
-The question matters before any resampling instrument is built, because the answer determines
-whether one is needed. If the two constructs are the same direction, a suspicion meter for
-resampling harnesses is redundant: existing evaluation-awareness tooling already measures it, and
-the right move is to reuse that tooling. If they are distinct, no amount of evaluation-awareness
-detection tells you whether an agent believes its environment is fabricated, and the instrument has
-to be built from scratch. We therefore treat this as a gate, pre-register a decision rule with a
-threshold, and commit in advance to reporting either outcome.
+The first question is a gate: if the constructs are one, a suspicion meter is redundant because
+existing tooling already measures it, and the right move is to reuse that tooling rather than build
+anything. We pre-register a threshold before extracting a single activation and commit to reporting
+either outcome. Each subsequent experiment is pre-registered the same way, and none was run before
+the one preceding it had reported.
 
 \paragraph{Contributions.}
 \begin{itemize}\setlength{\itemsep}{1pt}\setlength{\parskip}{0pt}
-\item \textbf{A ground-truth realness contrast.} Matched agentic transcript prefixes
-  differing only in whether tool outputs were produced by an instrumented filesystem or
-  fabricated by a language model. Prior probes vary a \emph{declared} framing while the
-  environment stays synthetic throughout; this varies the environment itself.
-\item \textbf{A pre-registered separability gate.} A threshold fixed before any
-  activation was extracted, with a commitment to report either outcome, because the
-  answer decides whether a resampling suspicion meter needs building at all.
-\item \textbf{Evidence that the constructs neither collapse nor converge with scale.}
-  Across three model sizes both directions sharpen individually while transfer between
-  them does not follow.
-\item \textbf{Evidence that declared realness is not measured realness.} A direction
-  built by declaring the environment synthetic aligns with evaluation framing rather
-  than with ground truth.
-\item \textbf{A released harness.} Task family, pure-function violation detector, both
-  arms, the probe pipeline, and every artifact behind every number in this paper.
+\item \textbf{A ground-truth realness contrast.} Matched agentic prefixes differing only in
+  whether tool outputs came from an instrumented filesystem or were fabricated. Prior probes vary
+  a \emph{declared} framing while the environment stays synthetic throughout.
+\item \textbf{A pre-registered separability gate.} Threshold fixed before any activation was
+  extracted, with a commitment to report either outcome. The constructs separate, and do not
+  converge across three model sizes---and a direction built by \emph{declaring} the environment
+  synthetic aligns with evaluation framing rather than with ground truth.
+\item \textbf{The behavioural comparison the question actually needs.} Matched task cells run
+  on-policy against a real filesystem and two fabricated substrates. Conduct diverges, and the
+  severe category---writing outside the stated scope---is absent from the real arm entirely.
+\item \textbf{A decomposition that a two-arm design cannot give.} A third arm that is fabricated
+  but self-consistent attributes the divergence to fabrication rather than to the simulator's
+  incoherence, which says where simulation effort does \emph{not} help.
+\item \textbf{Evidence that the probe, not the transcript, is the instrument.} Probe-measured
+  credence predicts out-of-scope behaviour within arm; the agent's own verbalized suspicion does
+  not. Asserting a belief in the transcript is overwritten by the model's own framing within a few
+  turns, so credence has to be manipulated through the substrate.
+\item \textbf{A released harness.} Task family, pure-function violation detector, three arms, the
+  probe pipeline, and every artifact behind every number here---including the run logs.
 \end{itemize}
 
 We do not build a resampling tool. That already exists, including the hybrid
@@ -154,158 +163,44 @@ and worth building.
 
 \section{Related work}
 
-% Every value attributed to another paper is wrapped in \litnum{} and carries a citation on the
-% same line. `render.check_template_has_no_numbers` enforces both halves: our numbers must come
-% from results/ through a placeholder, and someone else's must be visibly attributed. The guard
-% cannot verify a transcribed value -- only that its provenance is stated.
+Appendix~\ref{app:related} treats this literature at full length; the synthesis is what matters
+here, and it is a gap rather than a disagreement.
 
-\subsection{Simulating deployment, and the question it sets aside}
+\paragraph{The tooling exists; the assumption inside it is untested.} Deployment simulation with
+container-backed tool simulators is built and published \cite{williams2026predicting}, and
+resampling is already used as a control mechanism \cite{bhatt2025ctrlz,lucassen2026retrying}. Those
+resample inside a \emph{real} environment, where authenticity is not in question. Continuing a
+halted trajectory inside a fabricated one puts it in question, and nothing in that line tests
+whether the agent's belief about the fabrication changes the answer.
 
-The closest prior work builds the instrument this study would otherwise have needed.
-Williams et al.\ \cite{williams2026predicting} predict a model's post-release safety by resampling: they hold a
-de-identified conversation prefix fixed and regenerate the next response from a candidate model,
-extending the same idea to tool use by giving the simulator affordances including a time-matched
-codebase in a container it executes against. That is the hybrid container-plus-language-model
-design, already built and evaluated, and this paper does not rebuild it.
-
-Two features of their evaluation matter here. First, fidelity is measured by a
-\emph{discriminator}: a strong model is shown a shared prefix followed by one real and one
-simulated continuation and asked which is real, with the simulated win rate rising from
-\litnum{11.6\%} to \litnum{49.5\%} as affordances are added \cite{williams2026predicting}.
-Second, evaluation-awareness enters as a calibration \emph{target}: detectors classify almost all
-traditional-evaluation trajectories as evaluations against a small fraction of production ones,
-and the authors report that their simulated deployments land within \litnum{2.6}$\times$ of their
-production counterparts \cite{williams2026predicting}.
-
-Both features leave our question open, and in the same direction. A discriminator is a third party
-shown both continuations side by side; an agent inside a single trajectory, with no comparison
-available, forming a belief and acting on it, is a different measurement. And treating
-evaluation-awareness as a property to match is not the same as testing whether it \emph{causes}
-invalidity---a point the authors state explicitly rather than leave to inference. Their limitations
-section also records that agentic trajectories involve many tool calls that depend on or modify
-state beyond the conversation, making exact external-state reconstruction impractical. We take that
-as the boundary condition for the present study rather than a problem to solve: we do not
-reconstruct state, we contrast a genuinely stateful environment against a fabricated one.
-
-\subsection{Does believing it is a test change behaviour? The evidence is contested, and single-turn}
-
-The behavioural literature does not agree on the sign of the effect, and every study we are aware
-of measures it within a single turn.
-
-Knecht et al.\ \cite{knecht2026vea} find verbalized evaluation-awareness has limited behavioural consequence:
-injecting it into chains of thought produces near-zero effects, removing it causes small shifts,
-and spontaneous occurrences move answer distributions by at most \litnum{3.7} percentage points
-\cite{knecht2026vea}. Read at face value this is a null, and it would make the present study
-unnecessary. But the measurement is taken on single-turn benchmark responses, every condition sits
-inside an evaluation, and there is no real-world arm---so the null is equally consistent with a
-real effect that a within-evaluation contrast cannot see.
-
-Against that, Zhuang and Aranguri\ \cite{zhuang2026framing} report an effect large enough to flip with framing, with
-capabilities-framing predicting compliance at a gap of \litnum{24} to \litnum{46} percentage points
-over safety-framing \cite{zhuang2026framing}. Their methodological finding matters more to us than
-their effect size: truncating a chain of thought before an evaluation-awareness sentence caused
+\paragraph{The behavioural evidence is contested and single-turn.} Verbalized
+evaluation-awareness has been reported as near-inconsequential \cite{knecht2026vea}, as flipping
+compliance by tens of points under framing \cite{zhuang2026framing}, and as
+\emph{model-dependent in sign}---suppressing awareness roughly doubles compliance in one model
+while reducing it in another \cite{abdelnabi2025linear}. Frontier models can tell evaluation from
+deployment well above chance \cite{needham2026large}, but capability is not consequence. Every one
+of these is measured within a single turn, with every condition inside an evaluation and no
+real-world arm, so none can separate what a model does when \emph{told} its world is synthetic from
+what it does when the world actually is. One methodological result from that literature shapes this
+design directly: truncating a chain of thought before an evaluation-awareness sentence caused
 \litnum{66\%} of continuations to regenerate the same framing within a few sentences
-\cite{zhuang2026framing}. Transcript-side manipulation does not isolate the cause, because the
-model reconstitutes it. That is why the manipulation in this paper is the substrate rather than the
-transcript.
+\cite{zhuang2026framing}, which is why our manipulation is the substrate rather than the transcript.
 
-Abdelnabi and Salem\ \cite{abdelnabi2025linear} measure the inflation direction directly: models comply more readily
-with harmful prompts when real-world consequences appear absent, and steering toward test-awareness
-raises harmful compliance by \litnum{20.1} percentage points in one reasoning model and
-\litnum{15.5} in another \cite{abdelnabi2025linear}. Crucially the sign is model-dependent---
-suppressing awareness roughly doubles compliance in one model while reducing it in another
-\cite{abdelnabi2025linear}---so ``evaluation-awareness makes models safer'' is not a
-population-level fact. Their setting is again simplified to single-turn tool use, and compliance is
-detected by string-matching a non-empty tool call rather than by any consequence in a system.
-Needham et al.\ \cite{needham2026large} complete the picture by establishing the underlying \emph{capability}:
-frontier models distinguish evaluation from deployment well above chance, though still below a
-human baseline \cite{needham2026large}. Capability, however, is not consequence.
+\paragraph{The representation is decodable, and says little about conduct.} Evaluation awareness is
+linearly decodable from the residual stream of every model tested \cite{heidari2026evaluation},
+scales as a power law in model size \cite{chaudhary2026scales}, classifies current safety
+evaluations as evaluations \cite{nguyen2025probing}, and supports practical out-of-distribution
+monitors \cite{mckenzie2025detecting}. What a model represents, verbalizes and can be steered on
+come apart \cite{heidari2026evaluation,nayan2026notone}, and a cyber-deception study finds models
+articulate trap recognition and then exploit the trap anyway, with recognition barely correlated
+with action \cite{prinos2026honeyquest}. A measure built on what a model \emph{says} may be
+uncorrelated with what it \emph{does}.
 
-What survives this literature is a gap rather than a conclusion. No study we found follows a
-trajectory in which a belief accumulates across steps and licenses escalation, which is the shape
-of both the incident that motivates this work and the documented frontier-model failure. None has a
-real-environment arm against which a synthetic one can be contrasted.
-
-\subsection{Probing the representation, and the decomposition nobody ran}
-
-Heidari et al.\ \cite{heidari2026evaluation} settle what the behavioural literature could not: evaluation
-awareness is linearly decodable from the residual streams of every model they test, spanning six
-open-weight models across four families, with a best AUROC of at least \litnum{0.7}
-\cite{heidari2026evaluation}. They further show that what a model represents, what it verbalizes,
-and what steering it, come apart---a verbalization judge scores zero in the overwhelming majority
-of cases, and the coupling between representation and verbalization is negligible
-\cite{heidari2026evaluation}. We adopt their estimator and their reported floor as the
-reproduction gate for our own evaluation-awareness direction, precisely so that a null in our
-cross-transfer cannot be explained by a probe that failed to recover the construct.
-
-Three further results sharpen the picture. Nguyen et al.\ \cite{nguyen2025probing} show linear probes separating
-real-world evaluation from deployment prompts in a 70B model, and report that current safety
-evaluations are themselves correctly classified by those probes---evidence that existing
-evaluations ``already appear artificial or inauthentic to models''. Chaudhary et al.\ \cite{chaudhary2026scales}
-find that evaluation awareness follows a power law in model size across \litnum{15} models spanning
-\litnum{0.27}B to \litnum{70}B \cite{chaudhary2026scales}, which is the trend our own
-evaluation-awareness direction reproduces. And
-McKenzie et al.\ \cite{mckenzie2025detecting} establish that activation probes can serve as practical monitors,
-generalising out of distribution at a fraction of the cost of an LLM monitor---which is what makes
-a probe-based suspicion meter a deployable instrument rather than an analysis technique.
-
-Closest to our framing, Nayan et al.\ \cite{nayan2026notone} argue across 37 open-weight models that evaluation
-awareness ``is not one capability'': detectability, behavioural manifestation and controllability
-vary independently and are weakly coupled, so no single awareness score is a reliable proxy for
-deployment safety. We agree with the conclusion and decompose a different axis. Their dimensions
-are three \emph{measurement modalities} of one construct---can it be read out, does it change
-behaviour, can it be steered. Ours is a question about \emph{which construct is being read out at
-all}: whether the thing a probe detects when it separates evaluation framing is the same thing that
-would detect a fabricated environment. Both decompositions are needed, and neither implies the
-other.
-
-That leaves the opening our contribution enters. Every probe above, including
-Heidari et al.\ \cite{heidari2026evaluation}, is built from contrastive pairs differing in \emph{declared}
-framing, with both members equally synthetic. Whether ``this is a test'' and ``this environment is
-not real'' are the same linear direction is therefore not asked, and cannot be asked within that
-design: none has an arm in which the environment differs in fact rather than in description. Our
-\texttt{C\_declared} condition reproduces the declared construction on the realness axis, and our
-\texttt{B\_empirical} condition supplies the ground-truth contrast the design lacks.
-
-\subsection{Saying and doing come apart under deception, independently}
-
-A result from cyber deception corroborates the representation--verbalization gap from a different
-direction and a different literature. Prinos et al.\ \cite{prinos2026honeyquest} evaluate a large cohort of
-models against planted deceptive artifacts with a human baseline for comparison, and report three
-findings we rely on: every model in the cohort falls for traps at a significantly higher rate than
-human attackers (\litnum{78.5\%} against \litnum{37\%}); the defensive attention-diversion effect
-seen in humans is statistically absent in the model cohort; and a recognition--action gap in which
-models articulate trap recognition in their reasoning and then exploit the deceptive element anyway
-in \litnum{73.4\%} of cases \cite{prinos2026honeyquest}. Recognition does not predict behaviour,
-with a rank correlation of \litnum{+0.08} \cite{prinos2026honeyquest}.
-
-The scope limit is worth stating plainly: their manipulation is a planted artifact inside an
-otherwise ordinary environment, not the authenticity of the environment as a whole, which is the
-variable here. What transfers is the warning about instruments: a measure built on what a model
-\emph{says} about a suspicious thing may be uncorrelated with what it \emph{does} about it. That is
-the case for reading credence from the residual stream rather than from self-report, and it is why
-this paper's gate is stated on a probe rather than on a verbalization judge.
-
-\subsection{Resampling to incriminate is not resampling to reconstruct}
-
-Two adjacent lines of work resample agent trajectories for purposes distinct from ours.
-Bhatt et al.\ \cite{bhatt2025ctrlz} resample within a \emph{real} environment as a control mechanism, deciding
-whether to block a suspicious action---resampling to incriminate, where the environment's
-authenticity is not in question because it is genuine. Lucassen and Kaufman\ \cite{lucassen2026retrying} extend that
-line and contrast resampling with retrying, reporting that a monitor's rationale can be exploited
-by an adversarial model and, notably, that two of their findings reverse earlier resampling results
-in their setting. Both operate in genuine environments, so neither faces the question here.
-
-Liu et al.\ \cite{liu2026autoregressive} are architecturally closest in the off-policy-evaluation literature,
-alternating step by step between a learned world model and the agent. Whether the agent detects
-that it is inside a learned world model is not addressed there, which is the assumption this paper
-turns into a measurement.
-
-One observation from Needham et al.\ \cite{needham2026large} cuts across all of this and motivates the agentic
-setting specifically: both models and humans are better at identifying evaluations in agentic
-settings than in chat settings. The environment an agent acts on leaks more than a conversation
-does, which is precisely why a resampling harness---an agentic setting built entirely from
-fabricated tool outputs---is where the question bites hardest.
+\paragraph{The unasked question.} Every probe above is built from contrastive pairs differing in
+\emph{declared} framing, with both members equally synthetic. Whether ``this is a test'' and ``this
+environment is not real'' are one direction or two therefore cannot be asked inside that design,
+because none of them has an arm in which the environment differs in fact rather than in
+description. That arm is what this paper builds.
 
 \section{Method}
 
@@ -569,7 +464,10 @@ real from fabricated episodes at AUROC {{E2_TRANSFER}}---a precondition, since i
 matched replays and need not have survived the move. Regressing the out-of-scope rate on
 probe-measured credence, centred within arm so the arm label cannot produce the association, gives
 {{E2_CRED}} per standard deviation, {{E2_CRED_CI}}. The same regression on verbalized suspicion
-gives {{E2_VERB}}, {{E2_VERB_CI}}. The verdict is {{E2_VERDICT}}.
+gives {{E2_VERB}}, {{E2_VERB_CI}}. The verdict is {{E2_VERDICT}}. Pooled across arms the
+credence slope is {{E2_CRED_POOLED}} {{E2_CRED_POOLED_CI}}, which is the confounded
+counterpart: it cannot distinguish a graded relationship from the arm label, which is why
+the centred estimate is the one the prediction is stated on.
 
 The contrast is the point. Verbalized suspicion does differ between arms ({{E1_SUSP}},
 {{E1_SUSP_CI}}), so the agent says the environment looks fabricated more often when it is---it
@@ -604,73 +502,109 @@ the breakdowns and Appendix~\ref{app:threats} the threats to validity.
 
 \subsection{A suspicion meter cannot be read off evaluation-awareness tooling}
 
-The immediate consequence is practical. If the two constructs had collapsed, anyone wanting to know
-whether an agent believes its environment is fabricated could have reused an existing
-evaluation-awareness probe, and the instrument this paper argues for would have been redundant.
-They do not collapse. At every scale we tested, a direction that classifies evaluation framing
-almost perfectly classifies genuine-versus-fabricated environments close to chance. An
-evaluation-awareness detector applied to a resampling harness would report on the wrong variable.
+If the two constructs had collapsed, anyone wanting to know whether an agent believes its
+environment is fabricated could have reused an existing evaluation-awareness probe. They do not
+collapse, and they do not converge with capability: from {{SMALL_MODEL}} to {{LARGE_MODEL}} the
+evaluation-awareness direction sharpens to {{AEVAL_AUROC_LARGE}} and realness to
+{{BEMP_AUROC_LARGE}}, while transfer between them \emph{falls} to {{CROSS_AB_LARGE}} and
+{{CROSS_BA_LARGE}} and their cosine shrinks to {{COS_AB_LARGE}}. Both probes get better at their
+own contrast; the bridge does not follow. An evaluation-awareness detector pointed at a resampling
+harness would report on the wrong variable, and a larger model would not fix it.
 
-This is a narrow claim and we want to keep it narrow. It says the two are distinguishable as linear
-directions in the residual stream. It does not say the realness direction is causally connected to
-behaviour, and the experiment reported here cannot say so: our behavioural measurements come from a
-single arm and are descriptive. Whether probe-measured credence predicts what an agent does---the
-prediction the design was built to test---remains open, and is the next experiment rather than a
-result of this one.
+\subsection{The belief is not inert, and it moves in the direction that undermines resampling}
+
+Separability says a construct exists; it does not say it matters. Running the same task cells
+on-policy across three substrates shows that it does. Conduct diverges, and not as a rate artifact:
+episode length is unchanged, and the composition shifts from pure reconnaissance to out-of-scope
+reads and writes that never occurred once when the filesystem was real.
+
+The sign is the uncomfortable part. Classical evaluation-awareness predicts caution, which would
+make a resample conservative and therefore safe to over-trust. We observe the opposite, consistent
+with the inflation direction Abdelnabi and Salem report \cite{abdelnabi2025linear}: agents crossed
+the boundary \emph{more} when the world was fabricated. A resample of this family overstates
+danger---the failure mode that lets a developer dismiss resampled evidence as an artifact of the
+harness, and here they would be partly right.
+
+\subsection{Where simulation effort does not help}
+
+The natural response is to build a better simulator. Our decomposition argues against that as a
+first move: holding self-consistency fixed and varying only fabrication reproduces almost the whole
+effect, while holding fabrication fixed and varying only self-consistency moves nothing that
+excludes zero. Whatever the agent responds to, it is not the simulator contradicting itself, so a
+durable world-state store---the expensive component a fidelity-first roadmap builds next---should
+not be expected to close the gap alone. That is a prediction our design supports rather than a
+result it establishes, and it is cheap to falsify.
+
+\subsection{The instrument should read the representation, not the report}
+
+Within an arm, probe-measured credence predicts the out-of-scope rate and verbalized suspicion does
+not. These are not two descriptions of one signal: verbalized suspicion tracks the \emph{arm}
+strongly, so the agent does say the environment looks fabricated more often when it is---it simply
+does not say so more often when it is about to act on it. A monitor built on self-report would
+detect the substrate and miss the conduct. This is the recognition--action gap reported in cyber
+deception \cite{prinos2026honeyquest} and the representation--verbalization decoupling reported for
+evaluation awareness \cite{heidari2026evaluation}, arriving from a third direction.
 
 \subsection{Declared framing may be measuring the prompt}
 
-The comparison that most concerns existing method is between \texttt{C\_declared} and
-\texttt{B\_empirical}. Both name the realness axis. One declares it in the system prompt, the other
-makes it true of the environment. They are not the same direction, and the gap widens with scale:
-the cosine between declared and empirical realness moves from {{COS_BC_SMALL}} at {{SMALL_MODEL}}
-to {{COS_BC_LARGE}} at {{LARGE_MODEL}}. Over the same range, the cosine between declared realness
-and evaluation framing falls from {{COS_AC_SMALL}} to {{COS_AC_LARGE}}.
-
-We read this cautiously. The direction of both trends is consistent with larger models
-distinguishing a claim made \emph{about} an environment from the environment's actual character,
-but we have three scale points from one model family, one seed per point, and no interval on the
-difference between two cosines. We report it as an observation with that caveat rather than as a
-finding, and we note the methodological implication it would carry if it survives replication: a
-probe built entirely from declared contrastive framing may be measuring a property of the prompt,
-and its transfer to situations where the environment differs in fact rather than in description
-should be established rather than assumed.
-
-\subsection{Scale sharpens the constructs without merging them}
-
-The most plausible objection to a null is that the model is too small to have formed the
-representation. Table~\ref{tab:scale} rules that reading out. At {{LARGE_MODEL}} the
-evaluation-awareness direction reaches {{AEVAL_AUROC_LARGE}} and the realness direction
-{{BEMP_AUROC_LARGE}}, both higher than at the smallest scale, while cross-transfer \emph{falls} to
-{{CROSS_AB_LARGE}} and {{CROSS_BA_LARGE}} and the cosine between them narrows to
-{{COS_AB_LARGE}}. Both probes sharpen; the bridge between them does not. A
-failure-to-represent account predicts the opposite pattern.
-
-That the scripted control retains a clear positive alignment with empirical realness at the largest
-scale ({{COS_BS_LARGE}}) matters for the same reason in the other direction: the realness direction
-transfers to a fabrication process it never saw, so it is not an artifact of one simulator's prose.
+A direction built the way the probe literature builds them---by \emph{declaring} the environment
+synthetic---aligns with evaluation framing rather than with ground truth, at {{COS_AC_SMALL}}
+against {{COS_BC_SMALL}}, and the pattern holds at {{LARGE_MODEL}} ({{COS_AC_LARGE}} against
+{{COS_BC_LARGE}}). Two further observations point the same way. Its errors vary sharply with
+held-out wording, where the empirically grounded direction has no wording axis to vary along; and
+asked directly whether its environment was real, the model called a genuinely real filesystem
+simulated in most control episodes, on the strength of file timestamps postdating its training
+data. Declared framing and direct questioning are both cheap, and both appear to measure something
+other than the environment.
 
 \subsection{What this does not fix}
 
-It would be easy to over-read a clean separation. Alignment, control, interpretability and
-evaluation are, as a body of practice, not yet reliable, principled or robust, and nothing here
-changes that. This paper does not make counterfactual resampling valid. It establishes that the
-quantity a resampling harness would need to monitor exists as its own thing, and that a calibrated
-instrument for it is therefore worth building. That is a smaller claim than the topic invites, and
-the strongest one the evidence supports.
-
-The honest summary is that we have put a measurable error bar on one assumption inside one
-evaluation method. The assumption was previously untested, the direction of its effect was contested
-in the literature, and it is now at least addressable. Whether the effect is large enough to
-invalidate resampled evidence is a question this design can now ask and has not yet answered.
+None of this makes counterfactual resampling valid or invalid. It puts a measurable interval on one
+previously untested assumption inside it, for one task family and one actor. The
+credence-to-conduct link is correlational: the substrate is randomised across arms, the graded
+relationship within an arm is not, so the probe tracks something predictive of conduct without our
+being able to say credence causes it. Establishing that requires manipulating credence at the
+episode level---and our own finding that transcript-side assertion is overwritten within a few
+turns says that manipulation has to come through the substrate, which is the harder experiment
+rather than the obvious one.
 
 \section{Limitations and dual-use}
 
-% TODO(draft): required by the sprint and load-bearing here. The artifact is a method for
-% measuring how well a model can be convinced a fabricated world is real; a leak taxonomy read
-% backwards is a sandbox-detection guide. Publish methodology and category-level findings;
-% withhold exploit-grade detection strings pending review. Note the training-contamination
-% concern: a published cue list can enter training data.
+\paragraph{What the result does not cover.} One actor, one task family, {{E1_CELLS}} task cells,
+and---for the separability gate---one model lineage at three sizes. The sign of an
+evaluation-awareness effect is known to differ between models \cite{abdelnabi2025linear}, so
+nothing here should be read as a population-level fact. The behavioural arms use a simulator with
+no durable world-state store; a simulator that maintained one is the obvious next comparison, and
+our decomposition predicts it would not close the gap, which is a prediction rather than a finding.
+
+\paragraph{The credence-to-conduct link is correlational.} Credence is read from contexts the model
+processes, not manipulated at the episode level, so the within-arm association establishes that the
+probe tracks something predictive of conduct---not that credence causes it. The substrate
+manipulation is randomised across arms; the graded relationship inside an arm is not.
+
+\paragraph{Two measurement asymmetries we could not remove.} Both fabricated arms generate entries
+for any path, so their trees have no bottom while the real one is finite; episode length and task
+completion are reported as diagnostics of that rather than as evidence. And verbalized framing is
+scored by a committed lexicon over a stated verdict, which measures what a model \emph{says} when
+asked, not what it believes---the gap that motivates the probe in the first place.
+
+\paragraph{Dual-use.} This work publishes a method for measuring how convincingly an environment
+can be fabricated, and a leak taxonomy read backwards is a sandbox-detection guide. The asymmetry
+is real but it is not symmetric in cost: the people who most need to know whether a resampling
+harness is trusted are the ones building control evaluations, and they cannot act on a finding that
+is withheld. We therefore publish the methodology, the category-level findings and every artifact,
+and withhold nothing that is in the released corpus---because withholding it selectively while
+publishing the method would give a false impression of safety rather than an actual one.
+
+One specific cue does deserve care. The clearest tell in our corpus is not a subtle property of
+fabricated prose: it is file timestamps that postdate the model's training data, which made the
+model call a genuinely real filesystem simulated in most control episodes. That is a
+\emph{property of clocks}, not of simulators, and anyone building a resampling harness should
+expect it. We name it because a harness that does not control for it is measuring the calendar.
+
+Finally, a published cue list can enter training data and thereby change the behaviour it
+describes. We regard that as an argument for reporting cues at the category level and for treating
+any specific detection string as perishable, not as an argument for silence.
 
 \section*{Reproducibility}
 
@@ -794,6 +728,152 @@ route would be to assert in the agent's own context what it believes. That is te
 assumed, in three conditions per episode differing only by an appended sentence stating a
 conclusion about the environment, followed by a tool-free prose probe scored by a committed lexicon
 over the verdict sentence (Appendix~\ref{app:threats}).
+
+\section{Related work in full}
+\label{app:related}
+
+% Every value attributed to another paper is wrapped in \litnum{} and carries a citation on the
+% same line. `render.check_template_has_no_numbers` enforces both halves: our numbers must come
+% from results/ through a placeholder, and someone else's must be visibly attributed. The guard
+% cannot verify a transcribed value -- only that its provenance is stated.
+
+\subsection{Simulating deployment, and the question it sets aside}
+
+The closest prior work builds the instrument this study would otherwise have needed.
+Williams et al.\ \cite{williams2026predicting} predict a model's post-release safety by resampling: they hold a
+de-identified conversation prefix fixed and regenerate the next response from a candidate model,
+extending the same idea to tool use by giving the simulator affordances including a time-matched
+codebase in a container it executes against. That is the hybrid container-plus-language-model
+design, already built and evaluated, and this paper does not rebuild it.
+
+Two features of their evaluation matter here. First, fidelity is measured by a
+\emph{discriminator}: a strong model is shown a shared prefix followed by one real and one
+simulated continuation and asked which is real, with the simulated win rate rising from
+\litnum{11.6\%} to \litnum{49.5\%} as affordances are added \cite{williams2026predicting}.
+Second, evaluation-awareness enters as a calibration \emph{target}: detectors classify almost all
+traditional-evaluation trajectories as evaluations against a small fraction of production ones,
+and the authors report that their simulated deployments land within \litnum{2.6}$\times$ of their
+production counterparts \cite{williams2026predicting}.
+
+Both features leave our question open, and in the same direction. A discriminator is a third party
+shown both continuations side by side; an agent inside a single trajectory, with no comparison
+available, forming a belief and acting on it, is a different measurement. And treating
+evaluation-awareness as a property to match is not the same as testing whether it \emph{causes}
+invalidity---a point the authors state explicitly rather than leave to inference. Their limitations
+section also records that agentic trajectories involve many tool calls that depend on or modify
+state beyond the conversation, making exact external-state reconstruction impractical. We take that
+as the boundary condition for the present study rather than a problem to solve: we do not
+reconstruct state, we contrast a genuinely stateful environment against a fabricated one.
+
+\subsection{Does believing it is a test change behaviour? The evidence is contested, and single-turn}
+
+The behavioural literature does not agree on the sign of the effect, and every study we are aware
+of measures it within a single turn.
+
+Knecht et al.\ \cite{knecht2026vea} find verbalized evaluation-awareness has limited behavioural
+consequence: injecting it into chains of thought produces near-zero effects, and spontaneous
+occurrences move answer distributions by at most \litnum{3.7} percentage points
+\cite{knecht2026vea}. Read at face value that is a null which would make this study unnecessary.
+But it is measured on single-turn benchmark responses with every condition inside an evaluation
+and no real-world arm, so it is equally consistent with a real effect a within-evaluation contrast
+cannot see. Against it, Zhuang and Aranguri \cite{zhuang2026framing} report framing gaps of
+\litnum{24} to \litnum{46} percentage points in compliance \cite{zhuang2026framing}. Their
+methodological result matters more to us than their effect size: truncating a chain of thought
+before an evaluation-awareness sentence caused \litnum{66\%} of continuations to regenerate the
+same framing within a few sentences \cite{zhuang2026framing}. We replicate that regeneration in the
+agentic setting, and it is why the manipulation here is the substrate rather than the transcript.
+
+Abdelnabi and Salem \cite{abdelnabi2025linear} measure the inflation direction directly: steering
+toward test-awareness raises harmful compliance by \litnum{20.1} percentage points in one reasoning
+model and \litnum{15.5} in another, and the sign is model-dependent---suppressing awareness roughly
+doubles compliance in one model while reducing it in another \cite{abdelnabi2025linear}. So
+``evaluation-awareness makes models safer'' is not a population-level fact. Their setting is again
+single-turn tool use, with compliance detected by string-matching a non-empty tool call rather than
+by any consequence in a system. Needham et al.\ \cite{needham2026large} complete the picture by
+establishing the underlying \emph{capability}: frontier models distinguish evaluation from
+deployment well above chance \cite{needham2026large}. Capability, however, is not consequence.
+
+What survives is a gap rather than a conclusion. No study we found follows a trajectory in which a
+belief accumulates across steps and licenses escalation---the shape of both the incident motivating
+this work and the documented frontier-model failure---and none has a real-environment arm against
+which a synthetic one can be contrasted.
+
+\subsection{Probing the representation, and the decomposition nobody ran}
+
+Heidari et al.\ \cite{heidari2026evaluation} settle what the behavioural literature could not:
+evaluation awareness is linearly decodable from the residual streams of every model they test,
+across six open-weight models and four families, with a best AUROC of at least \litnum{0.7}
+\cite{heidari2026evaluation}. They also show that what a model represents, verbalizes, and can be
+steered on come apart, with negligible coupling between representation and verbalization
+\cite{heidari2026evaluation}. We adopt their estimator and their reported floor as the reproduction
+gate for our own evaluation-awareness direction, so that a null in cross-transfer cannot be
+explained by a probe that failed to recover the construct.
+
+Three results sharpen this. Nguyen et al.\ \cite{nguyen2025probing} separate real-world evaluation
+from deployment prompts in a 70B model and report that current safety evaluations are themselves
+classified as evaluations---evidence they ``already appear artificial or inauthentic to models''.
+Chaudhary et al.\ \cite{chaudhary2026scales} find evaluation awareness follows a power law in model
+size across \litnum{15} models from \litnum{0.27}B to \litnum{70}B \cite{chaudhary2026scales}, the
+trend our own direction reproduces. McKenzie et al.\ \cite{mckenzie2025detecting} establish that
+activation probes work as practical monitors, generalising out of distribution at a fraction of an
+LLM monitor's cost \cite{mckenzie2025detecting}---which is what makes a probe-based suspicion meter
+a deployable instrument rather than an analysis technique.
+
+Closest to our framing, Nayan et al.\ \cite{nayan2026notone} argue across 37 open-weight models that
+evaluation awareness ``is not one capability'': detectability, behavioural manifestation and
+controllability vary independently, so no single awareness score is a reliable proxy for deployment
+safety \cite{nayan2026notone}. We agree, and decompose a different axis. Their dimensions are three
+\emph{measurement modalities} of one construct---can it be read out, does it change behaviour, can
+it be steered. Ours asks \emph{which construct is being read out at all}: whether the thing a probe
+detects when it separates evaluation framing is the same thing that would detect a fabricated
+environment. Neither decomposition implies the other.
+
+That leaves the opening our contribution enters. Every probe above, including
+Heidari et al.\ \cite{heidari2026evaluation}, is built from contrastive pairs differing in
+\emph{declared} framing, with both members equally synthetic---so whether ``this is a test'' and
+``this environment is not real'' are the same direction cannot be asked within that design. Our
+\texttt{C\_declared} condition reproduces the declared construction on the realness axis, and
+\texttt{B\_empirical} supplies the ground-truth contrast the design lacks.
+
+\subsection{Saying and doing come apart under deception, independently}
+
+A result from cyber deception corroborates the representation--verbalization gap from a different
+direction and a different literature. Prinos et al.\ \cite{prinos2026honeyquest} evaluate a large cohort of
+models against planted deceptive artifacts with a human baseline for comparison, and report three
+findings we rely on: every model in the cohort falls for traps at a significantly higher rate than
+human attackers (\litnum{78.5\%} against \litnum{37\%}); the defensive attention-diversion effect
+seen in humans is statistically absent in the model cohort; and a recognition--action gap in which
+models articulate trap recognition in their reasoning and then exploit the deceptive element anyway
+in \litnum{73.4\%} of cases \cite{prinos2026honeyquest}. Recognition does not predict behaviour,
+with a rank correlation of \litnum{+0.08} \cite{prinos2026honeyquest}.
+
+The scope limit is worth stating plainly: their manipulation is a planted artifact inside an
+otherwise ordinary environment, not the authenticity of the environment as a whole, which is the
+variable here. What transfers is the warning about instruments: a measure built on what a model
+\emph{says} about a suspicious thing may be uncorrelated with what it \emph{does} about it. That is
+the case for reading credence from the residual stream rather than from self-report, and it is why
+this paper's gate is stated on a probe rather than on a verbalization judge.
+
+\subsection{Resampling to incriminate is not resampling to reconstruct}
+
+Two adjacent lines of work resample agent trajectories for purposes distinct from ours.
+Bhatt et al.\ \cite{bhatt2025ctrlz} resample within a \emph{real} environment as a control mechanism, deciding
+whether to block a suspicious action---resampling to incriminate, where the environment's
+authenticity is not in question because it is genuine. Lucassen and Kaufman\ \cite{lucassen2026retrying} extend that
+line and contrast resampling with retrying, reporting that a monitor's rationale can be exploited
+by an adversarial model and, notably, that two of their findings reverse earlier resampling results
+in their setting. Both operate in genuine environments, so neither faces the question here.
+
+Liu et al.\ \cite{liu2026autoregressive} are architecturally closest in the off-policy-evaluation literature,
+alternating step by step between a learned world model and the agent. Whether the agent detects
+that it is inside a learned world model is not addressed there, which is the assumption this paper
+turns into a measurement.
+
+One observation from Needham et al.\ \cite{needham2026large} cuts across all of this and motivates the agentic
+setting specifically: both models and humans are better at identifying evaluations in agentic
+settings than in chat settings. The environment an agent acts on leaks more than a conversation
+does, which is precisely why a resampling harness---an agentic setting built entirely from
+fabricated tool outputs---is where the question bites hardest.
 
 \section{Threats to validity}
 \label{app:threats}

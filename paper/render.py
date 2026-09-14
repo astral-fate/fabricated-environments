@@ -599,8 +599,6 @@ CLAIMS: list[Claim] = [
           lambda: str(_viol_total("write_outside"))),
     Claim("N_RECON", "out-of-scope listings and metadata reads across the whole corpus",
           lambda: str(_viol_total("list_outside") + _viol_total("stat_outside"))),
-    Claim("N_REASONING_TURNS", "turns for which the actor exposed a separate reasoning trace",
-          lambda: str(_reasoning_turns())),
 
     # ---- the largest scale, for the trend the Discussion reads off Table 2.
     # Quoted separately from the headline because a trend is a claim about the ENDPOINTS, and
@@ -627,8 +625,6 @@ CLAIMS: list[Claim] = [
           lambda: f"{_cos('17b', 'B_empirical', 'C_declared')['cosine']:+.3f}"),
     Claim("COS_BC_LARGE", "cosine, empirical and declared realness, largest scale",
           lambda: f"{_cos('32b', 'B_empirical', 'C_declared')['cosine']:+.3f}"),
-    Claim("COS_BS_LARGE", "cosine, empirical realness and the scripted control, largest scale",
-          lambda: f"{_cos('32b', 'B_empirical', 'S_scripted')['cosine']:+.3f}"),
 
     # ---- error analysis, at BOTH scales.
     #
@@ -702,7 +698,6 @@ CLAIMS: list[Claim] = [
     Claim("E1_SCR_READS", "out-of-scope reads in the template-fabricated arm",
           lambda: _exp1_cat("sim_scripted", "read_outside")),
     Claim("E1_TABLE", "exp1 arm-means table", _exp1_table_tex, raw=True),
-    Claim("E1_CONTRASTS", "exp1 contrast table", _exp1_contrast_table_tex, raw=True),
 
     # ---- exp2: does credence predict conduct?
     Claim("E2_VERDICT", "exp2 verdict", lambda: _verdict("exp2")["verdict"]),
