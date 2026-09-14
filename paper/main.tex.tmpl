@@ -587,6 +587,12 @@ Every number in this paper is substituted at build time from committed artifacts
 source contains no result values of its own, and the build fails if a placeholder cannot be
 computed. Code and artifacts: \url{{{ARTIFACT_URL}}}.
 
+\bibliographystyle{plainurl}
+\bibliography{refs}
+
+% Appendices start on a fresh page: the point of labelling them is that a reader can tell
+% them from the paper proper, and a heading stranded under the references undercuts that.
+\clearpage
 \appendix
 % Print appendix headings as "Appendix A: Title". Without this a reader meets a bare
 % "Error analysis" and cannot tell an appendix from a body section at a glance.
@@ -599,6 +605,9 @@ computed. Code and artifacts: \url{{{ARTIFACT_URL}}}.
 
 \noindent This appendix carries, at full length, the measurements the body
 summarises. It states no claim the body does not.
+
+\section{Error analysis}
+\label{app:errors}
 
 \begin{figure}[t]
 \centering
@@ -617,9 +626,6 @@ best layer is not load-bearing.}
 pairs. Both probes sharpen with scale while transfer between them does not follow.}
 \label{fig:scale}
 \end{figure}
-
-\section{Error analysis}
-\label{app:errors}
 
 A held-out AUROC reports how often a direction ranks a positive above a negative. It says nothing
 about \emph{which} items it gets wrong, and two pipelines with identical AUROC are different
@@ -905,8 +911,5 @@ rather than transcribed by hand, and each carries the mechanical rule by which i
 that a reader can see it was not chosen for how well it reads.
 
 {{TRANSCRIPTS}}
-
-\bibliographystyle{plainurl}
-\bibliography{refs}
 
 \end{document}
