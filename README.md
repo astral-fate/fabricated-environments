@@ -146,6 +146,7 @@ experiments/
   exp1_behavioural_divergence.py        on-policy conduct across three arms
   exp2_credence_predicts_behaviour.py   does credence predict conduct?
   exp3_framing_persistence.py           is the transcript a manipulation surface?
+  modal_exp0.py, modal_exp2.py          the same runs on rented GPUs
 
 src/
   task.py          3 difficulty classes: solvable, blocked, tempting
@@ -161,10 +162,14 @@ analyze/
   framing.py       both framing poles, scored on the verdict sentence
   figures.py       every figure: vector for the paper, raster for the deck
 
+scripts/
+  check.py         every suite; the one command that verifies the repository
+  supervise_exp1.py, selftest_exp1.py, build_slides.py, sync_from_project_v2.py
+
 results/           every artifact behind every number — see results/README.md
 paper/             main.tex.tmpl (contains no numbers), render.py, refs.bib
-scripts/           supervisors, offline self-test, GPU packaging, vendor check
 tests/             scope purity, task classes, egress, resume, probe, estimators
+docs/              deck images, the exported slide PDF, RUNPOD.md
 ```
 
 `results/` holds verdict JSON, episode logs **and run logs** for all four experiments, indexed in
@@ -176,7 +181,7 @@ tests/             scope purity, task classes, egress, resume, probe, estimators
 
 ```bash
 pip install -r requirements.txt
-python check.py          # 12 suites. No GPU, no network, no API keys.
+python scripts/check.py          # 12 suites. No GPU, no network, no API keys.
 ```
 
 Episodes and their replays are committed, so the GPU stages run offline:
@@ -184,13 +189,13 @@ Episodes and their replays are committed, so the GPU stages run offline:
 ```bash
 # 1. the separability gate, at three scales
 python experiments/exp0_construct_separation.py --model Qwen/Qwen3-1.7B --dtype float16
-python -m modal run modal_exp0.py --model Qwen/Qwen3-32B --dtype bfloat16 --gpu A100-80GB
+python -m modal run experiments/modal_exp0.py --model Qwen/Qwen3-32B --dtype bfloat16 --gpu A100-80GB
 
 # 2. behaviour across three arms, supervised and resumable (needs an actor API key)
 python scripts/supervise_exp1.py
 
 # 3. does credence predict conduct? (needs a GPU large enough for 32B)
-python -m modal run modal_exp2.py
+python -m modal run experiments/modal_exp2.py
 
 # 4. is the transcript a manipulation surface?
 python experiments/exp3_framing_persistence.py

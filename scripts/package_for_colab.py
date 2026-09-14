@@ -3,7 +3,7 @@
     python scripts/package_for_colab.py            # writes realness-code.zip
     python scripts/package_for_colab.py --with-results
 
-Follows the pattern of `project-v2/colab/package_for_drive.py`. See `RUNPOD.md` in this repository
+Follows the pattern of `project-v2/colab/package_for_drive.py`. See `docs/RUNPOD.md` in this repository
 for the full workflow; paper 1's `project-v2/colab/RUNPOD.md` covers the pod mechanics but its GPU
 advice does NOT carry over, because exp0's workload is different:
 
@@ -38,8 +38,8 @@ ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_OUT = ROOT / "realness-code.zip"
 
 INCLUDE = ["src", "analyze", "experiments", "tests", "scripts"]
-INCLUDE_FILES = ["check.py", "requirements.txt", "README.md", "PREREGISTRATION.md",
-                 "RUNPOD.md"]
+INCLUDE_FILES = ["scripts/check.py", "requirements.txt", "README.md",
+                 "PREREGISTRATION.md", "docs/RUNPOD.md"]
 
 #: Cached stage-1 and stage-2 artifacts, shipped by default.
 #:
@@ -132,7 +132,7 @@ def main(argv: list[str]) -> int:
     print("\nOn the pod -- NO API KEY AND NO NETWORK NEEDED (stages 1-2 ship cached):")
     print("  unzip realness-code.zip -d realness && cd realness")
     print("  pip install -r requirements.txt")
-    print("  python check.py")
+    print("  python scripts/check.py")
     print("")
     print("  # Heidari et al.'s range is 7B-49B. Run 8B first: it is the cheap point that")
     print("  # already enters that range, and it tells you whether 32B is worth the hour.")

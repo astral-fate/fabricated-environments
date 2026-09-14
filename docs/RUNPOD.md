@@ -44,7 +44,7 @@ less than an honest 8B one.
 ```bash
 unzip realness-code.zip -d realness && cd realness
 pip install -r requirements.txt
-python check.py                      # 177 tests; no GPU, no network, no keys
+python scripts/check.py                      # 177 tests; no GPU, no network, no keys
 
 python experiments/exp0_construct_separation.py \
     --model Qwen/Qwen3-8B  --dtype bfloat16 --batch-size 2

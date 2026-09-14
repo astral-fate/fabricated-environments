@@ -33,7 +33,7 @@ import sys
 
 import modal
 
-ROOT = pathlib.Path(__file__).parent
+ROOT = pathlib.Path(__file__).resolve().parent.parent
 
 # Weights are cached in a Volume so a second run -- or the 32B run after the 8B one -- does not
 # re-download tens of gigabytes. This is the single biggest cost saving available here: download

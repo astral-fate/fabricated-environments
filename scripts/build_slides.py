@@ -593,7 +593,7 @@ slide("Reproducibility", f"""  <div class="eyebrow">The artifact</div>
     <li><b>All three scales cost under $1</b> of rented GPU. Episodes and replays ship cached, so reproduction needs no API key.</li>
   </ul>
   <div class="code" style="margin-top:20px;">git clone https://github.com/astral-fate/fabricated-environments
-python check.py          <span style="color:#8c93a8;"># 8 suites, 177 tests, no GPU or network</span>
+python scripts/check.py          <span style="color:#8c93a8;"># 12 suites, no GPU or network</span>
 bash paper/build.sh      <span style="color:#8c93a8;"># recompute every claim, then compile</span></div>""")
 
 # 20 -------------------------------------------------------------------------- limitations

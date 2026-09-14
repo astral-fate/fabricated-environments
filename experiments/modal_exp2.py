@@ -24,7 +24,7 @@ import sys
 
 import modal
 
-ROOT = pathlib.Path(__file__).resolve().parent
+ROOT = pathlib.Path(__file__).resolve().parent.parent
 
 hf_cache = modal.Volume.from_name("realness-hf-cache", create_if_missing=True)
 results_vol = modal.Volume.from_name("realness-results", create_if_missing=True)

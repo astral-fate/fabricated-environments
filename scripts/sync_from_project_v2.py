@@ -13,7 +13,7 @@ between exp0 running at 1.7B on this machine and running at 32B on a 4090.
 So the files are copied. The cost of copying is drift -- a fix made in one repository and not the
 other -- and drift is exactly the kind of thing that stays invisible until a number disagrees with
 itself. This script makes the reuse boundary a mechanical check instead of a comment in a README:
-`check.py` runs it, and a modified vendored file fails the build with the hash that changed.
+`scripts/check.py` runs it, and a modified vendored file fails the build with the hash that changed.
 
 If a vendored file genuinely needs to differ here, it should be moved out of VENDORED and given
 its own module with a docstring saying what diverged and why.

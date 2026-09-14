@@ -28,7 +28,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent.parent
 
 SUITES: list[tuple[str, list[str]]] = [
     ("vendor", ["scripts/sync_from_project_v2.py"]),

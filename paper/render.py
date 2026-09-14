@@ -2,7 +2,7 @@
 
     python paper/render.py            # recompute, check, render paper/main.tex
     python paper/render.py --list     # print the claim table and stop
-    python paper/render.py --check    # recompute only; render nothing (used by check.py)
+    python paper/render.py --check    # recompute only; render nothing (used by scripts/check.py)
 
 Why the manuscript contains no numbers of its own
 -------------------------------------------------
