@@ -1,4 +1,4 @@
-"""Generate `docs/index.html` -- the pitch deck, served by GitHub Pages.
+"""Generate `index.html` at the repository root -- the pitch deck, served by GitHub Pages.
 
 Structure follows the house decks from the co-tenant channel-capacity study: every headline is a
 declarative claim rather than a topic, every slide carries a function label, and the closing slide
@@ -19,7 +19,9 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 RESULTS = ROOT / "results" / "exp0"
-OUT = ROOT / "docs" / "index.html"
+# The root, not docs/: GitHub Pages serves "deploy from branch, root" with no further
+# configuration, and the deck is the page this repository publishes.
+OUT = ROOT / "index.html"
 
 BRAND = "Fabricated Environments &middot; AI Incident Response Sprint 2026"
 N = 22
@@ -150,7 +152,7 @@ def slide(label: str, body: str, center: bool = False) -> None:
 
 
 FIG = ('<div style="margin-top:18px;text-align:center;">'
-       '<img src="img/{src}" alt="{alt}" '
+       '<img src="docs/img/{src}" alt="{alt}" '
        'style="max-width:{w};max-height:52vh;border-radius:10px;'
        'border:1px solid rgba(255,255,255,0.10);background:#fff;padding:10px;">'
        '<div style="margin-top:10px;font-size:12.5px;color:#8c93a8;">{cap}</div></div>')

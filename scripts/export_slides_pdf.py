@@ -1,4 +1,4 @@
-"""Export `docs/index.html` to a scrollable landscape PDF, one slide per page.
+"""Export the root `index.html` to a scrollable landscape PDF, one slide per page.
 
     python scripts/export_slides_pdf.py
 
@@ -24,7 +24,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-SRC = ROOT / "docs" / "index.html"
+SRC = ROOT / "index.html"
 OUT = ROOT / "docs" / "fabricated-environments-slides.pdf"
 
 CHROME_CANDIDATES = [
