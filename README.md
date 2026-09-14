@@ -227,5 +227,5 @@ Apart Research & CeSIA, AI Incident Response Sprint — Track 5 (Open).
 | Field | Value |
 |---|---|
 | Repository | <https://github.com/astral-fate/fabricated-environments> |
-| Commit behind the reported numbers | `54ac8c4e4715` |
+| Commit behind the reported numbers | `c3d4646f8372` |
 | DOI | not yet minted |
